@@ -1,0 +1,13 @@
+<div class="login-container">
+  <h2>Iniciar sesión 🔐</h2>
+  <form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <label for="">Email</label>
+    <input type="email" placeholder="Ingresa tu correo" id="email" formControlName="email">
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" placeholder="••••••" formControlName="password"/>
+    <button type="submit">Ingresar</button>
+  </form>
+  @if(errorMessage){
+    <p class="error">{{ errorMessage }}</p>
+  }
+</div>
