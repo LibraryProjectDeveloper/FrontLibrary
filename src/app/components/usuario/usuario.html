@@ -1,34 +1,58 @@
-<section class="container-fluid">
-  <div class="container">
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">DNI</th>
-        <th scope="col">Nombres</th>
-        <th scope="col">Apellidos</th>
-        <th scope="col">Edad</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <th scope="row">778899</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>21</td>
-      </tr>
-      <tr>
-        <th scope="row">78555</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>25</td>
-      </tr>
-      <tr>
-        <th scope="row">9666622</th>
-        <td>John</td>
-        <td>Doe</td>
-        <td>26</td>
-      </tr>
-      </tbody>
-    </table>
+<div class="container-users">
+  <h1>Usuarios</h1>
+  <div class="table-container">
+    @if (loading){
+      <p>Cargando...</p>
+    }
+    @if (error){
+      <p class="error">{{ error }}</p>
+    }
+    @if (!loading && !error && users.length > 0){
+      <table class="users-table">
+        <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Dirección</th>
+          <th>DNI</th>
+          <th>Fecha de registro</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (User of users; track User.idUsuario){
+            <tr>
+              <td>{{User.name}}</td>
+              <td>{{User.lastname}}</td>
+              <td>{{User.email}}</td>
+              <td>{{User.phone}}</td>
+              <td>{{User.address}}</td>
+              <td>{{User.DNI}}</td>
+              <td>{{User.dateRegistered}}</td>
+              <td>
+                <span class="user-role">{{User.roleName}}</span>
+              </td>
+              <td>
+                <span [ngClass]="{
+                  'badge': true,
+                  'active': User.state,
+                  'inactive': !User.state
+                }">
+                  {{User.state}}
+                </span>
+              </td>
+              <td class="actions">
+                <button class="btn-edit">✏️</button>
+                <button class="btn-delete">🗑️</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
   </div>
-</section>
+</div>
