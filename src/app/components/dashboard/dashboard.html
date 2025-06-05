@@ -1,0 +1,40 @@
+<header class="d-flex align-items-center justify-content-between px-3" style="height: 56px;">
+  <div class="fs-4 fw-bold" aria-label="Biblioteca - Dashboard">📚 Biblioteca</div>
+  <div class="d-flex align-items-center gap-2 profile" tabindex="0" aria-label="Perfil de usuario">
+    <img src="https://i.pravatar.cc/40" alt="Foto de perfil de usuario" class="profile-img"/>
+    <span class="text-white">Admin</span>
+  </div>
+</header>
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+    <div class="position-sticky pt-3">
+      <ul class="nav flex-column" role="navigation" aria-label="Navegación principal">
+        <li class="nav-item">
+          <a class="nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#books" role="tab" aria-current="page" aria-selected="true">
+            📖 Libros
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="users" data-bs-toggle="tab" data-bs-target="#users" role="tab" aria-selected="false">
+            👥 Usuarios
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#loans" role="tab" aria-selected="false">
+            🔄 Préstamos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="#settings" role="tab" aria-selected="false">
+            ⚙️ Configuración
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4 tab-content" tabindex="0">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+body, html {
+  height: 100%;
+}
+/* Fixed sidebar styling */
+#sidebarMenu {
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #2c3e50;
+}
+#sidebarMenu .nav-link {
+  color: #ecf0f1;
+}
+#sidebarMenu .nav-link.active,
+#sidebarMenu .nav-link:hover {
+  background-color: #357ABD;
+  color: white;
+}
+
+header {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+}
+.profile-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #f5a623;
+  object-fit: cover;
+  transition: border-color 0.3s;
+}
+.profile-img:hover {
+  border-color: #4a90e2;
+}
+
+.nav-tabs .nav-link {
+  cursor: pointer;
+  font-weight: 600;
+  color: #7f8c8d;
+  transition: color 0.3s;
+}
+.nav-tabs .nav-link.active {
+  color: #4a90e2;
+  font-weight: 700;
+}
+main {
+  overflow-y: auto;
+  height: calc(100vh - 56px);
+}
+
+/* Scrollbar fix for sidebar */
+#sidebarMenu::-webkit-scrollbar {
+  width: 8px;
+}
+#sidebarMenu::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
