@@ -4,14 +4,12 @@
     <div class="filter-item">
       <label for="filtroCategoria">Categoría</label>
       <select id="filtroCategoria">
-        <option value="" selected>Todas las categorías</option>
-        <option value="ficcion">Ficción</option>
-        <option value="ciencia">Ciencia</option>
-        <option value="historia">Historia</option>
-        <option value="biografia">Biografía</option>
+        <option value="">Todas las categorias</option>
+        @for (Category of Categories; track Category){
+          <option value="{{Category}}">{{Category}}</option>
+        }
       </select>
     </div>
-
     <div class="filter-item">
       <label for="filtroEditorial">Editorial</label>
       <select id="filtroEditorial">
@@ -26,9 +24,8 @@
       <label for="filtroEstado">Estado</label>
       <select id="filtroEstado">
         <option value="" selected>Todos los estados</option>
-        <option value="disponible">Disponible</option>
-        <option value="prestado">Prestado</option>
-        <option value="reservado">Reservado</option>
+        <option value="ACTIVO">Activo</option>
+        <option value="INACTIVE">Inactivo</option>
       </select>
     </div>
 
