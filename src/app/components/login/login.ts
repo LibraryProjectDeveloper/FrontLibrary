@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterLink} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
+import {AuthService} from '../../services/auth/auth-service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  constructor(private fb:FormBuilder,private http:HttpClient) {
+  constructor(private fb:FormBuilder,private authService:AuthService,private http:HttpClient, private router:Router) {
     this.loginForm = this.fb.group({
       email:[''],
       password:['']
@@ -29,7 +30,8 @@ export class LoginComponent {
       .subscribe({
         next: (response:any) =>{
           console.log(response);
-          sessionStorage.setItem('jwt',response)
+          this.authService.setToken(response.token);
+          this.router.navigate(['/panel']);
         },
         error: () => {
           this.errorMessage = 'Credenciales incorrectas'
