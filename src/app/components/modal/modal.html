@@ -1,0 +1,97 @@
+@if (isVisible){
+<div class="modal" tabindex="-1" role="dialog" [style.display]="isVisible ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{editMode ? 'Editar' : 'Agregar'}}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="col-md-12">
+          <input type="search" name="searchAuthor" id="searAuthor" (input)="searcAutor()" [(ngModel)] = "search" class="form-control">
+          <div>
+            @if (authors.length > 0) {
+              <ul class="list-group mt-2">
+                @for (au of authors; track au.idAuthor) {
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                      <strong>{{au.names}} {{au.lastname}}</strong>
+                      <small class="d-block text-muted">{{au.nationality}}</small>
+                    </div>
+                    <button class="btn btn-sm btn-primary" (click)="selectAuthor(au)">
+                      Agregar
+                    </button>
+                  </li>
+                }
+              </ul>
+            } @else if (search.trim().length > 0) {
+              <p class="text-muted mt-2">No se encontraron autores con esa búsqueda</p>
+            }
+          </div>
+          <!-- Mostrar autores seleccionados -->
+          <div class="mb-3">
+            <label>Autores seleccionados:</label>
+            <div class="d-flex flex-wrap gap-2 mt-2">
+              @for (author of selectedAuthors; track author.idAuthor) {
+                <span class="badge bg-primary">
+                    {{author.names}} {{author.lastname}}
+                  <button type="button" class="btn-close btn-close-white ms-2"
+                          (click)="removeAuthor(author.idAuthor)">
+                      </button>
+                    </span>
+              }
+            </div>
+          </div>
+        </div>
+        <form [formGroup] = "bookForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="title">Título</label>
+              <input type="text" name="title" id="title" placeholder="Ingresa el titulo..." class="form-control" formControlName="title">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="isbn">Isbn</label>
+              <input type="text" name="isbn" id="isbn" placeholder="Ingresa el codigo isbn..." class="form-control" formControlName="isbn">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="date">Fecha de publicación</label>
+              <input type="date" name="date" id="date" placeholder="Ingresa la fecha de publicación..." class="form-control" formControlName="publicationDate">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="publisher">Editorial</label>
+              <input type="text" name="publisher" id="publisher" placeholder="Ingresa el editorial..." class="form-control" formControlName="publisher">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="category">Elige la categoria</label>
+              <select name="category" id="category" class="form-select" formControlName="category">
+                @for (Category of categories; track Category){
+                  <option value="{{Category}}">{{Category}}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="stock">Stock del libro</label>
+              <input type="number" name="stock" id="stock" value="1" class="form-control" formControlName="stockTotal">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="state">Estado del libro</label>
+              <select class="form-select" formControlName="state">
+                <option value="ACTIVO">Activo</option>
+                <option value="INACTIVO">Inactivo</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"
+                (click)="onClose()">Close</button>
+        <button type="button" class="btn btn-primary"
+                (click)="onSave()" [disabled]="!bookForm.valid">
+          {{editMode ? 'Editar' : 'Guardar'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}
