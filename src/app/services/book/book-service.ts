@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {AuthorModel} from '../../model/Author';
 
 export interface Book {
-  codeBook: string;
+  codeBook: number;
   title: string;
   isbn: string;
   publicationDate: string;
@@ -10,6 +12,7 @@ export interface Book {
   category: string;
   stockTotal: number;
   state: string;
+  author: AuthorModel[];
 }
 
 
@@ -21,5 +24,25 @@ export class BookService {
   constructor(private http:HttpClient) { }
   getBooks(){
     return this.http.get<Book[]>(this.url);
+  }
+
+  getBookCategory(category:string):Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/categoria/${category}`);
+  }
+
+  getBookState(state:string):Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/state/${state}`);
+  }
+
+  getBookYear(year:number):Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/year/${year}`);
+  }
+
+  addBook(book:Book){
+    return this.http.post<Book>(`${this.url}/add`,book);
+  }
+
+  putBook(book:Book,id:number){
+    return this.http.put<Book>(`${this.url}/update/${id}`,book);
   }
 }
