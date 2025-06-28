@@ -47,19 +47,71 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="title">Título</label>
-              <input type="text" name="title" id="title" placeholder="Ingresa el titulo..." class="form-control" formControlName="title">
+              <input type="text" name="title" id="title" placeholder="Ingresa el titulo..." class="form-control" formControlName="title"
+              [ngClass] =
+                "{'is-invalid':bookForm.get('title')?.invalid && bookForm.get('title')?.touched,
+                'is-valid':bookForm.get('title')?.valid && bookForm.get('title')?.touched}"
+              >
+              <div class="invalid-feedback">
+                @if (bookForm.get('title')?.errors?.['required']){
+                  <span>El título es obligatorio</span>
+                }
+                @if (bookForm.get('title')?.errors?.['pattern']){
+                  <span>El título solo debe tener letras y espacios</span>
+                }
+                @if (bookForm.get('title')?.errors?.['maxLength']){
+                  <span>El titulo ha excedido la longitud permitida</span>
+                }
+              </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="isbn">Isbn</label>
-              <input type="text" name="isbn" id="isbn" placeholder="Ingresa el codigo isbn..." class="form-control" formControlName="isbn">
+              <input type="text" name="isbn" id="isbn" placeholder="Ingresa el codigo isbn..." class="form-control" formControlName="isbn"
+                     [ngClass] =
+                       "{'is-invalid':bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched,
+                'is-valid':bookForm.get('isbn')?.valid && bookForm.get('isbn')?.touched}"
+              >
+              <div class="invalid-feedback">
+                @if (bookForm.get('isbn')?.errors?.['required']){
+                  <span>El isbn es obligatorio</span>
+                }
+                @if (bookForm.get('isbn')?.errors?.['pattern']){
+                  <span>El isbn no puede tener caracteres especiales</span>
+                }
+              </div>
+
             </div>
             <div class="col-md-6 mb-3">
               <label for="date">Fecha de publicación</label>
-              <input type="date" name="date" id="date" placeholder="Ingresa la fecha de publicación..." class="form-control" formControlName="publicationDate">
+              <input type="date" name="date" id="date" placeholder="Ingresa la fecha de publicación..."
+                     class="form-control" formControlName="publicationDate"
+                     [ngClass]="{'is-invalid':bookForm.get('publicationDate')?.invalid && bookForm.get('publicationDate')?.touched,
+                'is-valid':bookForm.get('publicationDate')?.valid && bookForm.get('publicationDate')?.touched}"
+              >
+              <div class="invalid-feedback">
+                @if (bookForm.get('publicationDate')?.errors?.['required']){
+                  <span>La fecha es requerida</span>
+                }
+                @if (bookForm.get('publicationDate')?.errors?.['dateNotFuture']){
+                  <span>La fecha no puede ser futura</span>
+                }
+              </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="publisher">Editorial</label>
-              <input type="text" name="publisher" id="publisher" placeholder="Ingresa el editorial..." class="form-control" formControlName="publisher">
+              <input type="text" name="publisher" id="publisher" placeholder="Ingresa el editorial..."
+                     class="form-control" formControlName="publisher"
+                     [ngClass]="{'is-invalid':bookForm.get('publisher')?.invalid && bookForm.get('publisher')?.touched,
+                'is-valid':bookForm.get('publisher')?.valid && bookForm.get('publisher')?.touched}"
+              >
+              <div class="invalid-feedback">
+                @if (bookForm.get('publisher')?.errors?.['required']){
+                  <span>La editorial es requerida</span>
+                }
+                @if (bookForm.get('publisher')?.errors?.['dateNotFuture']){
+                  <span>La fecha no puede ser futura</span>
+                }
+              </div>
             </div>
             <div class="col-md-6 mb-3">
               <label for="category">Elige la categoria</label>
