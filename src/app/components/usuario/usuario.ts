@@ -7,7 +7,7 @@ import {User, UserService} from '../../services/user/user-service';
   imports: [CommonModule],
   templateUrl: './usuario.html',
   standalone: true,
-  styleUrl: './usuario.css'
+  styleUrl: './usuario.scss'
 })
 export class Usuario {
   loading: boolean = true;

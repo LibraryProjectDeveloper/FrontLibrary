@@ -14,7 +14,7 @@ import {dateNotFuture} from '../../validations/validators';
     FormsModule,ReactiveFormsModule
   ],
   templateUrl: './modal.html',
-  styleUrl: './modal.css'
+  styleUrl: './modal.scss'
 })
 export class Modal implements OnInit,OnChanges {
   @Input() isVisible = false;
@@ -49,7 +49,7 @@ export class Modal implements OnInit,OnChanges {
       publicationDate: this.bookData?.publicationDate || '',
       publisher: this.bookData?.publisher || '',
       category: this.bookData?.category || 'FANTASIA',
-      stockTotal: this.bookData?.stockTotal || 15,
+      stockTotal: this.bookData?.stockTotal || 1,
       state: this.bookData?.state || 'ACTIVO'
     });
 
@@ -67,7 +67,7 @@ export class Modal implements OnInit,OnChanges {
       category: ['FANTASIA', Validators.required],
       isbn: ['', [Validators.required,Validators.pattern("^(97[89][0-9]{10}|[0-9]{9}[0-9Xx])$")]],
       publisher: ['', [Validators.required,Validators.pattern("^[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñüÜ ,.:;'\"!?()\\-]+$")]],
-      publicationDate: ['', [Validators.required,dateNotFuture()]],
+      publicationDate: ['', [Validators.required,Validators.required,dateNotFuture()]],
       stockTotal: ['15', Validators.required],
       state: ['ACTIVO', Validators.required],
     })
