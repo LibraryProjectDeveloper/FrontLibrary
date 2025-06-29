@@ -1,0 +1,55 @@
+@if (isVisible){
+<div class="custom-modal" tabindex="-1" role="dialog">
+  <div class="custom-modal__overlay" ></div>
+  <div class="custom-modal__dialog">
+    <div class="custom-modal__content">
+      <div class="custom-modal__header">
+        <h5 class="custom-modal__title">Add</h5>
+        <button type="button" class="custom-modal__close" aria-label="Cerrar" (click)="closeModal()">×</button>
+      </div>
+      <div class="custom-modal__body">
+        <form [formGroup]="form">
+          <div class="custom-grid">
+            <div class="custom-grid__item">
+              <label for="searchUser">Buscar usuario</label>
+              <input type="search" name="searchUser" id="searchUser" class="custom-input" placeholder="Ingresa el DNI del usuario..." formControlName="userSearch">
+              <div class="results-users">
+
+              </div>
+              <div class="custom--error">
+
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="searchBook">Buscar Libro</label>
+              <input type="search" name="searchBook" id="searchBook" class="custom-input" placeholder="Buscar Libro..." formControlName="bookSearch">
+              <div class="results-books">
+
+              </div>
+              <div class="custom--error">
+
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="cantBooks"># Libros</label>
+              <input type="number" name="cantBooks" id="cantBooks" formControlName="numBooks">
+            </div>
+            <div class="custom-grid__item">
+              <label for="days">Dias prestados</label>
+              <input type="number" id="days" name="days" placeholder="Ingresa los dias que se van a prestar..." formControlName="days">
+              <div class="custom-error">
+
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="custom-modal__footer">
+        <button type="button" class="custom-button custom-button--secondary" (click)="closeModal()">Cerrar</button>
+        <button type="button" class="custom-button custom-button--primary">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+}
