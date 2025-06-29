@@ -11,16 +11,6 @@
       </select>
     </div>
     <div class="filter-item">
-      <label for="filtroEditorial">Editorial</label>
-      <select id="filtroEditorial">
-        <option value="" selected>Todas las editoriales</option>
-        <option value="planeta">Planeta</option>
-        <option value="anagrama">Anagrama</option>
-        <option value="alfaguara">Alfaguara</option>
-      </select>
-    </div>
-
-    <div class="filter-item">
       <label for="filtroEstado">Estado</label>
       <select id="filtroEstado" [(ngModel)]="state" (change)="getState()">
         <option value="" selected>Todos los estados</option>
@@ -28,7 +18,6 @@
         <option value="INACTIVO">Inactivo</option>
       </select>
     </div>
-
     <div class="filter-item">
       <label for="filtroFecha">Fecha de publicación</label>
       <input
@@ -40,7 +29,7 @@
         (change)="getYear()"
       >
     </div>
-    <div class="container">
+    <div class="filter-item">
       <button class="btn btn-primary" (click)="addBook()">Agregar libro</button>
     </div>
   </div>

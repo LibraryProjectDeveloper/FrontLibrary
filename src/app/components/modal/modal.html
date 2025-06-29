@@ -1,92 +1,159 @@
 @if (isVisible){
-<div class="modal" tabindex="-1" role="dialog" [style.display]="isVisible ? 'block' : 'none'">
-  <div class="modal-dialog modal-dialog-scrollable modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{editMode ? 'Editar' : 'Agregar'}}</h5>
-        <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+<div class="custom-modal" tabindex="-1" role="dialog">
+  <div class="custom-modal__overlay" (click)="onClose()"></div>
+  <div class="custom-modal__dialog">
+    <div class="custom-modal__content">
+      <div class="custom-modal__header">
+        <h5 class="custom-modal__title">{{editMode ? 'Editar' : 'Agregar'}}</h5>
+        <button type="button" class="custom-modal__close" aria-label="Cerrar" (click)="onClose()">×</button>
       </div>
-      <div class="modal-body">
-        <div class="col-md-12">
-          <input type="search" name="searchAuthor" id="searAuthor" (input)="searcAutor()" [(ngModel)] = "search" class="form-control">
+      <div class="custom-modal__body">
+        <div class="form-group">
+          <input type="search" name="searchAuthor" id="searAuthor" (input)="searcAutor()" [(ngModel)]="search" class="custom-input">
           <div>
             @if (authors.length > 0) {
-              <ul class="list-group mt-2">
+              <ul class="custom-list">
                 @for (au of authors; track au.idAuthor) {
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
+                  <li class="custom-list__item">
+                    <div class="custom-list__info">
                       <strong>{{au.names}} {{au.lastname}}</strong>
-                      <small class="d-block text-muted">{{au.nationality}}</small>
+                      <small class="custom-list__detail">{{au.nationality}}</small>
                     </div>
-                    <button class="btn btn-sm btn-primary" (click)="selectAuthor(au)">
+                    <button class="custom-button custom-button--primary custom-button--sm" (click)="selectAuthor(au)">
                       Agregar
                     </button>
                   </li>
                 }
               </ul>
             } @else if (search.trim().length > 0) {
-              <p class="text-muted mt-2">No se encontraron autores con esa búsqueda</p>
+              <p class="custom-text--muted">No se encontraron autores con esa búsqueda</p>
             }
           </div>
-          <!-- Mostrar autores seleccionados -->
-          <div class="mb-3">
+
+          <div class="form-group">
             <label>Autores seleccionados:</label>
-            <div class="d-flex flex-wrap gap-2 mt-2">
+            <div class="custom-tags">
               @for (author of selectedAuthors; track author.idAuthor) {
-                <span class="badge bg-primary">
-                    {{author.names}} {{author.lastname}}
-                  <button type="button" class="btn-close btn-close-white ms-2"
-                          (click)="removeAuthor(author.idAuthor)">
-                      </button>
-                    </span>
+                <span class="custom-tag">
+                  {{author.names}} {{author.lastname}}
+                  <button type="button" class="custom-tag__close" (click)="removeAuthor(author.idAuthor)">×</button>
+                </span>
               }
             </div>
           </div>
         </div>
-        <form [formGroup] = "bookForm">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="title">Título</label>
-              <input type="text" name="title" id="title" placeholder="Ingresa el titulo..." class="form-control" formControlName="title">
+
+        <form [formGroup]="bookForm">
+          <div class="custom-grid">
+            <div class="custom-grid__item">
+              <label for="title" class="custom-label">Título</label>
+              <input type="text" name="title" id="title" placeholder="Ingresa el titulo..."
+                class="custom-input"
+                formControlName="title"
+                [ngClass]="{
+                  'custom-input--invalid': bookForm.get('title')?.invalid && bookForm.get('title')?.touched,
+                  'custom-input--valid': bookForm.get('title')?.valid && bookForm.get('title')?.touched
+                }">
+              <div class="custom-error">
+                @if (bookForm.get('title')?.errors?.['required']){
+                  <span>El título es obligatorio</span>
+                }
+                @if (bookForm.get('title')?.errors?.['pattern']){
+                  <span>El título solo debe tener letras y espacios</span>
+                }
+                @if (bookForm.get('title')?.errors?.['maxLength']){
+                  <span>El titulo ha excedido la longitud permitida</span>
+                }
+              </div>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="custom-grid__item">
               <label for="isbn">Isbn</label>
-              <input type="text" name="isbn" id="isbn" placeholder="Ingresa el codigo isbn..." class="form-control" formControlName="isbn">
+              <input
+                type="text"
+                name="isbn"
+                id="isbn"
+                placeholder="Ingresa el codigo isbn..."
+                class="custom-input" formControlName="isbn"
+                [ngClass] =
+                       "{'custom-input--invalid':bookForm.get('isbn')?.invalid && bookForm.get('isbn')?.touched,
+                'custom-input--valid':bookForm.get('isbn')?.valid && bookForm.get('isbn')?.touched}"
+              >
+              <div class="custom-error">
+                @if (bookForm.get('isbn')?.errors?.['required']){
+                  <span>El isbn es obligatorio</span>
+                }
+                @if (bookForm.get('isbn')?.errors?.['pattern']){
+                  <span>El isbn no puede tener caracteres especiales</span>
+                }
+              </div>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="custom-grid__item">
               <label for="date">Fecha de publicación</label>
-              <input type="date" name="date" id="date" placeholder="Ingresa la fecha de publicación..." class="form-control" formControlName="publicationDate">
+              <input type="date" name="date" id="date" placeholder="Ingresa la fecha de publicación..."
+                     class="custom-input" formControlName="publicationDate"
+                     [ngClass]="{'custom-input--invalid':bookForm.get('publicationDate')?.invalid &&
+                     bookForm.get('publicationDate')?.touched,
+                'custom-input--valid':bookForm.get('publicationDate')?.valid && bookForm.get('publicationDate')?.touched}"
+              >
+              <div class="custom-error">
+                @if (bookForm.get('publicationDate')?.errors?.['required']){
+                  <span>La fecha es requerida</span>
+                }
+                @if (bookForm.get('publicationDate')?.errors?.['fechaFutura']){
+                  <span>La fecha no puede ser futura</span>
+                }
+              </div>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="custom-grid__item">
               <label for="publisher">Editorial</label>
-              <input type="text" name="publisher" id="publisher" placeholder="Ingresa el editorial..." class="form-control" formControlName="publisher">
+              <input type="text" name="publisher" id="publisher" placeholder="Ingresa el editorial..."
+                     class="custom-input" formControlName="publisher"
+                     [ngClass]="{'custom-input--invalid':bookForm.get('publisher')?.invalid && bookForm.get('publisher')?.touched,
+                'custom-input--valid':bookForm.get('publisher')?.valid && bookForm.get('publisher')?.touched}"
+              >
+              <div class="custom-error">
+                @if (bookForm.get('publisher')?.errors?.['required']){
+                  <span>La editorial es requerida</span>
+                }
+                @if (bookForm.get('publisher')?.errors?.['pattern']){
+                  <span>El nombre de la editorial no debe tener caracteres espceciales</span>
+                }
+              </div>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="custom-grid__item">
               <label for="category">Elige la categoria</label>
-              <select name="category" id="category" class="form-select" formControlName="category">
+              <select name="category" id="category" class="custom-input" formControlName="category">
                 @for (Category of categories; track Category){
                   <option value="{{Category}}">{{Category}}</option>
                 }
               </select>
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="custom-grid__item">
               <label for="stock">Stock del libro</label>
-              <input type="number" name="stock" id="stock" value="1" class="form-control" formControlName="stockTotal">
+              <input type="number" name="stock" id="stock" value="1" class="custom-input" formControlName="stockTotal">
             </div>
-            <div class="col-md-6 mb-3">
+
+            <div class="custom-input__item">
               <label for="state">Estado del libro</label>
-              <select class="form-select" formControlName="state">
+              <select class="custom-input" formControlName="state">
                 <option value="ACTIVO">Activo</option>
                 <option value="INACTIVO">Inactivo</option>
               </select>
+
             </div>
+
           </div>
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary"
-                (click)="onClose()">Close</button>
-        <button type="button" class="btn btn-primary"
+
+      <div class="custom-modal__footer">
+        <button type="button" class="custom-button custom-button--secondary" (click)="onClose()">Cerrar</button>
+        <button type="button" class="custom-button custom-button--primary"
                 (click)="onSave()" [disabled]="!bookForm.valid">
           {{editMode ? 'Editar' : 'Guardar'}}
         </button>
