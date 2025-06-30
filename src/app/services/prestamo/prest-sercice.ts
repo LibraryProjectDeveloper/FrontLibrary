@@ -15,4 +15,8 @@ export class PrestSercice {
   getAllState(state:string){
     return this.http.get<Loan[]>(`${this.url}/state/${state}`);
   }
+
+  getAllByUserId(dni:string){
+    return this.http.get<Loan[]>(`${this.url}/user/dni/${dni}`);
+  }
 }

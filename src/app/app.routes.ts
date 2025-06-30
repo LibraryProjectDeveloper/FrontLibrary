@@ -13,15 +13,15 @@ import {CompPrestamo} from './components/comp-prestamo/comp-prestamo';
 export const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'login', component: LoginComponent},
-  {path: 'panel', component: Dashboard, children:[
+  {path: 'panel', component: Dashboard, canActivate:[authGuard],data:{roles: ['ROLE_ADMIN','ROLE_LIBRARIAN']},children:[
       {path: 'users', component: Usuario, canActivate:[authGuard],data:{roles: ['ROLE_ADMIN','ROLE_LIBRARIAN']}},
       {path:'books',component:BookComponent,canActivate:[authGuard],data:{roles: ['ROLE_ADMIN','ROLE_LIBRARIAN']}},
       {path: 'home',component:Home,canActivate:[authGuard],data:{roles: ['ROLE_ADMIN','ROLE_LIBRARIAN']}},
       {path: 'reserva', component: CompReserva,canActivate:[authGuard],data:{roles: ['ROLE_ADMIN','ROLE_LIBRARIAN']}},
-      {path: 'prestamo', component: CompPrestamo},
+      {path: 'prestamo', component: CompPrestamo,canActivate:[authGuard],data:{roles: ['ROLE_ADMIN','ROLE_LIBRARIAN']}},
     ]},
+  {path: 'unauthorized',component: Unauthorized},
   { path: '**', redirectTo: 'login' },
-  {path: 'unauthorized',component: Unauthorized}
 ];
 
 @NgModule({

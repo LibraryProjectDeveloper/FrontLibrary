@@ -42,7 +42,6 @@ export class Modal implements OnInit,OnChanges {
   }
 
   loadBookDataToForm() {
-    // Actualiza el formulario con los datos del libro
     this.bookForm.patchValue({
       title: this.bookData?.title || '',
       isbn: this.bookData?.isbn || '',
@@ -53,7 +52,6 @@ export class Modal implements OnInit,OnChanges {
       state: this.bookData?.state || 'ACTIVO'
     });
 
-    // Carga los autores del libro si existen
     if (this.bookData?.author && Array.isArray(this.bookData.author)) {
       this.selectedAuthors = [...this.bookData.author];
     } else {
@@ -96,7 +94,7 @@ export class Modal implements OnInit,OnChanges {
       }
       if (this.query.length >= 2){
         const name = this.query[0];
-        const lastName = this.query.slice(1).join(" "); // Unir el resto como apellido
+        const lastName = this.query.slice(1).join(" ");
         this.getAuthor(name, lastName);
       }
     }else {

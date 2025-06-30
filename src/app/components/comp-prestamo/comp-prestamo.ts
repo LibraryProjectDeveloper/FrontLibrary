@@ -4,6 +4,8 @@ import {Loan} from '../../model/loan';
 import {FormsModule} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import {ModalPrestamo} from '../modal-prestamo/modal-prestamo';
+import {LoanRequest} from '../../model/LoanRequest';
+import {LoanUpdateResponse} from '../../model/LoanUpdateRequest';
 
 @Component({
   selector: 'app-comp-prestamo',
@@ -20,6 +22,9 @@ export class CompPrestamo implements OnInit {
   error: string | null = null;
   stateFilter:string = '';
   showModal:boolean = false;
+  dni:string = "";
+  editar:boolean = false;
+  prestaUpdate : LoanUpdateResponse | null = null;
   constructor(private servicePrestamo:PrestSercice) {}
 
   ngOnInit(){
@@ -31,7 +36,7 @@ export class CompPrestamo implements OnInit {
     this.servicePrestamo.getAllPrestamos().subscribe({
         next: (data) => {
           this.prestamos = data;
-          console.log(data);
+          console.log("Prestamos",data);
         }, error: (error) => {
           this.error = "No se pudieron cargar los prestamos";
           console.log("Ha ocurrido un error al cargar los prestamos:", error);
@@ -56,10 +61,64 @@ export class CompPrestamo implements OnInit {
   }
 
   addPrestamo(){
+    this.editar = false;
+    this.prestaUpdate = null;
     this.showModal = true;
   }
 
   closeModal(){
     this.showModal = false;
   }
+
+  getAllByUser(){
+    this.error = null;
+    if(!this.dni){
+      this.getAllPrestamos();
+      return;
+    }
+    //this.prestamos = [];
+    this.servicePrestamo.getAllByUserId(this.dni).subscribe({
+      next: (data) => {
+        if (data.length>0) {
+          console.log(data);
+          this.prestamos = data;
+        }else {
+          alert("No se encontraron los prestamos para el dni ingresado");
+          return
+        }
+      },
+      error: (error) => {
+        this.error = "No se pudieron cargar los prestamos";
+        console.log("Ha ocurrido un error",error);
+      }
+    })
+  }
+
+  save(Loan:LoanRequest){
+    console.log("Se guardo",Loan);
+  }
+
+  edit(prest:Loan){
+    this.editar = true;
+    this.showModal = true;
+    this.prestaUpdate = {
+      booksQuantity:prest.booksQuantity,
+      userId: prest.userId,
+      librarianId: prest.librarian,
+      books:prest.bookResponseList,
+      loanDays: this.calculateLoanDays(prest.loanDate, prest.devolutionDate),
+      state: prest.state
+    }
+    console.log(this.prestaUpdate);
+  }
+
+  calculateLoanDays(londDate: string, returnDate: string): number {
+    const startDate = new Date(londDate);
+    const endDate = new Date(returnDate);
+    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }
 }
+
+

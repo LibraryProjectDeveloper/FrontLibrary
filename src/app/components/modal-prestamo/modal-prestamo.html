@@ -4,7 +4,7 @@
   <div class="custom-modal__dialog">
     <div class="custom-modal__content">
       <div class="custom-modal__header">
-        <h5 class="custom-modal__title">Add</h5>
+        <h5 class="custom-modal__title">{{edit ? 'Editar' : 'Guardar'}}</h5>
         <button type="button" class="custom-modal__close" aria-label="Cerrar" (click)="closeModal()">×</button>
       </div>
       <div class="custom-modal__body">
@@ -12,42 +12,96 @@
           <div class="custom-grid">
             <div class="custom-grid__item">
               <label for="searchUser">Buscar usuario</label>
-              <input type="search" name="searchUser" id="searchUser" class="custom-input" placeholder="Ingresa el DNI del usuario..." formControlName="userSearch">
-              <div class="results-users">
-
-              </div>
+              <input type="search" name="searchUser" id="searchUser" class="custom-input" placeholder="Ingresa el DNI del usuario..."
+                     formControlName="searchDni">
+                  <div class="results-books">
+                    @for (usuari of usuarioResponse; track usuari.idUsuario) {
+                      <ul >
+                        <li>Nombres: {{usuari.name}} {{usuari.lastname}}</li>
+                        <li>DNI: {{usuari.dni}}</li>
+                        <li>Correo: {{usuari.email}}</li>
+                        <button type="button" class="btn" (click)="addUser(usuari)" title="Seleccionar usuario">
+                          Seleccionar
+                        </button>
+                      </ul>
+                    }
+                  </div>
+                  @if (usuario){
+                    <div class="select-user">
+                        <strong>Usuario selecionado: </strong>
+                        <p>{{usuario.name}} - {{usuario.lastname}}</p>
+                        <button type="button" (click)="usuario = null">Eliminar selecion</button>
+                    </div>
+                  }
               <div class="custom--error">
 
               </div>
             </div>
             <div class="custom-grid__item">
               <label for="searchBook">Buscar Libro</label>
-              <input type="search" name="searchBook" id="searchBook" class="custom-input" placeholder="Buscar Libro..." formControlName="bookSearch">
-              <div class="results-books">
-
+              <div class="container-search">
+                <input type="search" name="searchBook" id="searchBook" class="custom-input" placeholder="Buscar Libro por Titulo..."
+                       formControlName="searchTitle" [class.disable]="form.get('searchTitle')?.disable">
               </div>
-              <div class="custom--error">
-
+              <div class="results-books">
+                @for (book of books;track book.codeBook){
+                  <div>
+                    <li>{{book.title}} - {{book.category}}</li>
+                    <button type="button" class="btn" (click)="addBook(book)">Selecionar</button>
+                  </div>
+                }
+              </div>
+              <div>
+                @for (bookSelec of booksSeleccionado; track bookSelec.codeBook){
+                  <div>
+                    <li><strong>Libro selecionado: </strong>{{bookSelec.title}} - {{bookSelec.category}}</li>
+                    <button type="button" (click)="removeBook(bookSelec)">Eliminar</button>
+                  </div>
+                }
               </div>
             </div>
+
             <div class="custom-grid__item">
               <label for="cantBooks"># Libros</label>
-              <input type="number" name="cantBooks" id="cantBooks" formControlName="numBooks">
+              <input type="number" name="cantBooks" id="cantBooks" formControlName="booksQuantity">
+              <div class="custom--error">
+                @if (form.get('booksQuantity')?.errors?.['required']){
+                  <span>El campo es requerido</span>
+                }
+                @if (form.get('booksQuantity')?.errors?.['pattern']){
+                  <span>El campo no debe tener letras</span>
+                }
+              </div>
             </div>
             <div class="custom-grid__item">
               <label for="days">Dias prestados</label>
-              <input type="number" id="days" name="days" placeholder="Ingresa los dias que se van a prestar..." formControlName="days">
+              <input type="number" id="days" name="days" placeholder="Ingresa los dias que se van a prestar..." formControlName="loanDays">
               <div class="custom-error">
-
+                @if (form.get('loanDays')?.errors?.['required']){
+                  <span>El campo es requerido</span>
+                }
+                @if (form.get('loanDays')?.errors?.['pattern']){
+                  <span>El campo no debe tener letras</span>
+                }
               </div>
             </div>
+
+            @if (edit){
+              <div class="custom-grid__item">
+                <label for="state">Estado</label>
+                <select id="state" formControlName="state">
+                  <option value="PRESTADO">Prestado</option>
+                  <option value="NO_PRESTADO">No prestado</option>
+                  <option value="DEVUELTO">Devuelto</option>
+                </select>
+              </div>
+            }
           </div>
         </form>
       </div>
-
       <div class="custom-modal__footer">
         <button type="button" class="custom-button custom-button--secondary" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="custom-button custom-button--primary">Save</button>
+        <button type="button" class="custom-button custom-button--primary" (click)="onSumbit()" [disabled]="!form.valid">Save</button>
       </div>
     </div>
   </div>
