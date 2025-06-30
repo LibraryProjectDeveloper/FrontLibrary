@@ -8,8 +8,7 @@ export interface User {
   email: string;
   phone : string;
   address: string;
-  DNI: string;
-  password: string;
+  dni: string;
   state: boolean;
   dateRegistered: string;
   roleName: string;
@@ -23,5 +22,13 @@ export class UserService {
   constructor(private http: HttpClient) { }
   getUsers(){
     return this.http.get<User[]>(this.url)
+  }
+
+  getUserRol(dni:string,rol:string){
+    return this.http.get<User>(`${this.url}dniRol/${dni}/${rol}`);
+  }
+
+  getUser(id:number){
+    return this.http.get<User>(`${this.url}${id}`)
   }
 }

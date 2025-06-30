@@ -4,4 +4,5 @@ export interface LoanRequest{
   librarianId:number;
   bookIds:number[];
   loanDays:number;
+  state?:string;
 }

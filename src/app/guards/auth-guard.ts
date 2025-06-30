@@ -5,6 +5,7 @@ import {inject} from '@angular/core';
 export const authGuard:CanActivateFn =(route: ActivatedRouteSnapshot)=> {
   const authService = inject(AuthService);
   const router = inject(Router);
+
   if (!authService.isAuthenticated()) {
     router.navigate(['/login']);
     return false;
@@ -13,7 +14,6 @@ export const authGuard:CanActivateFn =(route: ActivatedRouteSnapshot)=> {
   if (expectRoles && expectRoles.length > 0) {
     const userRoles = authService.getUserRoles();
     const hasAccess = expectRoles.some(role => userRoles.includes(role));
-
     if (!hasAccess) {
       router.navigate(['/unauthorized']);
       return false;
