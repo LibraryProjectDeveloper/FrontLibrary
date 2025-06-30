@@ -31,7 +31,7 @@ export class LoginComponent {
         next: (response:any) =>{
           console.log(response);
           this.authService.setToken(response.token);
-          this.router.navigate(['/panel']);
+          this.router.navigate(['/panel/books']);
         },
         error: () => {
           this.errorMessage = 'Credenciales incorrectas'
