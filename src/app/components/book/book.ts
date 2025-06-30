@@ -10,7 +10,7 @@ import {Modal} from '../modal/modal';
   standalone: true,
   imports: [CommonModule, FormsModule, Modal],
   templateUrl: './book.html',
-  styleUrl: './book.css'
+  styleUrl: './book.scss'
 })
 export class BookComponent implements OnInit {
   Books : Book[] = [];
@@ -36,7 +36,6 @@ export class BookComponent implements OnInit {
     this.bookService.getBooks().subscribe({
       next: (response:Book[])=>{
         this.Books = response;
-        console.log(this.Books);
         this.loading = false;
       },
       error: ()=>{
@@ -72,7 +71,6 @@ export class BookComponent implements OnInit {
       next: (response)=>{
         this.Books = response;
         this.loading = false;
-        console.log(response);
       },
       error: (err)=>{
         this.loading = false;
@@ -150,7 +148,7 @@ export class BookComponent implements OnInit {
         if (id){
           book.codeBook=id;
         }
-      console.log("editado libro: ",book);
+      //console.log("editado libro: ",book);
       this.updateBook(book,id);
     } else {
       console.log("guardando libro: ",book);
@@ -159,16 +157,14 @@ export class BookComponent implements OnInit {
     this.showModal = false;
   }
   closeModal() {
-    console.log('Cerrando modal, isVisible antes:', this.showModal);
     this.showModal = false;
-    console.log('isVisible después:', this.showModal);
   }
 
   updateBook(book: Book,id:any) {
     return this.bookService.putBook(book,id).subscribe({
       next: (res) => {
         alert("Libro actualizado");
-        console.log("Libro actualizado",res);
+        //console.log("Libro actualizado",res);
         this.getData();
         this.loading = false;
       },
@@ -185,7 +181,7 @@ export class BookComponent implements OnInit {
     this.bookService.addBook(book).subscribe({
       next: (response)=>{
         alert("Libro guardado");
-        console.log("Libro creado",response);
+       // console.log("Libro creado",response);
         this.getData();
         this.loading = false;
       },

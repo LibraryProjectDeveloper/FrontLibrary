@@ -1,0 +1,61 @@
+<div class="container-prestamos">
+  <div class="container-filter">
+    <div class="filter-item">
+      <label for="state">Estado</label>
+      <select id="state" [(ngModel)]="stateFilter" (change)="filterState()">
+        <option value="">Por todos los estados</option>
+        <option value="PRESTADO">PRESTADO</option>
+        <option value="NO_PRESTADO">NO_PRESTADO</option>
+        <option value="DEVUELTO">DEVUELTO</option>
+      </select>
+    </div>
+    <div class="filter-item">
+      <label for="fecha">Fecha Del Prestamo</label>
+      <input type="date" name="fecha" id="fecha">
+    </div>
+    <div class="filter-item">
+      <label for="dniSear">Por DNI</label>
+      <input type="search" name="searDni" id="dniSear" placeholder="Buscar por dni...">
+    </div>
+    <div class="filter-btn"><button class="btn" (click)="addPrestamo()">Nuevo prestamo</button></div>
+  </div>
+
+  <div class="container-table">
+    @if (!error && prestamos.length>0) {
+    <table>
+      <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>Libros Prestados</th>
+        <th>Estado</th>
+        <th>Fecha Prestamo</th>
+        <th>Fecha Devolucion</th>
+        <th>Nombre bibliotecario</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (prest of prestamos;track prest.idLean){
+          <tr>
+            <td>{{prest.username}}</td>
+            <td>{{prest.booksQuantity}}</td>
+            <td>{{prest.state}}</td>
+            <td>{{prest.loanDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{prest.devolutionDate | date: 'MMM d, yyyy'}}</td>
+            <td>{{prest.librarianName}}</td>
+            <td>
+              <button class="btn-edit">✏️</button>
+              <button class="btn-delete">🗑️</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
+</div>
+<app-modal-prestamo
+  [isVisible] = "showModal"
+  (close) = "closeModal()"
+/>
+

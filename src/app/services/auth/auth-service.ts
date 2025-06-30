@@ -1,4 +1,10 @@
 import { Injectable } from '@angular/core';
+import {jwtDecode} from 'jwt-decode';
+export interface JwtPayload  {
+  sub: string;
+  roles: string[];
+  exp: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +18,25 @@ export class AuthService {
     console.log(sessionStorage.getItem(this.TOKEN));
     return sessionStorage.getItem(this.TOKEN);
   }
+  getUserRoles():string[]{
+    const token = this.getToken();
+    if(!token) return [];
+    const decoded = jwtDecode<any>(token);
+
+    if(typeof decoded.role === 'string') return [decoded.role];
+
+    if (Array.isArray(decoded.role)) return decoded.role;
+
+    return [];
+  }
+
+  getUserId():number|null{
+    const token = this.getToken();
+    if(!token) return null;
+    const decoded = jwtDecode<any>(token);
+    return decoded.id || null;
+  }
+
   removeToken():void{
     sessionStorage.removeItem(this.TOKEN);
   }

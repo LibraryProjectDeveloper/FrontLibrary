@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule,FormBuilder,FormGroup,ReactiveFormsModule,Validators} from '@angular/forms';
 import {AuthorModel} from '../../model/Author';
 import {Author} from '../../services/author';
+import {dateNotFuture} from '../../validations/validators';
 
 @Component({
   selector: 'app-modal',
@@ -13,7 +14,7 @@ import {Author} from '../../services/author';
     FormsModule,ReactiveFormsModule
   ],
   templateUrl: './modal.html',
-  styleUrl: './modal.css'
+  styleUrl: './modal.scss'
 })
 export class Modal implements OnInit,OnChanges {
   @Input() isVisible = false;
@@ -48,7 +49,7 @@ export class Modal implements OnInit,OnChanges {
       publicationDate: this.bookData?.publicationDate || '',
       publisher: this.bookData?.publisher || '',
       category: this.bookData?.category || 'FANTASIA',
-      stockTotal: this.bookData?.stockTotal || 15,
+      stockTotal: this.bookData?.stockTotal || 1,
       state: this.bookData?.state || 'ACTIVO'
     });
 
@@ -62,11 +63,11 @@ export class Modal implements OnInit,OnChanges {
 
   initForm(){
     this.bookForm = this.fb.group({
-      title: ['', Validators.required],
+      title: ['', [Validators.required,Validators.maxLength(200),Validators.pattern("^[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñüÜ ,.:;'\"!?()\\-]+$")]],
       category: ['FANTASIA', Validators.required],
-      isbn: ['', Validators.required],
-      publisher: ['', Validators.required],
-      publicationDate: ['', Validators.required],
+      isbn: ['', [Validators.required,Validators.pattern("^(97[89][0-9]{10}|[0-9]{9}[0-9Xx])$")]],
+      publisher: ['', [Validators.required,Validators.pattern("^[a-zA-Z0-9ÁÉÍÓÚáéíóúÑñüÜ ,.:;'\"!?()\\-]+$")]],
+      publicationDate: ['', [Validators.required,Validators.required,dateNotFuture()]],
       stockTotal: ['15', Validators.required],
       state: ['ACTIVO', Validators.required],
     })
@@ -124,5 +125,9 @@ export class Modal implements OnInit,OnChanges {
 
   removeAuthor(authorId: number) {
     this.selectedAuthors = this.selectedAuthors.filter(a => a.idAuthor !== authorId);
+  }
+
+  limpiarIsbn(isbn: string): string {
+    return isbn.replace(/[-\s]/g, '').toUpperCase();
   }
 }

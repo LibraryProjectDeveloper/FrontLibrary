@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
     CommonModule
   ],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrl: './login.scss'
 })
 export class LoginComponent {
   loginForm: FormGroup;
