@@ -13,6 +13,7 @@ export interface User {
   state: boolean;
   dateRegistered: string;
   roleName: string;
+  idRol:number;
 }
 
 @Injectable({
