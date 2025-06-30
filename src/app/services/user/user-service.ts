@@ -8,7 +8,7 @@ export interface User {
   email: string;
   phone : string;
   address: string;
-  DNI: string;
+  dni: string;
   password: string;
   state: boolean;
   dateRegistered: string;

@@ -23,7 +23,7 @@ export class BookService {
   private url = 'http://localhost:8080/api/LIBRARIAN/books';
   constructor(private http:HttpClient) { }
   getBooks(){
-    return this.http.get<Book[]>(this.url);
+    return this.http.get<Book[]>(this.url+'/state/ACTIVO');
   }
 
   getBookCategory(category:string):Observable<Book[]> {
@@ -44,5 +44,8 @@ export class BookService {
 
   putBook(book:Book,id:number){
     return this.http.put<Book>(`${this.url}/update/${id}`,book);
+  }
+  deleteBook(id:number){
+    return this.http.delete<Book>(`${this.url}/delete/${id}`);
   }
 }

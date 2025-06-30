@@ -4,11 +4,12 @@ import {CommonModule} from '@angular/common';
 import {CategoryService} from '../../services/book/category';
 import {FormsModule} from '@angular/forms';
 import {Modal} from '../modal/modal';
+import {ModalDelete} from '../modal-delete/modal-delete';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal],
+  imports: [CommonModule, FormsModule, Modal,ModalDelete],
   templateUrl: './book.html',
   styleUrl: './book.scss'
 })
@@ -23,7 +24,10 @@ export class BookComponent implements OnInit {
 
   showModal = false;
   editMode = false;
+  showDeleteModal = false;
+  bookToDelete: Book | null = null;
   selectedBook: Book | null = null;
+  bookDelete: Book | null = null;
   constructor(private bookService:BookService, private category:CategoryService) {
   }
   ngOnInit():void{
@@ -191,5 +195,28 @@ export class BookComponent implements OnInit {
         console.error('Error al crear:', err);
       }
     });
+  }
+  openDeleteModal(book: Book) {
+    this.bookDelete = {...book};
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.bookToDelete = null;
+  }
+  confirmDelete(book: Book) {
+      this.bookService.deleteBook(book.codeBook).subscribe({
+        next: () => {
+          alert('Libro eliminado');
+          this.getData();
+          this.closeDeleteModal();
+        },
+        error: () => {
+          alert('Error al eliminar el libro');
+          this.closeDeleteModal();
+        }
+      });
+
   }
 }

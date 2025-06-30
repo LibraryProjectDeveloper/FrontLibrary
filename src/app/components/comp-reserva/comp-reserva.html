@@ -1,1 +1,58 @@
-<p>comp-reserva works!</p>
+<div class="container-reserves">
+  <h1>Reservas</h1>
+  <div class="table-container">
+    @if (loading){
+      <p>Cargando...</p>
+    }
+    @if (error){
+      <p class="error">{{ error }}</p>
+    }
+    @if (!loading && !error && reserves.length>0){
+      <table class="reserves-table">
+        <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Libro</th>
+          <th>Fecha</th>
+          <th>Hora de reserva</th>
+          <th>Hora de entrega</th>
+          <th>Bibliotecario</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          @for (reserve of reserves; track reserve.id){
+            <td>{{reserve.userName}}</td>
+            <td>{{reserve.bookTitle}}</td>
+            <td>{{reserve.reservationDate}}</td>
+            <td>{{reserve.startTime}}</td>
+            <td>{{reserve.endTime}}</td>
+            <td>{{reserve.libraryName}}</td>
+            <td>
+                <span [ngClass]="{
+                  'badge': true,
+                  'active': reserve.active,
+                  'inactive': !reserve.active
+                }">
+                  @if (reserve.active){
+                    ACTIVO
+                  } @else if (!reserve.active ){
+                    INACTIVO
+                  }
+                </span>
+            </td>
+            <td class="actions">
+              <button class="btn-edit">✏️</button>
+              <button class="btn-delete">🗑️</button>
+            </td>
+          }
+        </tr>
+        </tbody>
+
+      </table>
+
+    }
+  </div>
+</div>
