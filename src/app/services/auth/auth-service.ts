@@ -30,11 +30,29 @@ export class AuthService {
     return [];
   }
 
+  hasRole(role: string): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+
+    const decoded = jwtDecode<any>(token);
+
+    if (typeof decoded.role === 'string') {
+      return decoded.role === role;
+    }
+
+    if (Array.isArray(decoded.role)) {
+      return decoded.role.includes(role);
+    }
+
+    return false;
+  }
+
+
   getUserId():number|null{
     const token = this.getToken();
     if(!token) return null;
     const decoded = jwtDecode<any>(token);
-    return decoded.id || null;
+    return decoded.idUser || null;
   }
 
   removeToken():void{

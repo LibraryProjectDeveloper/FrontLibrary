@@ -26,12 +26,19 @@ export class LoginComponent {
   }
   onSubmit(){
     const data : any = this.loginForm.value;
+    this.errorMessage = " ";
     this.http.post('http://localhost:8080/api/auth/login',data)
       .subscribe({
         next: (response:any) =>{
           console.log(response);
           this.authService.setToken(response.token);
-          this.router.navigate(['/panel/books']);
+          setTimeout(() => {
+            if (this.authService.hasRole('ROLE_ADMIN') || this.authService.hasRole('ROLE_LIBRARIAN')) {
+              this.router.navigate(['/panel']);
+            } else {
+              this.errorMessage = "No tienes los permisos necesarios";
+            }
+          }, 100);
         },
         error: () => {
           this.errorMessage = 'Credenciales incorrectas'

@@ -15,6 +15,16 @@ export interface Book {
   author: AuthorModel[];
 }
 
+export interface BookResponse {
+  codeBook: number;
+  title: string;
+  isbn: string;
+  publicationDate: string;
+  publisher:string;
+  category: string;
+  stockTotal: number;
+  state: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +55,14 @@ export class BookService {
   putBook(book:Book,id:number){
     return this.http.put<Book>(`${this.url}/update/${id}`,book);
   }
-  deleteBook(id:number){
+  getBuscarTitle(title:string):Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/searchTitle?title=${title}`);
+  }
+
+  getBuscarCategory(category:string):Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/searchCategory?category=${category}`);
+  }
+  deleteBook(id:number) {
     return this.http.delete<Book>(`${this.url}/delete/${id}`);
   }
 }

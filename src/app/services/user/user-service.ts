@@ -24,4 +24,12 @@ export class UserService {
   getUsers(){
     return this.http.get<User[]>(this.url)
   }
+
+  getUserRol(dni:string,rol:string){
+    return this.http.get<User>(`${this.url}dniRol/${dni}/${rol}`);
+  }
+
+  getUser(id:number){
+    return this.http.get<User>(`${this.url}${id}`)
+  }
 }
