@@ -34,7 +34,7 @@ input.ng-invalid.ng-touched {
   border-color: #f44336;
 }
 
-button {
+button[type="submit"] {
   margin-top: 20px;
   padding: 12px;
   background-color: #1976d2;
@@ -55,4 +55,17 @@ button:hover {
   font-size: 14px;
   margin-top: 10px;
   text-align: center;
+}
+
+.img-svg {
+  width: 20px;
+  height: 20px;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 490px;
+  top: 50%;
+  transform: translateY(-120%);
+  cursor: pointer;
 }

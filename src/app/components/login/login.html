@@ -2,12 +2,40 @@
   <h2>Iniciar sesión 🔐</h2>
   <form action="" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <label for="">Email</label>
-    <input type="email" placeholder="Ingresa tu correo" id="email" formControlName="email">
+    <input
+      type="email"
+      placeholder="Ingresa tu correo"
+      id="email"
+      formControlName="email"
+    />
+    @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+    @if (loginForm.get('email')?.errors?.['required']) {
+    <p class="error">El campo es obligatorio</p>
+    } @if (loginForm.get('email')?.errors?.['email']) {
+    <p class="error">El correo electrónico debe ser válido</p>
+    } }
     <label for="password">Contraseña</label>
-    <input type="password" id="password" placeholder="••••••" formControlName="password"/>
-    <button type="submit">Ingresar</button>
+    <input
+      [type]="hidePassword ? 'password' : 'text'"
+      id="password"
+      placeholder="••••••"
+      formControlName="password"
+    />
+    <span class="toggle-password" (click)="hidePassword = !hidePassword">
+      @if (hidePassword) {
+      <img src="openEye.svg" alt="openEye" class="img-svg" />
+      }@else {
+      <img src="close-eye.svg" alt="close-eye" class="img-svg" />
+      }
+    </span>
+    @if (loginForm.get('password')?.invalid &&
+    loginForm.get('password')?.touched) { @if
+    (loginForm.get('password')?.errors?.['required']) {
+    <p class="error">La contraseña es obligatoria</p>
+    } }
+    <button type="submit" [disabled]="!loginForm.valid">Ingresar</button>
   </form>
   @if(errorMessage){
-    <p class="error">{{ errorMessage }}</p>
+  <p class="error">{{ errorMessage }}</p>
   }
 </div>
