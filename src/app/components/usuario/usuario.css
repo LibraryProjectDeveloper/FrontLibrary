@@ -4,6 +4,46 @@
   margin: 0 auto;
   padding: 20px 0;
 }
+.container-users .header {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1.5rem;
+}
+.container-users .header .newUser {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+  padding: 0.25em;
+}
+.container-users .header .newUser .btn-exportar {
+  background-color: #64748b;
+}
+.container-users .header .toolbar {
+  display: flex;
+  width: 600px;
+  gap: 1rem;
+}
+.container-users .header .toolbar input,
+.container-users .header .toolbar select {
+  outline: none;
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.container-users .header .toolbar input:focus,
+.container-users .header .toolbar select:focus {
+  box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.2);
+}
+.container-users .header .toolbar input::-moz-placeholder, .container-users .header .toolbar select::-moz-placeholder {
+  color: #000000;
+}
+.container-users .header .toolbar input::placeholder,
+.container-users .header .toolbar select::placeholder {
+  color: #000000;
+}
 
 .table-container {
   overflow-x: auto;
@@ -76,7 +116,8 @@
   white-space: nowrap;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit,
+.btn-delete {
   border: none;
   border-radius: 4px;
   padding: 6px 10px;
@@ -98,6 +139,4 @@
   color: #e53e3e;
   font-weight: 600;
   margin-bottom: 12px;
-}
-
-/*# sourceMappingURL=usuario.css.map */
+}/*# sourceMappingURL=usuario.css.map */

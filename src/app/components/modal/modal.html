@@ -136,6 +136,14 @@
             <div class="custom-grid__item">
               <label for="stock">Stock del libro</label>
               <input type="number" name="stock" id="stock" value="1" class="custom-input" formControlName="stockTotal">
+              <div class="custom-error">
+                @if (bookForm.get('stockTotal')?.errors?.['required']){
+                  <span>El stock es requerida</span>
+                }
+                @if (bookForm.get('stockTotal')?.errors?.['min']){
+                  <span>El stock no puede tener numero negativos</span>
+                }
+              </div>
             </div>
 
             <div class="custom-input__item">

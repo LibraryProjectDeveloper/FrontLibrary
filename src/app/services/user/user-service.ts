@@ -6,30 +6,48 @@ export interface User {
   name: string;
   lastname: string;
   email: string;
-  phone : string;
+  phone: string;
   address: string;
   dni: string;
   password: string;
   state: boolean;
   dateRegistered: string;
   roleName: string;
+  idRol: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  private url = "http://localhost:8080/api/user/"
-  constructor(private http: HttpClient) { }
-  getUsers(){
-    return this.http.get<User[]>(this.url)
+  private url = 'http://localhost:8080/api/user/';
+  constructor(private http: HttpClient) {}
+
+  getUsersAll() {
+    return this.http.get<User[]>(`${this.url}`);
   }
 
-  getUserRol(dni:string,rol:string){
+  getUsersInactives() {
+    return this.http.get<User[]>(`${this.url}inactives`);
+  }
+
+  getUsersActives() {
+    return this.http.get<User[]>(`${this.url}actives`);
+  }
+
+  getUserRol(dni: string, rol: string) {
     return this.http.get<User>(`${this.url}dniRol/${dni}/${rol}`);
   }
 
-  getUser(id:number){
-    return this.http.get<User>(`${this.url}${id}`)
+  getUser(id: number) {
+    return this.http.get<User>(`${this.url}${id}`);
+  }
+
+  searchUser(search: string) {
+    return this.http.get<any>(`${this.url}search/${search}`);
+  }
+
+  searchUserByRol(rol: number) {
+    return this.http.get<User[]>(`${this.url}rol/${rol}`);
   }
 }

@@ -3,6 +3,46 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px 0;
+
+  .header {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1.5rem;
+    // background-color: #cddcf5;
+    .newUser {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+      padding: 0.25em;
+      .btn-exportar {
+        background-color: #64748b;
+      }
+    }
+    .toolbar {
+      display: flex;
+      width: 600px;
+      gap: 1rem;
+
+      input,
+      select {
+        outline: none;
+        width: 100%;
+        padding: 0.25rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #fff;
+        transition: border-color 0.3s, box-shadow 0.3s;
+
+        &:focus {
+          box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.2);
+        }
+
+        &::placeholder {
+          color: #000000;
+        }
+      }
+    }
+  }
 }
 .table-container {
   overflow-x: auto;
@@ -16,7 +56,6 @@
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 14px;
-
 }
 
 .users-table thead {
@@ -73,7 +112,8 @@
   white-space: nowrap;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit,
+.btn-delete {
   border: none;
   border-radius: 4px;
   padding: 6px 10px;

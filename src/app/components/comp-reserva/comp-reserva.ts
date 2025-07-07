@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Reserve,ReserveService} from '../../services/reserve/reserve-service';
 import {NgClass} from '@angular/common';
 
@@ -11,7 +11,7 @@ import {NgClass} from '@angular/common';
   styleUrl: './comp-reserva.scss'
 
 })
-export class CompReserva {
+export class CompReserva implements OnInit {
   loading: boolean = true;
   error:string|null = null;
   reserves: Reserve[] = [];
@@ -25,6 +25,7 @@ export class CompReserva {
     this.error = null;
     this.reserveService.getReserves().subscribe({
       next: (response:Reserve[])=>{
+        console.log(response);
         this.reserves = response;
         this.loading = false;
       },

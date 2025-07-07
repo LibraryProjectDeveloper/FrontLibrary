@@ -140,7 +140,6 @@ export class ModalPrestamo implements OnInit,OnChanges {
         if (data && data.length > 0){
           this.books = data;
         }else {
-          alert("No hay libros, intentelo otra vez");
           this.books = [];
         }
       },
