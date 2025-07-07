@@ -1,0 +1,150 @@
+@if (showModal) {
+<div class="custom-modal" role="dialog">
+  <div class="custom-modal__overlay"></div>
+  <div class="custom-modal__dialog">
+    <div class="custom-modal__content">
+      <div class="custom-modal__header">
+        <h3 class="custom-modal__title">{{editar ? 'Editar' : 'Agregar'}}</h3>
+        <button
+          type="button"
+          class="custom-modal__close"
+          aria-label="Cerrar"
+          (click)="closModal()"
+        >
+          x
+        </button>
+      </div>
+      <div class="custom-modal__body">
+        <form [formGroup]="userForm">
+          <div class="custom-grid">
+            <div class="custom-grid__item">
+              <label for="name" class="custom-label">Nombre</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="custom-input"
+                placeholder="Ingrese los nombres del usuario"
+                formControlName="name"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="lastname" class="custom-label">Apellido</label>
+              <input
+                type="text"
+                id="lastname"
+                name="lastname"
+                class="custom-input"
+                placeholder="Ingrese los apellidos del usuario"
+                formControlName="lastname"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="email" class="custom-label">Correo</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                class="custom-input"
+                placeholder="Ingrese el correo"
+                formControlName="email"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="phone" class="custom-label">Celular</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="custom-input"
+                placeholder="Ingrese el numero de Celular"
+                formControlName="phone"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="address" class="custom-label">Direccion</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                class="custom-input"
+                placeholder="Ingrese la direccion"
+                formControlName="address"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="dni" class="custom-label">DNI</label>
+              <input
+                type="text"
+                id="dni"
+                name="dni"
+                class="custom-input"
+                placeholder="Ingrese el dni"
+                formControlName="dni"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="password" class="custom-label">Contraseña</label>
+              <input
+                type="text"
+                id="password"
+                name="password"
+                class="custom-input"
+                placeholder="Ingrese la Contraseña"
+                formControlName="password"
+              />
+            </div>
+            <div class="custom-grid__item">
+              <label for="Rol" class="custom-label">Asignar Rol</label>
+              <select
+                class="custom-input"
+                id="Rol"
+                name="Rol"
+                formControlName="idRol"
+              >
+                <option value="1">Administrador</option>
+                <option value="2" selected>Usuario</option>
+                <option value="3">Bibliotecario</option>
+              </select>
+            </div>
+            <div class="custom-grid__item">
+              <label for="state" class="custom-label">Estado</label>
+              <select
+                class="custom-input"
+                id="state"
+                name="state"
+                formControlName="state"
+                [class.disabled]="!editar"
+              >
+                <option value="true" selected>Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+              @if (!editar) {
+              <small class="field-info"
+                >Los nuevos usuarios se crean activos por defecto</small
+              >
+              }
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="custom-modal__footer">
+        <button
+          type="button"
+          class="custom-button custom-button--primary"
+          [disabled]="!userForm.valid"
+        >
+          Guardar
+        </button>
+        <button
+          type="button"
+          class="custom-button custom-button--secondary"
+          (click)="closModal()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

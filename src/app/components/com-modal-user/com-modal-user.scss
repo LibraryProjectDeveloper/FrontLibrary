@@ -1,0 +1,25 @@
+@import "../modal/modal.scss";
+
+// Estilos para campos deshabilitados
+.custom-input.disabled,
+.custom-input:disabled {
+  background-color: #f5f5f5;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.custom-grid__item:has(.custom-input.disabled) .custom-label,
+.custom-grid__item:has(.custom-input:disabled) .custom-label {
+  color: #666;
+  opacity: 0.7;
+}
+
+// Estilos para la información de campo
+.field-info {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
