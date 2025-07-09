@@ -81,7 +81,13 @@
             <button type="button" class="btn-edit" (click)="edit(User)">
               ✏️
             </button>
-            <button class="btn-delete">🗑️</button>
+            <button
+              type="button"
+              class="btn-delete"
+              (click)="openDeleteModal(User.idUsuario)"
+            >
+              🗑️
+            </button>
           </td>
         </tr>
         } } @if (user != null){
@@ -111,7 +117,13 @@
             <button type="button" class="btn-edit" (click)="edit(user)">
               ✏️
             </button>
-            <button class="btn-delete">🗑️</button>
+            <button
+              type="button"
+              class="btn-delete"
+              (click)="openDeleteModal(user.idUsuario)"
+            >
+              🗑️
+            </button>
           </td>
         </tr>
         }
@@ -125,4 +137,12 @@
   [editar]="editar"
   [user]="userUpdated"
   (closeModal)="close()"
+  (saveUserEvent)="saveUser($event)"
 />
+
+<app-delemodal-user
+  *ngIf="showDeleteModal"
+  (close)="closeDeleteModal()"
+  (confirm)="deleteUser($event)"
+  [idUserDelete]="idUserDelete"
+></app-delemodal-user>

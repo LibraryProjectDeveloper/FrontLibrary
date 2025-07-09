@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { UserRequest } from '../../model/UserRequest';
+import { map, Observable } from 'rxjs';
 
 export interface User {
   idUsuario: number;
@@ -49,5 +51,31 @@ export class UserService {
 
   searchUserByRol(rol: number) {
     return this.http.get<User[]>(`${this.url}rol/${rol}`);
+  }
+
+  updateUser(User: UserRequest) {
+    console.log('Updating user:', User);
+    return this.http.patch<User>(`${this.url}update/${User.idUsuario}`, User);
+  }
+
+  addUser(User: UserRequest) {
+    console.log('Adding user:', User);
+    return this.http.post<User>(`${this.url}add`, User);
+  }
+
+  existeEmail(email: string): Observable<boolean> {
+    return this.http
+      .get<any>(`${this.url}existsEmail/${email}`)
+      .pipe(map((response) => response.exists === true));
+  }
+
+  existeDni(dni: string): Observable<boolean> {
+    return this.http
+      .get<any>(`${this.url}existsDni/${dni}`)
+      .pipe(map((response) => response.exists === true));
+  }
+
+  deleteUser(id: number) {
+    return this.http.delete(`${this.url}delete/${id}`);
   }
 }

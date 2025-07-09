@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { User, UserService } from '../../services/user/user-service';
 import { FormsModule } from '@angular/forms';
 import { ComModalUser } from '../com-modal-user/com-modal-user';
+import { UserRequest } from '../../model/UserRequest';
+import { DelemodalUser } from '../delemodal-user/delemodal-user';
 @Component({
   selector: 'app-usuario',
-  imports: [CommonModule, FormsModule, ComModalUser],
+  imports: [CommonModule, FormsModule, ComModalUser, DelemodalUser],
   templateUrl: './usuario.html',
   standalone: true,
   styleUrl: './usuario.scss',
@@ -21,6 +23,9 @@ export class Usuario {
   state: string = '';
   showModal: boolean = false;
   editar: boolean = false;
+  userSave: UserRequest | null = null;
+  showDeleteModal: boolean = false;
+  idUserDelete: number = 0;
   constructor(private userService: UserService) {}
   ngOnInit(): void {
     this.getUsers();
@@ -28,7 +33,7 @@ export class Usuario {
   getUsers() {
     this.loading = true;
     this.error = null;
-    this.userService.getUsersAll().subscribe({
+    this.userService.getUsersActives().subscribe({
       next: (response: User[]) => {
         this.user = null;
         this.users = response;
@@ -93,7 +98,7 @@ export class Usuario {
 
   getUsersState() {
     if (!this.state || this.state === '') {
-      this.getUsers();
+      this.getUserAll();
       return;
     }
 
@@ -102,6 +107,22 @@ export class Usuario {
     } else if (this.state === 'false') {
       this.getUserInactives();
     }
+  }
+
+  getUserAll() {
+    this.loading = true;
+    this.error = null;
+    this.userService.getUsersAll().subscribe({
+      next: (response: User[]) => {
+        this.users = response;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+        this.error = 'Error al cargar todos los usuarios';
+        console.log('Error al cargar todos los usuarios');
+      },
+    });
   }
 
   getUserInactives() {
@@ -159,5 +180,57 @@ export class Usuario {
     console.log('Boton Editar Presionado', this.editar);
     console.log('Usuario a editar:', user);
     console.log('showModal después de setear:', this.showModal); // Debug
+  }
+
+  saveUser(User: UserRequest) {
+    this.userSave = User;
+    if (this.editar && this.userUpdated) {
+      this.userService.updateUser(this.userSave).subscribe({
+        next: () => {
+          alert('Usuario actualizado correctamente');
+          this.getUsers();
+        },
+        error: (error) => {
+          console.error('Error al actualizar el usuario:', error);
+        },
+      });
+    } else {
+      this.userService.addUser(this.userSave).subscribe({
+        next: () => {
+          alert('Usuario agregado correctamente');
+          this.getUsers();
+        },
+        error: (error) => {
+          console.error('Error al agregar el usuario:', error);
+        },
+      });
+    }
+  }
+
+  openDeleteModal(idUser: number) {
+    this.idUserDelete = idUser;
+    this.showDeleteModal = true;
+    console.log(
+      'Abriendo modal de eliminación para el usuario con id:',
+      idUser
+    );
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    console.log('Cerrando modal de eliminación');
+  }
+
+  deleteUser(idUser: number) {
+    this.userService.deleteUser(idUser).subscribe({
+      next: () => {
+        this.getUsers();
+        this.closeDeleteModal();
+      },
+      error: (error) => {
+        console.error('Error al eliminar el usuario:', error);
+        alert('Error al eliminar el usuario');
+      },
+    });
   }
 }

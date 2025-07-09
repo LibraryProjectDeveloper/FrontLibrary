@@ -1,4 +1,5 @@
 export interface UserRequest {
+  idUsuario?: number; // Optional for new users
   name: string;
   lastname: string;
   email: string;
@@ -7,4 +8,5 @@ export interface UserRequest {
   dni: string;
   password: string;
   idRol: number;
+  state?: boolean;
 }
