@@ -34,7 +34,7 @@ export class LoginComponent {
           this.authService.setToken(response.token);
           setTimeout(() => {
             if (this.authService.hasRole('ROLE_ADMIN') || this.authService.hasRole('ROLE_LIBRARIAN')) {
-              this.router.navigate(['/panel']);
+              this.router.navigate(['/panel/books']);
             } else {
               this.errorMessage = "No tienes los permisos necesarios";
             }

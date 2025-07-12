@@ -87,7 +87,6 @@
               border-radius: 4px;
               transition: background-color 0.2s;
             }
-
             .btn-edit {
               background-color: #ffc107;
               color: #fff;
@@ -110,4 +109,25 @@
       }
     }
   }
+}
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.active {
+  background-color: orange;
+  color: white;
+}
+.returned {
+  background-color: #14b852;
+  color: white;
+}
+
+.inactive {
+  background-color: #ef4444;
+  color: white;
 }

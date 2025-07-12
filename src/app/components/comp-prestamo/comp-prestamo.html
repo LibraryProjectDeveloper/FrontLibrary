@@ -30,10 +30,10 @@
       <tr>
         <th>Usuario</th>
         <th>Libros Prestados</th>
-        <th>Estado</th>
         <th>Fecha Prestamo</th>
         <th>Fecha Devolucion</th>
         <th>Nombre bibliotecario</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
       </thead>
@@ -42,10 +42,19 @@
           <tr>
             <td>{{prest.username}}</td>
             <td>{{prest.booksQuantity}}</td>
-            <td>{{prest.state}}</td>
             <td>{{prest.loanDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
             <td>{{prest.devolutionDate | date: 'MMM d, yyyy'}}</td>
             <td>{{prest.librarianName}}</td>
+            <td>
+              <span [ngClass]="{
+                'badge': true,
+                'active': prest.state === 'PRESTADO',
+                'returned': prest.state === 'DEVUELTO',
+                'inactive': prest.state === 'NO_PRESTADO',
+              }">
+                {{prest.state}}
+              </span>
+            </td>
             <td>
               <button class="btn-edit" (click)="edit(prest)">✏️</button>
               <button class="btn-delete">🗑️</button>
