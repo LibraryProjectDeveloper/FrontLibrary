@@ -27,7 +27,7 @@ h1 {
   transition: background-color 0.2s ease;
 }
 .btn:hover {
-  background-color: rgb(1.762295082, 87.2336065574, 213.237704918);
+  background-color: #0257d5;
 }
 .btn:focus {
   outline: none;
@@ -36,6 +36,4 @@ h1 {
 .btn:disabled {
   opacity: 0.65;
   cursor: not-allowed;
-}
-
-/*# sourceMappingURL=styles.css.map */
+}/*# sourceMappingURL=styles.css.map */

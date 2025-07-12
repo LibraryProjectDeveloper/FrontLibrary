@@ -1,15 +1,44 @@
 <div class="container-users">
-  <h1>Usuarios</h1>
+  <h3>Usuarios</h3>
+  <div class="header">
+    <div class="newUser">
+      <button class="btn" (click)="openModal()">Agregar Usuario</button>
+      <button class="btn btn-exportar">📤 Exportar</button>
+    </div>
+
+    <div class="toolbar">
+      <input
+        type="text"
+        placeholder="Buscar por nombre, email,DNI"
+        [(ngModel)]="query"
+        (change)="searchUser()"
+      />
+
+      <select [(ngModel)]="idRol" (change)="getRol()">
+        <option value="">Todos los roles</option>
+        <option value="1">Admin</option>
+        <option value="3">Bibliotecario</option>
+        <option value="2">Usuario</option>
+      </select>
+
+      <select [(ngModel)]="state" (change)="getUsersState()">
+        <option value="">Todos los estados</option>
+        <option value="true">Activos</option>
+        <option value="false">Inactivos</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Toolbar: Búsqueda, Filtros, Acciones -->
+
   <div class="table-container">
     @if (loading){
-      <p>Cargando...</p>
-    }
-    @if (error){
-      <p class="error">{{ error }}</p>
-    }
-    @if (!loading && !error && users.length > 0){
-      <table class="users-table">
-        <thead>
+    <p>Cargando...</p>
+    } @if (error){
+    <p class="error">{{ error }}</p>
+    } @if (!loading && !error && (users.length > 0 || user != null)){
+    <table class="users-table">
+      <thead>
         <tr>
           <th>Nombre</th>
           <th>Apellido</th>
@@ -22,41 +51,98 @@
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
-        </thead>
-        <tbody>
-          @for (User of users; track User.idUsuario){
-            <tr>
-              <td>{{User.name}}</td>
-              <td>{{User.lastname}}</td>
-              <td>{{User.email}}</td>
-              <td>{{User.phone}}</td>
-              <td>{{User.address}}</td>
-              <td>{{User.dni}}</td>
-              <td>{{User.dateRegistered}}</td>
-              <td>
-                <span class="user-role">{{User.roleName}}</span>
-              </td>
-              <td>
-                <span [ngClass]="{
-                  'badge': true,
-                  'active': User.state,
-                  'inactive': !User.state
-                }">
-                  @if (User.state){
-                    ACTIVO
-                  } @else if (!User.state ){
-                    INACTIVO
-                  }
-                </span>
-              </td>
-              <td class="actions">
-                <button class="btn-edit">✏️</button>
-                <button class="btn-delete">🗑️</button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+      </thead>
+      <tbody>
+        @if (users && user == null) { @for (User of users; track
+        User.idUsuario){
+        <tr>
+          <td>{{User.name}}</td>
+          <td>{{User.lastname}}</td>
+          <td>{{User.email}}</td>
+          <td>{{User.phone}}</td>
+          <td>{{User.address}}</td>
+          <td>{{User.dni}}</td>
+          <td>{{User.dateRegistered | date: "dd/MM/yy HH:mm"}}</td>
+          <td>
+            <span class="user-role">{{User.roleName}}</span>
+          </td>
+          <td>
+            <span
+              [ngClass]="{
+                    'badge': true,
+                    'active': User.state,
+                    'inactive': !User.state
+                  }"
+            >
+              {{User.state}}
+            </span>
+          </td>
+          <td class="actions">
+            <button type="button" class="btn-edit" (click)="edit(User)">
+              ✏️
+            </button>
+            <button
+              type="button"
+              class="btn-delete"
+              (click)="openDeleteModal(User.idUsuario)"
+            >
+              🗑️
+            </button>
+          </td>
+        </tr>
+        } } @if (user != null){
+        <tr>
+          <td>{{user.name}}</td>
+          <td>{{user.lastname}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.phone}}</td>
+          <td>{{user.address}}</td>
+          <td>{{user.dni}}</td>
+          <td>{{user.dateRegistered | date: "dd/MM/yy HH:mm"}}</td>
+          <td>
+            <span class="user-role">{{user.roleName}}</span>
+          </td>
+          <td>
+            <span
+              [ngClass]="{
+                      'badge': true,
+                      'active': user.state,
+                      'inactive': !user.state
+                    }"
+            >
+              {{user.state}}
+            </span>
+          </td>
+          <td class="actions">
+            <button type="button" class="btn-edit" (click)="edit(user)">
+              ✏️
+            </button>
+            <button
+              type="button"
+              class="btn-delete"
+              (click)="openDeleteModal(user.idUsuario)"
+            >
+              🗑️
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
     }
   </div>
 </div>
+<app-com-modal-user
+  [showModal]="showModal"
+  [editar]="editar"
+  [user]="userUpdated"
+  (closeModal)="close()"
+  (saveUserEvent)="saveUser($event)"
+/>
+
+<app-delemodal-user
+  *ngIf="showDeleteModal"
+  (close)="closeDeleteModal()"
+  (confirm)="deleteUser($event)"
+  [idUserDelete]="idUserDelete"
+></app-delemodal-user>

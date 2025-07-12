@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Loan} from '../../model/loan';
+import {LoanRequest} from '../../model/LoanRequest';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,5 +19,13 @@ export class PrestSercice {
 
   getAllByUserId(dni:string){
     return this.http.get<Loan[]>(`${this.url}/user/dni/${dni}`);
+  }
+
+  addLoan(loanRequest:LoanRequest){
+    return this.http.post<Loan>(`${this.url}/add`, loanRequest);
+  }
+
+  updateLoan(loanRequest:LoanRequest,id:number){
+    return this.http.put<Loan>(`${this.url}/update/${id}`, loanRequest);
   }
 }

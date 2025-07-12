@@ -1,0 +1,257 @@
+@if (showModal) {
+<div class="custom-modal" role="dialog">
+  <div class="custom-modal__overlay"></div>
+  <div class="custom-modal__dialog">
+    <div class="custom-modal__content">
+      <div class="custom-modal__header">
+        <h3 class="custom-modal__title">{{editar ? 'Editar' : 'Agregar'}}</h3>
+        <button
+          type="button"
+          class="custom-modal__close"
+          aria-label="Cerrar"
+          (click)="closModal()"
+        >
+          x
+        </button>
+      </div>
+      <div class="custom-modal__body">
+        <form [formGroup]="userForm">
+          <div class="custom-grid">
+            <div class="custom-grid__item">
+              <label for="name" class="custom-label">Nombre</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                class="custom-input"
+                placeholder="Ingrese los nombres del usuario"
+                formControlName="name"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('name')?.invalid && userForm.get('name')?.touched,
+                  'custom-input--valid': userForm.get('name')?.valid && userForm.get('name')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('name')?.errors?.['required'] &&
+                userForm.get('name')?.touched) {
+                <span>El nombre es obligatorio</span>
+                } @if (userForm.get('name')?.errors?.['pattern']) {
+                <span>El nombre solo puede contener letras y espacios</span>
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="lastname" class="custom-label">Apellido</label>
+              <input
+                type="text"
+                id="lastname"
+                name="lastname"
+                class="custom-input"
+                placeholder="Ingrese los apellidos del usuario"
+                formControlName="lastname"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('lastname')?.invalid && userForm.get('lastname')?.touched,
+                  'custom-input--valid': userForm.get('lastname')?.valid && userForm.get('lastname')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('lastname')?.errors?.['required'] &&
+                userForm.get('lastname')?.touched) {
+                <span>El apellido es obligatorio</span>
+                } @if (userForm.get('lastname')?.errors?.['pattern']) {
+                <span>El apellido solo puede contener letras y espacios</span>
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="email" class="custom-label">Correo</label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                class="custom-input"
+                placeholder="Ingrese el correo"
+                formControlName="email"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('email')?.invalid && userForm.get('email')?.touched,
+                  'custom-input--valid': userForm.get('email')?.valid && userForm.get('email')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('email')?.errors?.['required'] &&
+                userForm.get('email')?.touched) {
+                <span>El correo es obligatorio</span>
+                } @if (userForm.get('email')?.errors?.['pattern']) {
+                <span
+                  >El correo no es valido, no debe tener caracteres especiales
+                  como ñ</span
+                >
+                } @if(userForm.get('email')?.errors?.['emailExists']) {
+                <span>El correo ya existe</span>
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="phone" class="custom-label">Celular</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="custom-input"
+                placeholder="Ingrese el numero de Celular"
+                formControlName="phone"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('phone')?.invalid && userForm.get('phone')?.touched,
+                  'custom-input--valid': userForm.get('phone')?.valid && userForm.get('phone')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('phone')?.errors?.['required'] &&
+                userForm.get('phone')?.touched) {
+                <span>El celular es obligatorio</span>
+                } @if (userForm.get('phone')?.errors?.['pattern']) {
+                <span
+                  >El celular solo debe contener numeros y empezar con el numero
+                  9</span
+                >
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="address" class="custom-label">Direccion</label>
+              <input
+                type="text"
+                id="address"
+                name="address"
+                class="custom-input"
+                placeholder="Ingrese la direccion"
+                formControlName="address"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('address')?.invalid && userForm.get('address')?.touched,
+                  'custom-input--valid': userForm.get('address')?.valid && userForm.get('address')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('address')?.errors?.['required'] &&
+                userForm.get('address')?.touched) {
+                <span>La dirección es obligatoria</span>
+                } @if (userForm.get('address')?.errors?.['pattern']) {
+                <span>La direccion no debe tener caracteres raros</span>
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="dni" class="custom-label">DNI</label>
+              <input
+                type="text"
+                id="dni"
+                name="dni"
+                class="custom-input"
+                placeholder="Ingrese el dni"
+                formControlName="dni"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('dni')?.invalid && userForm.get('dni')?.touched,
+                  'custom-input--valid': userForm.get('dni')?.valid && userForm.get('dni')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('dni')?.errors?.['required'] &&
+                userForm.get('dni')?.touched) {
+                <span>El DNI es obligatorio</span>
+                } @if (userForm.get('dni')?.errors?.['pattern']) {
+                <span
+                  >El DNI debe tener 8 digitos y tampoco caracteres
+                  especiales</span
+                >
+                } @if(userForm.get('dni')?.errors?.['dniExists']){
+                <span>El dni ya esta en uso</span>}
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="password" class="custom-label">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="custom-input"
+                placeholder="Ingrese la Contraseña"
+                formControlName="password"
+                [ngClass]="{
+                  'custom-input--invalid': userForm.get('password')?.invalid && userForm.get('password')?.touched,
+                  'custom-input--valid': userForm.get('password')?.valid && userForm.get('password')?.touched
+                }"
+              />
+              <div class="custom--error">
+                @if (userForm.get('password')?.errors?.['required'] &&
+                userForm.get('password')?.touched) {
+                <span>La contraseña es obligatoria</span>
+                } @if (userForm.get('password')?.errors?.['minlength']) {
+                <span>La contraseña debe tener al menos 6 caracteres</span>
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="Rol" class="custom-label">Asignar Rol</label>
+              <select
+                class="custom-input"
+                id="Rol"
+                name="Rol"
+                formControlName="idRol"
+              >
+                <option value="1">Administrador</option>
+                <option value="2" selected>Usuario</option>
+                <option value="3">Bibliotecario</option>
+              </select>
+              <div class="custom--error">
+                @if (userForm.get('idRol')?.errors?.['required']) {
+                <span>El rol es obligatorio</span>
+                }
+              </div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="state" class="custom-label">Estado</label>
+              <select
+                class="custom-input"
+                id="state"
+                name="state"
+                formControlName="state"
+                [class.disabled]="!editar"
+              >
+                <option value="true" selected>Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+              @if (!editar) {
+              <small class="field-info"
+                >Los nuevos usuarios se crean activos por defecto</small
+              >
+              }
+              <div class="custom--error">
+                @if (userForm.get('state')?.errors?.['required']) {
+                <span>El estado es obligatorio</span>
+                }
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="custom-modal__footer">
+        <button
+          type="button"
+          class="custom-button custom-button--primary"
+          [disabled]="!userForm.valid"
+          (click)="saveUser()"
+        >
+          Guardar
+        </button>
+        <button
+          type="button"
+          class="custom-button custom-button--secondary"
+          (click)="closModal()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

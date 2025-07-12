@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PrestSercice} from '../../services/prestamo/prest-sercice';
 import {Loan} from '../../model/loan';
 import {FormsModule} from '@angular/forms';
-import {DatePipe, NgClass} from '@angular/common';
+import {DatePipe} from '@angular/common';
 import {ModalPrestamo} from '../modal-prestamo/modal-prestamo';
 import {LoanRequest} from '../../model/LoanRequest';
 import {LoanUpdateResponse} from '../../model/LoanUpdateRequest';
@@ -12,8 +12,7 @@ import {LoanUpdateResponse} from '../../model/LoanUpdateRequest';
   imports: [
     FormsModule,
     DatePipe,
-    ModalPrestamo,
-    NgClass
+    ModalPrestamo
   ],
   templateUrl: './comp-prestamo.html',
   styleUrl: './comp-prestamo.scss'
