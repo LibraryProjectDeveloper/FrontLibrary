@@ -138,6 +138,34 @@ export class BookComponent implements OnInit {
     this.showModal = true;
     console.log("showModal:",this.showModal);
   }
+  generateReport(){
+    const body = {
+      dateStart: '2024-07-01',
+      dateEnd: '2025-07-12',
+      category: ''
+    }
+    this.bookService.getReportExcel(body).subscribe({
+      next: response =>{
+        const contentDisposition = response.headers.get('Content-Disposition') ?? '';
+        let filename = 'Report.xlsx';
+        const matches = /filename="?([^"]+)"?/.exec(contentDisposition);
+        if (matches && matches[1]) {
+          filename = matches[1];
+        }
+        const blob = response.body as Blob;
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        window.URL.revokeObjectURL(url);
+      },
+      error: err => {
+        alert('Error al generar el archivo Excel');
+      }
+    })
+
+  }
 
   editBook(book: Book) {
     console.log("Esta haciendo clicj en editBook",book);

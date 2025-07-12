@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AuthorModel} from '../../model/Author';
 
@@ -24,6 +24,11 @@ export interface BookResponse {
   category: string;
   stockTotal: number;
   state: string;
+}
+export interface BookReportRequest{
+  dateStart: string;
+  dateEnd: string;
+  category: string;
 }
 
 @Injectable({
@@ -61,6 +66,10 @@ export class BookService {
 
   getBuscarCategory(category:string):Observable<Book[]> {
     return this.http.get<Book[]>(`${this.url}/searchCategory?category=${category}`);
+  }
+  getReportExcel(request:BookReportRequest):Observable<HttpResponse<Blob>> {
+    return this.http.post<Blob>(`${this.url}/download-report`, request, { responseType: 'blob' as 'json',observe: 'response'
+    });
   }
   deleteBook(id:number) {
     return this.http.delete<Book>(`${this.url}/delete/${id}`);

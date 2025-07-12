@@ -74,7 +74,11 @@
                     'inactive': !User.state
                   }"
             >
-              {{User.state}}
+              @if (User.state){
+              Activo
+              } @else {
+              Inactivo
+              }
             </span>
           </td>
           <td class="actions">
