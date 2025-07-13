@@ -19,8 +19,6 @@ export interface ReserveRequest {
   libraryId?: number;
   bookId?: number;
   id?: number;
-
-  BookId?: number;
   startTime?: string;
   endTime?: string;
   reservationDate?: string;

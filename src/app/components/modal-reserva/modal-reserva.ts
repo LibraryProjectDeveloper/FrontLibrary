@@ -272,7 +272,7 @@ export class ModalReserva implements OnInit, OnChanges {
     } else {
       const reserva: ReserveRequest = {
         id: this.reserveEdit?.id || 0,
-        BookId: this.bookSelected?.codeBook || 0,
+        bookId: this.bookSelected?.codeBook || 0,
         reservationDate: this.formSave.get('reservationDate')?.value,
         startTime: this.formSave.get('startTime')?.value,
         endTime: this.formSave.get('endTime')?.value,

@@ -25,6 +25,15 @@ export interface BookResponse {
   stockTotal: number;
   state: string;
 }
+export interface BookReport {
+  codeBook: number;
+  isbn: string;
+  title: string;
+  category: string;
+  publicationDate: string;
+  publisher: string;
+  quantity:number
+}
 export interface BookReportRequest{
   dateStart: string;
   dateEnd: string;
@@ -66,6 +75,9 @@ export class BookService {
 
   getBuscarCategory(category:string):Observable<Book[]> {
     return this.http.get<Book[]>(`${this.url}/searchCategory?category=${category}`);
+  }
+  getReport(dateStart:string,dateEnd:string,category:string):Observable<BookReport[]> {
+    return this.http.get<BookReport[]>(`${this.url}/report`,{params:{dateStart,dateEnd,category}});
   }
   getReportExcel(request:BookReportRequest):Observable<HttpResponse<Blob>> {
     return this.http.post<Blob>(`${this.url}/download-report`, request, { responseType: 'blob' as 'json',observe: 'response'

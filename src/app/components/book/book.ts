@@ -5,11 +5,12 @@ import {CategoryService} from '../../services/book/category';
 import {FormsModule} from '@angular/forms';
 import {Modal} from '../modal/modal';
 import {ModalDelete} from '../modal-delete/modal-delete';
+import {ModalReportBook} from '../modal-report-book/modal-report-book';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal,ModalDelete],
+  imports: [CommonModule, FormsModule, Modal,ModalDelete,ModalReportBook],
   templateUrl: './book.html',
   styleUrl: './book.scss'
 })
@@ -25,6 +26,7 @@ export class BookComponent implements OnInit {
   showModal = false;
   editMode = false;
   showDeleteModal = false;
+  showReportModal = false;
   bookToDelete: Book | null = null;
   selectedBook: Book | null = null;
   bookDelete: Book | null = null;
@@ -190,6 +192,12 @@ export class BookComponent implements OnInit {
   }
   closeModal() {
     this.showModal = false;
+  }
+  openReportModal() {
+    this.showReportModal = true;
+  }
+  closeReportModal() {
+    this.showReportModal = false;
   }
 
   updateBook(book: Book,id:any) {

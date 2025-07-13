@@ -1,0 +1,83 @@
+@if (isVisible) {
+  <div class="modal-report__overlay" (click)="onClose()"></div>
+  <div class="modal-report__container" tabindex="-1" role="dialog">
+    <div class="modal-report__header">
+      <h2 class="modal-report__title">Reporte de Libros</h2>
+      <button class="modal-report__close" (click)="onClose()" aria-label="Cerrar">
+        &times;
+      </button>
+    </div>
+    <div class="modal-report__filters">
+      <div class="form-group">
+        <label for="startDate" class="form-label">Fecha</label>
+        <select id="startDate" class="form-input" [(ngModel)]="date" (change)="onChange()">
+          <option value=""></option>
+          <option value="1">Hoy</option>
+          <option value="2">Este mes</option>
+          <option value="3">Ultimo 3 meses</option>
+          <option value="4">Este año</option>
+          <option value="5">Todo</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="category" class="form-label">Categoría</label>
+        <select id="category" class="form-input" [(ngModel)]="category" (change)="onChange()">
+          <option value="">Todas</option>
+          @for (cat of Categories; track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+      </div>
+      <button class="btn-excel" (click)="generateReport()" [disabled]="stateButton">
+        <span class="excel-icon">
+          <!-- Ícono SVG igual que en el otro modal -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="18" rx="3" fill="#fff"/>
+            <rect x="2" y="3" width="20" height="18" rx="3" stroke="#218838" stroke-width="2"/>
+            <path d="M7 8L10 16" stroke="#218838" stroke-width="2" stroke-linecap="round"/>
+            <path d="M13 8L16 16" stroke="#218838" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8.5 12H15.5" stroke="#218838" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        Exportar a Excel
+      </button>
+    </div>
+    <div class="modal-report__table-container">
+      @if (loading) {
+        <p class="loading-message">Cargando...</p>
+      }
+      @if (error) {
+        <p class="error-message">{{ error }}</p>
+      }
+      @if (!loading && !error && Books.length > 0) {
+        <table class="report-table">
+          <thead>
+          <tr>
+            <th>ISBN</th>
+            <th>Libro</th>
+            <th>Categoría</th>
+            <th>Fecha de Publicación</th>
+            <th>Editorial</th>
+            <th>Cantidad</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (book of Books; track book.isbn) {
+              <tr>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.category }}</td>
+                <td>{{ book.publicationDate}}</td>
+                <td>{{ book.publisher }}</td>
+                <td>{{ book.quantity }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @if (!loading && !error && Books.length === 0) {
+        <p class="error-message">No hay libros en el rango/categoría seleccionados.</p>
+      }
+    </div>
+  </div>
+}
