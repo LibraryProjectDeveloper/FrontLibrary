@@ -1,5 +1,6 @@
 <div class="container-reserves">
   <h1>Reservas</h1>
+  <button class="btn-report" (click)="generateReport()" >Generar reporte</button>
   <div class="table-container">
     @if (loading){
       <p>Cargando...</p>
@@ -56,3 +57,10 @@
     }
   </div>
 </div>
+
+<app-modal-report
+[isVisible] = "showModal"
+(close) = "closeModal()"
+>
+
+</app-modal-report>

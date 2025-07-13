@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Reserve,ReserveService} from '../../services/reserve/reserve-service';
 import {NgClass} from '@angular/common';
+import {ModalReport} from '../modal-report/modal-report';
 
 @Component({
   selector: 'app-comp-reserva',
   imports: [
-    NgClass
+    NgClass,
+    ModalReport
   ],
   templateUrl: './comp-reserva.html',
   styleUrl: './comp-reserva.scss'
@@ -15,6 +17,7 @@ export class CompReserva implements OnInit {
   loading: boolean = true;
   error:string|null = null;
   reserves: Reserve[] = [];
+  showModal = false;
   constructor(private reserveService:ReserveService) {
   }
   ngOnInit():void{
@@ -36,6 +39,10 @@ export class CompReserva implements OnInit {
       }
     })
   }
-
-
+  generateReport(){
+    this.showModal = true;
+  }
+  closeModal() {
+    this.showModal = false;
+  }
 }

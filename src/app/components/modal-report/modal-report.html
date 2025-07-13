@@ -1,0 +1,73 @@
+@if (isVisible) {
+  <div class="modal-report__overlay" (click)="onClose()"></div>
+  <div class="modal-report__container" tabindex="-1" role="dialog">
+    <div class="modal-report__header">
+      <h2 class="modal-report__title">Reporte de Reservas</h2>
+      <button class="modal-report__close" (click)="onClose()" aria-label="Cerrar">
+        &times;
+      </button>
+    </div>
+    <div class="modal-report__filters">
+      <div class="form-group">
+        <label for="startDate" class="form-label">Fecha Inicio</label>
+        <input type="date" id="startDate" class="form-input"  [(ngModel)]="dateStart" (change)="onChange()">
+      </div>
+      <div class="form-group">
+        <label for="startEnd" class="form-label">Fecha Fin</label>
+        <input type="date" id="startEnd" class="form-input" [(ngModel)]="dateEnd" (change)="onChange()" >
+      </div>
+      <button class="btn-excel" (click)="generateReport()" [disabled]="stateButton">
+        <span class="excel-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="18" rx="3" fill="#fff"/>
+            <rect x="2" y="3" width="20" height="18" rx="3" stroke="#218838" stroke-width="2"/>
+            <path d="M7 8L10 16" stroke="#218838" stroke-width="2" stroke-linecap="round"/>
+            <path d="M13 8L16 16" stroke="#218838" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8.5 12H15.5" stroke="#218838" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        Exportar a Excel
+      </button>
+    </div>
+    <div class="modal-report__table-container">
+      @if (loading) {
+        <p class="loading-message">Cargando...</p>
+      }
+      @if (error) {
+        <p class="error-message">{{ error }}</p>
+      }
+      @if (!loading && !error && Reserve.length > 0) {
+        <table class="report-table">
+          <thead>
+          <tr>
+            <th>Fecha de Reserva</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Libro</th>
+            <th>Usuario</th>
+            <th>Bibliotecario</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (reserve of Reserve; track reserve.timeStart) {
+              <tr>
+                <td>{{ reserve.dateReserve | date:'dd-MM-yyyy' }}</td>
+                <td>{{ reserve.timeStart }}</td>
+                <td>{{ reserve.timeEnd }}</td>
+                <td>{{ reserve.titleBook }}</td>
+                <td>{{ reserve.userName }}</td>
+                <td>{{ reserve.librarianName }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+      @if (!loading && !error && Reserve.length === 0) {
+        <p class="error-message">No hay reservas en el rango seleccionado.</p>
+
+      }
+    </div>
+  </div>
+}
+
+

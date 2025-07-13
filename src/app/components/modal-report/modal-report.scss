@@ -1,0 +1,230 @@
+$primary: #3498db;
+$success: #27ae60;
+$danger: #e74c3c;
+$bg-overlay: rgba(0, 0, 0, 0.55);
+$modal-bg: #fff;
+$header-bg: #f4f8fb;
+$border: #e0e0e0;
+$shadow: 0 8px 32px rgba(0,0,0,0.18);
+$transition: 0.3s cubic-bezier(.4,0,.2,1);
+$font: "Segoe UI", Arial, sans-serif;
+.modal-report__overlay {
+  position: fixed;
+  inset: 0;
+  background: $bg-overlay;
+  z-index: 2000;
+  animation: fadeIn 0.4s;
+}
+
+.modal-report__container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.98);
+  background: $modal-bg;
+  border-radius: 14px;
+  box-shadow: $shadow;
+  width: 96%;
+  max-width: 1100px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  font-family: $font;
+  z-index: 2100;
+  animation: modalPop 0.5s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes modalPop {
+  0% { opacity: 0; transform: translate(-50%, -60%) scale(0.95);}
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1);}
+}
+.modal-report__header {
+  background: $header-bg;
+  padding: 20px 32px 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid $border;
+  position: relative;
+}
+
+.modal-report__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $primary;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.modal-report__close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: $danger;
+  cursor: pointer;
+  transition: color $transition;
+  position: absolute;
+  right: 24px;
+  top: 18px;
+  line-height: 1;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba($danger, 0.08);
+    color: darken($danger, 10%);
+  }
+}
+.modal-report__filters {
+  display: flex;
+  gap: 24px;
+  padding: 24px 32px 0 32px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.form-label {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-input {
+  padding: 10px 14px;
+  border: 1px solid $border;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color $transition;
+  font-family: inherit;
+  &:focus {
+    border-color: $primary;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba($primary, 0.13);
+  }
+}
+
+.btn-excel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: $success;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 22px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba($success, 0.08);
+  transition: background $transition, transform $transition;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    background: darken($success, 7%);
+    transform: translateY(-2px) scale(1.03);
+  }
+
+  .excel-icon {
+    font-size: 1.4rem;
+    color: #fff;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.08));
+    transition: transform $transition;
+  }
+}
+.modal-report__table-container {
+  flex: 1;
+  overflow: auto;
+  padding: 24px 32px 32px 32px;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+.report-table thead {
+  background: $primary;
+}
+
+.report-table th, .report-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid $border;
+}
+
+.report-table th {
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.report-table tbody tr:nth-child(even) {
+  background: #f7fbfd;
+}
+
+.report-table tbody tr:hover {
+  background: rgba($primary, 0.08);
+  transition: background 0.2s;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.error-message {
+  color: $danger;
+  font-weight: 600;
+  margin: 18px 0 0 0;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.loading-message {
+  color: $primary;
+  font-weight: 600;
+  margin: 18px 0 0 0;
+  font-size: 1.1rem;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .modal-report__container {
+    max-width: 99vw;
+    padding: 0;
+  }
+  .modal-report__header,
+  .modal-report__filters,
+  .modal-report__table-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .modal-report__filters {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .report-table th, .report-table td {
+    padding: 10px 8px;
+    font-size: 0.97rem;
+  }
+}
