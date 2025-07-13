@@ -18,6 +18,7 @@ import {
 import { User, UserService } from '../../services/user/user-service';
 import { UserRequest } from '../../model/UserRequest';
 import { dniExists, emailExists } from '../../validations/validators';
+import { AuthService } from '../../services/auth/auth-service';
 @Component({
   selector: 'app-com-modal-user',
   imports: [ReactiveFormsModule, CommonModule],
@@ -36,6 +37,7 @@ export class ComModalUser implements OnInit, OnChanges {
 
   errorEmail: string | null = null;
   errorDni: string | null = null;
+
   ngOnInit(): void {
     this.initForm();
   }

@@ -16,16 +16,20 @@
 
       <select [(ngModel)]="idRol" (change)="getRol()">
         <option value="">Todos los roles</option>
+        @if (hasRole('ROLE_ADMIN')) {
         <option value="1">Admin</option>
+        }
         <option value="3">Bibliotecario</option>
         <option value="2">Usuario</option>
       </select>
 
+      @if (hasRole('ROLE_ADMIN')) {
       <select [(ngModel)]="state" (change)="getUsersState()">
         <option value="">Todos los estados</option>
         <option value="true">Activos</option>
         <option value="false">Inactivos</option>
       </select>
+      }
     </div>
   </div>
 
@@ -74,17 +78,15 @@
                     'inactive': !User.state
                   }"
             >
-              @if (User.state){
-              Activo
-              } @else {
-              Inactivo
-              }
+              @if (User.state){ Activo } @else { Inactivo }
             </span>
           </td>
           <td class="actions">
             <button type="button" class="btn-edit" (click)="edit(User)">
               ✏️
             </button>
+
+            @if (hasRole('ROLE_ADMIN')) {
             <button
               type="button"
               class="btn-delete"
@@ -92,6 +94,7 @@
             >
               🗑️
             </button>
+            }
           </td>
         </tr>
         } } @if (user != null){
@@ -121,6 +124,7 @@
             <button type="button" class="btn-edit" (click)="edit(user)">
               ✏️
             </button>
+            @if (hasRole('ROLE_ADMIN')) {
             <button
               type="button"
               class="btn-delete"
@@ -128,6 +132,7 @@
             >
               🗑️
             </button>
+            }
           </td>
         </tr>
         }

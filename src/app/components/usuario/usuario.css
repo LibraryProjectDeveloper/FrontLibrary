@@ -37,6 +37,9 @@
 .container-users .header .toolbar select:focus {
   box-shadow: 0 0 0 2px rgba(100, 116, 139, 0.2);
 }
+.container-users .header .toolbar input::-moz-placeholder, .container-users .header .toolbar select::-moz-placeholder {
+  color: #000000;
+}
 .container-users .header .toolbar input::placeholder,
 .container-users .header .toolbar select::placeholder {
   color: #000000;
@@ -136,6 +139,4 @@
   color: #e53e3e;
   font-weight: 600;
   margin-bottom: 12px;
-}
-
-/*# sourceMappingURL=usuario.css.map */
+}/*# sourceMappingURL=usuario.css.map */
