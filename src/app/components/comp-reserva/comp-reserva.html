@@ -1,15 +1,79 @@
 <div class="container-reserves">
-  <h1>Reservas</h1>
+  <div>
+    <div class="header">
+      <div class="container-btnAdd">
+        <button type="button" class="btn" (click)="openModal()">
+          Nueva Reserva +
+        </button>
+      </div>
+      <div class="filter-container">
+        <form class="filter-item" [formGroup]="formFilter">
+          <div>
+            <label for="search-user">Reserva por usuario:</label>
+            <input
+              type="search"
+              id="search-user"
+              placeholder="Buscar por Dni..."
+              formControlName="searchDni"
+              (focus)="deshabilitarCampos('searchDni')"
+              (blur)="habilitarCampos('searchDni')"
+            />
+            <div class="errores">
+              @if (formFilter.get('searchDni')?.hasError('maxlength')) {
+              <span style="color: red; font-size: 13px">
+                El DNI no puede tener más de 8 caracteres.
+              </span>
+              }
+            </div>
+          </div>
+          <div>
+            <label for="search-book">Buscar Reserva por Libro:</label>
+            <input
+              type="search"
+              id="search-book"
+              placeholder="Buscar por libro"
+              formControlName="searchTitle"
+              (focus)="deshabilitarCampos('searchTitle')"
+              (blur)="habilitarCampos('searchTitle')"
+            />
+          </div>
+          <div>
+            <label for="search-date">Buscar Reserva por Fecha:</label>
+            <input
+              type="date"
+              id="search-date"
+              placeholder="Buscar por fecha"
+              formControlName="searchDate"
+              (focus)="deshabilitarCampos('searchDate')"
+              (blur)="habilitarCampos('searchDate')"
+            />
+          </div>
+          <div>
+            <label for="filter-user">Filtrar por estado:</label>
+            <select
+              name="filter-state"
+              id="filter-state"
+              formControlName="state"
+              (focus)="deshabilitarCampos('state')"
+              (blur)="habilitarCampos('state')"
+            >
+              <option value="">Todos</option>
+              <option value="true">Reservas Activas</option>
+              <option value="false">Reservas Inactivas</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <div class="table-container">
     @if (loading){
-      <p>Cargando...</p>
-    }
-    @if (error){
-      <p class="error">{{ error }}</p>
-    }
-    @if (!loading && !error && reserves.length>0){
-      <table class="reserves-table">
-        <thead>
+    <p>Cargando...</p>
+    } @if (error){
+    <p class="error">{{ error }}</p>
+    } @if (!loading && !error && reserves.length>0){
+    <table class="reserves-table">
+      <thead>
         <tr>
           <th>Usuario</th>
           <th>Libro</th>
@@ -20,39 +84,54 @@
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
-        </thead>
-        <tbody>
+      </thead>
+      <tbody>
+        @for (reserve of reserves; track reserve.id){
         <tr>
-          @for (reserve of reserves; track reserve.id){
-            <td>{{reserve.userName}}</td>
-            <td>{{reserve.bookTitle}}</td>
-            <td>{{reserve.reservationDate}}</td>
-            <td>{{reserve.startTime}}</td>
-            <td>{{reserve.endTime}}</td>
-            <td>{{reserve.libraryName}}</td>
-            <td>
-                <span [ngClass]="{
+          <td>{{reserve.userName}}</td>
+          <td>{{reserve.bookTitle}}</td>
+          <td>{{reserve.reservationDate}}</td>
+          <td>{{reserve.startTime}}</td>
+          <td>{{reserve.endTime}}</td>
+          <td>{{reserve.libraryName}}</td>
+          <td>
+            <span
+              [ngClass]="{
                   'badge': true,
                   'active': reserve.active,
                   'inactive': !reserve.active
-                }">
-                  @if (reserve.active){
-                    ACTIVO
-                  } @else if (!reserve.active ){
-                    INACTIVO
-                  }
-                </span>
-            </td>
-            <td class="actions">
-              <button class="btn-edit">✏️</button>
-              <button class="btn-delete">🗑️</button>
-            </td>
-          }
+                }"
+            >
+              @if (reserve.active){ ACTIVO } @else if (!reserve.active ){
+              INACTIVO }
+            </span>
+          </td>
+          <td class="actions">
+            <button type="button" class="btn-edit" (click)="editar(reserve)">
+              ✏️
+            </button>
+            <button
+              class="btn-delete"
+              type="button"
+              (click)="deleteReserve(reserve.id)"
+            >
+              🗑️
+            </button>
+          </td>
         </tr>
-        </tbody>
-
-      </table>
+        }
+      </tbody>
+    </table>
 
     }
   </div>
+</div>
+<div>
+  <app-modal-reserva
+    [isVisible]="isVisible"
+    [editMode]="edit"
+    [reserveEdit]="reserveEdit"
+    (close)="closeModal()"
+    (save)="saveReserve($event)"
+  ></app-modal-reserva>
 </div>
