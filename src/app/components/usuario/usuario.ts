@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User, UserService } from '../../services/user/user-service';
 import { FormsModule } from '@angular/forms';
 import { ComModalUser } from '../com-modal-user/com-modal-user';
 import { UserRequest } from '../../model/UserRequest';
 import { DelemodalUser } from '../delemodal-user/delemodal-user';
+import { AuthService } from '../../services/auth/auth-service';
 @Component({
   selector: 'app-usuario',
   imports: [CommonModule, FormsModule, ComModalUser, DelemodalUser],
@@ -26,6 +27,9 @@ export class Usuario {
   userSave: UserRequest | null = null;
   showDeleteModal: boolean = false;
   idUserDelete: number = 0;
+
+  userRoles: string[] = [];
+  authService = inject(AuthService);
   constructor(private userService: UserService) {}
   ngOnInit(): void {
     this.getUsers();
@@ -232,5 +236,9 @@ export class Usuario {
         alert('Error al eliminar el usuario');
       },
     });
+  }
+
+  hasRole(role: string): boolean {
+    return this.userRoles.includes(role);
   }
 }

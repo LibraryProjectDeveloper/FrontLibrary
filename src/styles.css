@@ -27,7 +27,7 @@ h1 {
   transition: background-color 0.2s ease;
 }
 .btn:hover {
-  background-color: #0257d5;
+  background-color: rgb(1.762295082, 87.2336065574, 213.237704918);
 }
 .btn:focus {
   outline: none;
@@ -36,4 +36,30 @@ h1 {
 .btn:disabled {
   opacity: 0.65;
   cursor: not-allowed;
-}/*# sourceMappingURL=styles.css.map */
+}
+
+.btn-danger {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  background-color: #dd3e25;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-danger:hover {
+  background-color: rgb(179.0714285714, 48.4642857143, 27.9285714286);
+}
+.btn-danger:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(248, 32, 4, 0.921);
+}
+.btn-danger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/*# sourceMappingURL=styles.css.map */

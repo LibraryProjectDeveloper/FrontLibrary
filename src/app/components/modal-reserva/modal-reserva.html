@@ -1,0 +1,171 @@
+@if (isVisible) {
+<div class="custom-modal" tabindex="-1" role="dialog">
+  <div class="custom-modal__overlay" (click)="onClose()"></div>
+  <div class="custom-modal__dialog">
+    <div class="custom-modal__content">
+      <div class="custom-modal__header">
+        <h5 class="custom-modal__title">
+          {{editMode ? 'Editar' : 'Nueva Reserva'}}
+        </h5>
+        <button
+          type="button"
+          class="custom-modal__close"
+          aria-label="Cerrar"
+          (click)="onClose()"
+        >
+          ×
+        </button>
+      </div>
+      <div class="custom-modal__body">
+        <form [formGroup]="formSave">
+          <div class="custom-grid">
+            @if (!editMode) {
+            <div class="custom-grid__item">
+              <label for="userSearch" class="custom-label"
+                >Buscar Usuario por DNI</label
+              >
+              <div class="input-with-feedback">
+                <input
+                  type="text"
+                  name="searchUser"
+                  id="userSearch"
+                  placeholder="Ingrese DNI (8 dígitos)"
+                  formControlName="userSearch"
+                  class="custom-input"
+                  [class.input-error]="formSave.get('userSearch')?.invalid && formSave.get('userSearch')?.touched"
+                  [class.input-success]="usuario && formSave.get('userSearch')?.valid"
+                />
+                @if (isSearchingUser) {
+                <span class="search-indicator">🔍 Buscando...</span>
+                } @if (usuario && formSave.get('userSearch')?.valid) {
+                <span class="user-found"
+                  >✅ {{ usuario.name }} {{ usuario.lastname }}</span
+                >
+                }
+              </div>
+
+              <!-- Mensajes de error de validación -->
+              <div class="custom-error">
+                @if (getUserSearchErrorMessage()) {
+                <span class="error-message"
+                  >{{ getUserSearchErrorMessage() }}</span
+                >
+                } @if (userSearchError) {
+                <span class="search-error">{{ userSearchError }}</span>
+                }
+              </div>
+            </div>
+            }
+            <div class="custom-grid__item">
+              <label for="bookSearch" class="custom-label">Buscar Libro</label>
+              <input
+                type="search"
+                name="searchBook"
+                id="bookSearch"
+                placeholder="Buscar por titulo"
+                class="custom-input"
+                formControlName="bookSearch"
+                [class.input-error]="formSave.get('bookSearch')?.invalid && formSave.get('bookSearch')?.touched"
+                [class.input-success]="books && formSave.get('bookSearch')?.valid"
+              />
+              <div class="custom-error">
+                @if (formSave.get('bookSearch')?.hasError('required') &&
+                formSave.get('bookSearch')?.touched) {
+                <span class="error-message">El libro es requerido</span>
+                } @if (formSave.get('bookSearch')?.hasError('pattern')) {
+                <span class="error-message"
+                  >Solo se permiten letras y espacios</span
+                >
+                }
+              </div>
+              @if (books) { @for (book of books; track book.codeBook) {
+              <div class="custom-list">
+                <div class="custom-list__item">
+                  {{ book.title }}
+                  <button type="button" (click)="selectBook(book)" class="btn">
+                    Agregar
+                  </button>
+                </div>
+              </div>
+              } } @if (bookSelected) {
+              <div class="selected-book">
+                <h3>Libro seleccionado:</h3>
+                <p>{{ bookSelected.title }}</p>
+                <button type="button" (click)="removeBook()" class="btn-danger">
+                  Quitar
+                </button>
+              </div>
+              }
+            </div>
+            @if (editMode) {
+            <div class="custom-grid__item">
+              <label for="startTime" class="custom-label">Desde</label>
+              <input
+                type="time"
+                name="startTime"
+                id="startTime"
+                class="custom-input"
+                formControlName="startTime"
+              />
+              <div class="custom-error"></div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="endTime" class="custom-label">Hasta </label>
+              <input
+                type="time"
+                name="endTime"
+                id="endTime"
+                class="custom-input"
+                formControlName="endTime"
+              />
+              <div class="custom-error"></div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="date" class="custom-label">Fecha</label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                class="custom-input"
+                formControlName="reservationDate"
+              />
+              <div class="custom-error"></div>
+            </div>
+            <div class="custom-grid__item">
+              <label for="state" class="custom-label">Estado</label>
+              <select
+                name="state"
+                id="state"
+                class="custom-input"
+                formControlName="state"
+              >
+                <option value="true" selected>Activo</option>
+                <option value="false">Inactivo</option>
+              </select>
+              <div class="custom-error"></div>
+            </div>
+            }
+          </div>
+        </form>
+      </div>
+
+      <div class="custom-modal__footer">
+        <button
+          type="button"
+          class="custom-button custom-button--secondary"
+          (click)="onClose()"
+        >
+          Cerrar
+        </button>
+        <button
+          type="button"
+          class="custom-button custom-button--primary"
+          (click)="saveReserve()"
+        >
+          {{editMode ? 'Actualizar' : 'Guardar'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

@@ -1,3 +1,33 @@
+.header {
+  display: flex;
+  padding: 0.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+  .container-btnAdd {
+    display: flex;
+  }
+  .filter-container {
+    display: flex;
+    gap: 1rem;
+    input,
+    select {
+      outline: none;
+      border-radius: 5px;
+      width: 15rem;
+      height: 2rem;
+      padding: 0.25rem;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
+      color: #333;
+      font-size: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .filter-item {
+      display: flex;
+    }
+    //background-color: #ffc107;
+  }
+}
 .container-reserves {
   font-family: Arial, sans-serif;
   max-width: 1200px;
@@ -11,7 +41,7 @@
   margin: 20px;
 }
 
-.reserves-table{
+.reserves-table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
@@ -64,7 +94,8 @@
   white-space: nowrap;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit,
+.btn-delete {
   border: none;
   padding: 0.4rem 0.6rem;
   font-size: 1rem;
@@ -113,4 +144,103 @@
   color: #e53e3e;
   font-weight: 600;
   margin-bottom: 12px;
+}
+
+/* Estilos para las mejoras de filtrado */
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+
+  .btn-clear-filter {
+    padding: 0.5rem 1rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      background-color: #c82333;
+      transform: translateY(-1px);
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+.filter-info {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+
+  &.active {
+    opacity: 1;
+    transform: translateY(0);
+    background-color: #e3f2fd;
+    border-color: #2196f3;
+  }
+
+  .filter-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .filter-text {
+      font-weight: 500;
+      color: #495057;
+    }
+
+    .loading-indicator {
+      color: #007bff;
+      font-size: 0.9rem;
+      animation: pulse 1.5s infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Mejorar visibilidad de campos de filtro activos */
+.filter-container {
+  input:focus,
+  select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: #fff;
+  }
+
+  input:disabled,
+  select:disabled {
+    background-color: #e9ecef;
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  margin: 1rem 0;
 }
