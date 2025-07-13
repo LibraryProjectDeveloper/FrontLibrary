@@ -46,6 +46,7 @@ export class UserService {
   }
 
   searchUser(search: string) {
+    //para buscar por nombre, dni o email
     return this.http.get<any>(`${this.url}search/${search}`);
   }
 

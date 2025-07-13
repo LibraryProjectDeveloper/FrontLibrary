@@ -1,68 +1,120 @@
 <header class="header-container">
-  <button class="menu-toggle" aria-label="Abrir menú" (click)="toggleSidebar()">☰</button>
-  <div class="header-item" aria-label="Biblioteca - Dashboard">📚 Biblioteca</div>
+  <button class="menu-toggle" aria-label="Abrir menú" (click)="toggleSidebar()">
+    ☰
+  </button>
+  <div class="header-item" aria-label="Biblioteca - Dashboard">
+    📚 Biblioteca
+  </div>
   <div class="header-item" tabindex="0" aria-label="Perfil de usuario">
-    <img src="https://i.pravatar.cc/40" alt="Foto de perfil de usuario" class="profile-img"/>
+    <img
+      src="https://i.pravatar.cc/40"
+      alt="Foto de perfil de usuario"
+      class="profile-img"
+    />
     <span class="text-white">Bienvenido</span>
   </div>
-
 </header>
 <div class="container-main">
-    <nav class="sidebar" [class.visible]="isSidebarVisible">
-      <div>
-        <ul class="nav flex-column" role="navigation" aria-label="Navegación principal">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="home"
-               routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#books" role="tab" aria-current="page" aria-selected="true">
-              🏠 Inicio
-            </a>
-          </li>
-          @if (hasRole('ROLE_ADMIN')){
-          <li class="nav-item">
-            <a class="nav-link" routerLink="books" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#books" role="tab" aria-current="page" aria-selected="true">
-              📚 Libros
-            </a>
-          </li>
-          }
-          @if (hasRole('ROLE_ADMIN')){
-          <li class="nav-item">
-            <a class="nav-link" routerLink="users"
-               routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#users" role="tab" aria-selected="false">
-              👥 Usuarios
-            </a>
-          </li>
-          }
-          @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
-          <li class="nav-item">
-            <a class="nav-link" routerLink="prestamo" data-bs-toggle="tab" routerLinkActive="active" data-bs-target="#loans" role="tab"
-               aria-selected="false">
-              🔄 Préstamos
-            </a>
-          </li>
-          }
-          @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
-          <li class="nav-item">
-            <a class="nav-link" routerLink="reserva" data-bs-toggle="tab" routerLinkActive="active" data-bs-target="#loans" role="tab"
-               aria-selected="false">
-              🔄 Reservas
-            </a>
-          </li>
-          }
-          @if (hasRole('ROLE_ADMIN')){
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-bs-toggle="tab" routerLinkActive="active" data-bs-target="#settings" role="tab"
-               aria-selected="false">
-              ⚙️ Configuración
-            </a>
-          </li>
-          }
-          <li class="nav-item">
-            <button class="btn" (click)="logout()">Cerrar sesión</button>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <main>
-      <router-outlet></router-outlet>
-    </main>
+  <nav class="sidebar" [class.visible]="isSidebarVisible">
+    <div>
+      <ul
+        class="nav flex-column"
+        role="navigation"
+        aria-label="Navegación principal"
+      >
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="home"
+            routerLinkActive="active"
+            data-bs-toggle="tab"
+            data-bs-target="#books"
+            role="tab"
+            aria-current="page"
+            aria-selected="true"
+          >
+            🏠 Inicio
+          </a>
+        </li>
+        @if (hasRole('ROLE_ADMIN')){
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="books"
+            routerLinkActive="active"
+            data-bs-toggle="tab"
+            data-bs-target="#books"
+            role="tab"
+            aria-current="page"
+            aria-selected="true"
+          >
+            📚 Libros
+          </a>
+        </li>
+        } @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="users"
+            routerLinkActive="active"
+            data-bs-toggle="tab"
+            data-bs-target="#users"
+            role="tab"
+            aria-selected="false"
+          >
+            👥 Usuarios
+          </a>
+        </li>
+        } @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="prestamo"
+            data-bs-toggle="tab"
+            routerLinkActive="active"
+            data-bs-target="#loans"
+            role="tab"
+            aria-selected="false"
+          >
+            🔄 Préstamos
+          </a>
+        </li>
+        } @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            routerLink="reserva"
+            data-bs-toggle="tab"
+            routerLinkActive="active"
+            data-bs-target="#loans"
+            role="tab"
+            aria-selected="false"
+          >
+            🔄 Reservas
+          </a>
+        </li>
+        } @if (hasRole('ROLE_ADMIN')){
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            data-bs-toggle="tab"
+            routerLinkActive="active"
+            data-bs-target="#settings"
+            role="tab"
+            aria-selected="false"
+          >
+            ⚙️ Configuración
+          </a>
+        </li>
+        }
+        <li class="nav-item">
+          <button class="btn" (click)="logout()">Cerrar sesión</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <router-outlet></router-outlet>
+  </main>
 </div>
