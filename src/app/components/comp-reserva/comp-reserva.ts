@@ -39,8 +39,6 @@ export class CompReserva implements OnInit {
         console.log('Valor de searchDni:', value);
         if (value && value.trim() !== '') {
           this.getReserveByDni(value);
-        } else {
-          this.getReserves();
         }
       });
 

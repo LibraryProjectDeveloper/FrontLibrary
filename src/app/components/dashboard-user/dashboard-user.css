@@ -121,8 +121,7 @@
 }
 .dashboard-layout ::ng-deep table th {
   background: rgba(248, 250, 252, 0.8);
-  -webkit-backdrop-filter: blur(10px);
-          backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 /* Header responsivo */
@@ -383,7 +382,6 @@ html {
 ::-webkit-scrollbar-thumb {
   background: rgba(100, 116, 139, 0.3);
   border-radius: 4px;
-  -webkit-transition: var(--transition);
   transition: var(--transition);
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -472,4 +470,6 @@ html {
     background-color: #1e40af;
     color: #dbeafe;
   }
-}/*# sourceMappingURL=dashboard-user.css.map */
+}
+
+/*# sourceMappingURL=dashboard-user.css.map */

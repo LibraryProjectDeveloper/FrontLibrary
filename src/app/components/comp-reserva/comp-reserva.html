@@ -21,7 +21,7 @@
               (blur)="habilitarCampos('searchDni')"
             />
             <div class="errores">
-              @if (formFilter.get('searchDni')) {
+              @if (formFilter.get('searchDni')?.errors?.['maxlength']) {
                 <span style="color: red; font-size: 13px">
                   El DNI no puede tener más de 8 caracteres.
                 </span>
