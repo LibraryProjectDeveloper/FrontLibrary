@@ -1,0 +1,84 @@
+<section class="container-fluid p-2">
+  <div class="row">
+    <div class="col-12 rounded-2 shadow-sm p-3 mb-2 bg-body-tertiary">
+      <h1>Catálogo de Libros</h1>
+      <p>Explora y reserva libros disponibles en nuestra biblioteca</p>
+    </div>
+    <div
+      class="row row-cols-3 border-1 mt-3 shadow-sm mb-2 p-2 bg-body-tertiary"
+    >
+      <div class="col-4">
+        <label for="categoria">Filtrar por categoria</label>
+        <select id="categoria" class="form-select">
+          <option value="INFANTIL">INFANTIL</option>
+          <option value="CIENCIA_FICCION">CIENCIA_FICCION</option>
+          <option value="FANTASIA">FANTASIA</option>
+          <option value="HISTORIA">HISTORIA</option>
+          <option value="SUPENSO">SUSPENSO</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label for="searchAuthor">Buscar por autor</label>
+        <div class="input-group mb-3">
+          <input
+            id="searchAuthor"
+            type="text"
+            class="form-control"
+            placeholder="Ingresa el nombre del autor"
+            aria-label="Example text with button addon"
+            aria-describedby="button-addon1"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-addon1"
+          >
+            Button
+          </button>
+        </div>
+      </div>
+      <div class="col-4">
+        <label for="searchTitle">Buscar por Titulo</label>
+        <div class="input-group mb-3">
+          <input
+            id="searchTitle"
+            type="text"
+            class="form-control"
+            placeholder="Ingresa el título del libro"
+            aria-label="Example text with button addon"
+            aria-describedby="button-addon1"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-addon1"
+          >
+            Button
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row border-1 mt-3 shadow-lg mb-2 p-1">
+    @for (book of booksAvailable; track book.codeBook) {
+    <div class="col-sm-4 mb-sm-0 mt-2 mb-2">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{book.title}}</h5>
+          <p class="card-text">
+            <strong>Autor:</strong> {{ getAuthorsNames(book) }}<br />
+            <strong>Publicado:</strong> {{ book.publicationDate
+            |date:'dd/MM/yyyy'}}<br />
+            <strong>Editorial:</strong> {{ book.publisher }}<br />
+            <strong>Categoría:</strong> {{ book.category }}<br />
+            @if (book.stockTotal <= 0) {
+            <strong>No disponible</strong>
+            }
+          </p>
+          <!--<a href="#" class="btn btn-primary">Go somewhere</a>-->
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</section>

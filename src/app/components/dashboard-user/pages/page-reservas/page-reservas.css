@@ -1,0 +1,460 @@
+@charset "UTF-8";
+/* Variables para la tabla de reservas */
+:root {
+  --table-bg: #ffffff;
+  --table-border: #e5e7eb;
+  --table-header-bg: #f8fafc;
+  --table-header-text: #374151;
+  --table-text: #1f2937;
+  --table-text-secondary: #6b7280;
+  --table-hover-bg: #f9fafb;
+  --table-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --table-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --status-active-bg: #dcfce7;
+  --status-active-text: #166534;
+  --status-active-border: #bbf7d0;
+  --status-inactive-bg: #fef2f2;
+  --status-inactive-text: #991b1b;
+  --status-inactive-border: #fecaca;
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --transition: all 0.3s ease;
+}
+
+/* Contenedor principal de la sección */
+.reservas-section {
+  padding: 1.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.prestamos-section {
+  padding: 1.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Header de la página */
+.page-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--table-header-text);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: var(--table-text-secondary);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Contenedor de contenido */
+.content-reserves,
+.content-prestamos {
+  background: var(--table-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--table-shadow-lg);
+  border: 1px solid var(--table-border);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.content-reserves:hover,
+.content-prestamos:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Contenedor de la tabla */
+.table-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Estilos de la tabla */
+.table-reserves {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: var(--table-bg);
+}
+
+.table-prestamos {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: var(--table-bg);
+}
+
+/* Header de la tabla */
+.table-reserves thead {
+  background: var(--table-header-bg);
+  border-bottom: 2px solid var(--table-border);
+}
+
+.table-prestamos thead {
+  background: var(--table-header-bg);
+  border-bottom: 2px solid var(--table-border);
+}
+
+.table-reserves th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--table-header-text);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  position: relative;
+}
+
+.table-prestamos th {
+  padding: 1rem 1.5rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--table-header-text);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  position: relative;
+}
+
+.table-reserves th::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: var(--table-border);
+}
+
+.table-prestamos th::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: var(--table-border);
+}
+
+.table-reserves th:last-child::after {
+  display: none;
+}
+
+.table-prestamos th:last-child::after {
+  display: none;
+}
+
+/* Filas del cuerpo */
+.table-reserves tbody tr,
+.table-prestamos tbody tr {
+  border-bottom: 1px solid var(--table-border);
+  transition: var(--transition);
+}
+
+.table-reserves tbody tr:hover,
+.table-prestamos tbody tr:hover {
+  background: var(--table-hover-bg);
+  transform: scale(1.001);
+}
+
+.table-reserves tbody tr:last-child,
+.table-prestamos tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Celdas del cuerpo */
+.table-reserves td,
+.table-prestamos td {
+  padding: 1rem 1.5rem;
+  color: var(--table-text);
+  vertical-align: middle;
+  border-right: 1px solid transparent;
+  transition: var(--transition);
+}
+
+.table-reserves tbody tr:hover td,
+.table-prestamos tbody tr:hover td {
+  border-right-color: rgba(229, 231, 235, 0.5);
+}
+
+.table-reserves td:last-child,
+.table-prestamos td:last-child {
+  border-right: none;
+}
+
+/* Información del usuario */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-name {
+  font-weight: 500;
+  color: var(--table-text);
+}
+
+/* Información del libro */
+.book-info {
+  max-width: 200px;
+}
+
+.book-title {
+  font-weight: 500;
+  color: var(--table-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+/* Fechas y horas */
+.date-text,
+.time-text {
+  background: rgba(249, 250, 251, 0.8);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--table-border);
+}
+
+/* Nombre de la sucursal */
+.library-name {
+  font-weight: 500;
+  color: var(--table-text-secondary);
+}
+
+/* Estados/Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid;
+  transition: var(--transition);
+}
+
+.status-active {
+  background-color: var(--status-active-bg);
+  color: var(--status-active-text);
+  border-color: var(--status-active-border);
+}
+
+.status-inactive {
+  background-color: var(--status-inactive-bg);
+  color: var(--status-inactive-text);
+  border-color: var(--status-inactive-border);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .table-reserves th,
+  .table-reserves td,
+  .table-prestamos th,
+  .table-prestamos td {
+    padding: 0.75rem 1rem;
+  }
+  .book-info {
+    max-width: 150px;
+  }
+}
+@media (max-width: 768px) {
+  .reservas-section,
+  .prestamos-section {
+    padding: 1rem;
+  }
+  .page-title {
+    font-size: 1.5rem;
+  }
+  .page-subtitle {
+    font-size: 0.875rem;
+  }
+  /* Tabla responsiva con cards en móvil */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+  .table-reserves {
+    min-width: 700px;
+  }
+  .table-reserves th,
+  .table-reserves td,
+  .table-prestamos th,
+  .table-prestamos td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  .book-info {
+    max-width: 120px;
+  }
+  .book-title {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+  }
+}
+@media (max-width: 640px) {
+  /* Layout de cards para móviles muy pequeños */
+  .table-wrapper {
+    overflow: visible;
+  }
+  .table-reserves,
+  .table-reserves thead,
+  .table-reserves tbody,
+  .table-reserves th,
+  .table-reserves td,
+  .table-reserves tr {
+    display: block;
+  }
+  .table-prestamos,
+  .table-prestamos thead,
+  .table-prestamos tbody,
+  .table-prestamos th,
+  .table-prestamos td,
+  .table-prestamos tr {
+    display: block;
+  }
+  .table-reserves thead tr,
+  .table-prestamos thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  .table-reserves tr {
+    background: var(--table-bg);
+    border: 1px solid var(--table-border);
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: var(--table-shadow);
+    transition: var(--transition);
+  }
+  .table-reserves tr:hover {
+    box-shadow: var(--table-shadow-lg);
+    transform: translateY(-2px);
+  }
+  .table-reserves td {
+    border: none;
+    padding: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 2rem;
+  }
+  .table-reserves td::before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: var(--table-header-text);
+    flex-shrink: 0;
+    margin-right: 1rem;
+    min-width: 100px;
+  }
+  .table-reserves td:last-child {
+    border-bottom: none;
+  }
+  /* Ajustar contenido en modo card */
+  .user-info,
+  .book-info {
+    max-width: none;
+    flex: 1;
+    text-align: right;
+  }
+  .book-title {
+    -webkit-line-clamp: none;
+    line-clamp: none;
+    overflow: visible;
+    text-align: right;
+  }
+  .status-badge {
+    margin-left: auto;
+  }
+}
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.table-reserves tbody tr {
+  animation: fadeInUp 0.3s ease-out forwards;
+}
+
+.table-reserves tbody tr:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.table-reserves tbody tr:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.table-reserves tbody tr:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.table-reserves tbody tr:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+/* Estados de carga */
+.loading-row {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+/* Scrollbar personalizada para la tabla */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+  -webkit-transition: var(--transition);
+  transition: var(--transition);
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}/*# sourceMappingURL=page-reservas.css.map */

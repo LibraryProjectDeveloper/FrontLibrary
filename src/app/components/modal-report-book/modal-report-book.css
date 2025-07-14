@@ -81,7 +81,7 @@
 }
 .modal-report__close:hover {
   background: rgba(231, 76, 60, 0.08);
-  color: rgb(213.698630137, 43.8356164384, 26.301369863);
+  color: #d62c1a;
 }
 
 .modal-report__filters {
@@ -137,7 +137,7 @@
   overflow: hidden;
 }
 .btn-excel:hover {
-  background: rgb(32.4633802817, 144.8366197183, 79.9098591549);
+  background: #209150;
   transform: translateY(-2px) scale(1.03);
 }
 .btn-excel .excel-icon {
@@ -228,6 +228,4 @@ button:disabled {
     padding: 10px 8px;
     font-size: 0.97rem;
   }
-}
-
-/*# sourceMappingURL=modal-report-book.css.map */
+}/*# sourceMappingURL=modal-report-book.css.map */

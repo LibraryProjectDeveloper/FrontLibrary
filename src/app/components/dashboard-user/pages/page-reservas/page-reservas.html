@@ -1,0 +1,65 @@
+<section class="reservas-section">
+  <div class="page-header">
+    <h2 class="page-title">Mis Reservas</h2>
+    <p class="page-subtitle">
+      Gestiona y visualiza todas tus reservas de libros
+    </p>
+  </div>
+
+  <div class="content-reserves">
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table class="table-reserves">
+          <thead>
+            <tr>
+              <th class="th-user">Usuario</th>
+              <th class="th-book">Libro</th>
+              <th class="th-date">Fecha de Reserva</th>
+              <th class="th-time">Hora Inicio</th>
+              <th class="th-time">Hora Fin</th>
+              <th class="th-library">Bibliotecario</th>
+              <th class="th-status">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (reserve of reservas; track reserve.id){
+            <tr class="table-row">
+              <td class="td-user" data-label="Usuario">
+                <div class="user-info">
+                  <span class="user-name">{{reserve.userName}}</span>
+                </div>
+              </td>
+              <td class="td-book" data-label="Libro">
+                <div class="book-info">
+                  <span class="book-title">{{reserve.bookTitle}}</span>
+                </div>
+              </td>
+              <td class="td-date" data-label="Fecha de Reserva">
+                <span class="date-text">{{reserve.reservationDate}}</span>
+              </td>
+              <td class="td-time" data-label="Hora Inicio">
+                <span class="time-text">{{reserve.startTime}}</span>
+              </td>
+              <td class="td-time" data-label="Hora Fin">
+                <span class="time-text">{{reserve.endTime}}</span>
+              </td>
+              <td class="td-library" data-label="Sucursal">
+                <span class="library-name">{{reserve.libraryName}}</span>
+              </td>
+              <td class="td-status" data-label="Estado">
+                <span
+                  class="status-badge"
+                  [class.status-active]="reserve.active"
+                  [class.status-inactive]="!reserve.active"
+                >
+                  @if (reserve.active){ ACTIVO } @else { INACTIVO }
+                </span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

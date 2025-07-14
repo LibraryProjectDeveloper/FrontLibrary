@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 export interface Reserve {
   id: number;
   bookTitle: string;
@@ -25,16 +25,16 @@ export interface ReserveRequest {
   isActive?: boolean;
 }
 export interface ReserveResponse {
-  dateReserve : string,
-  timeStart : string,
-  timeEnd : string,
-  titleBook : string,
-  userName : string,
-  librarianName : string,
+  dateReserve: string;
+  timeStart: string;
+  timeEnd: string;
+  titleBook: string;
+  userName: string;
+  librarianName: string;
 }
-export interface ReserveReport{
-  dateStart:string,
-  dateEnd:string
+export interface ReserveReport {
+  dateStart: string;
+  dateEnd: string;
 }
 
 @Injectable({
@@ -46,12 +46,15 @@ export class ReserveService {
   getReserves() {
     return this.http.get<Reserve[]>(this.url);
   }
-  getReservesReport(dateStart:string,dateEnd:string){
-    return this.http.get<ReserveResponse[]>(`${this.url}report`, { params :{ dateStart,dateEnd}});
+  getReservesReport(dateStart: string, dateEnd: string) {
+    return this.http.get<ReserveResponse[]>(`${this.url}report`, {
+      params: { dateStart, dateEnd },
+    });
   }
-  getReportExcel(reserveReport:ReserveReport):Observable<HttpResponse<Blob>> {
+  getReportExcel(reserveReport: ReserveReport): Observable<HttpResponse<Blob>> {
     return this.http.post<Blob>(`${this.url}download-report`, reserveReport, {
-      responseType: 'blob' as 'json', observe: 'response'
+      responseType: 'blob' as 'json',
+      observe: 'response',
     });
   }
   getReserveActives() {
@@ -72,6 +75,10 @@ export class ReserveService {
 
   getReserveByDate(date: string) {
     return this.http.get<Reserve[]>(`${this.url}date/${date}`);
+  }
+
+  getRereserveByUserId(userId: number) {
+    return this.http.get<Reserve[]>(`${this.url}user/${userId}`);
   }
 
   addReserve(reserve: ReserveRequest) {

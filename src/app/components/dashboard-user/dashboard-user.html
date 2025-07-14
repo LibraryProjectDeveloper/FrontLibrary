@@ -1,0 +1,28 @@
+<div class="dashboard-layout">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="dashboard-info">
+        <h1>Bienvenido</h1>
+      </div>
+      <nav class="dashboard-nav">
+        <ul>
+          <li>
+            <a routerLink="reservas" routerLinkActive="active">Reservas</a>
+          </li>
+          <li>
+            <a routerLink="prestamos" routerLinkActive="active">Préstamos</a>
+          </li>
+          <li>
+            <a routerLink="catalogo" routerLinkActive="active">Catálogo</a>
+          </li>
+          <li>
+            <button class="btn" type="button" (click)="logout()">Logout</button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="container-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

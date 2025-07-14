@@ -45,6 +45,8 @@ export class LoginComponent {
             this.authService.hasRole('ROLE_LIBRARIAN')
           ) {
             this.router.navigate(['/panel']);
+          } else if (this.authService.hasRole('ROLE_USER')) {
+            this.router.navigate(['/panelUser/reservas']);
           } else {
             this.errorMessage = 'No tienes los permisos necesarios';
           }

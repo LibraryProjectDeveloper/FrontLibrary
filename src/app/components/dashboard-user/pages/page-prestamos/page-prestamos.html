@@ -1,0 +1,60 @@
+<section class="prestamos-section">
+  <div class="page-header">
+    <h2 class="page-title">Mis Prestamos</h2>
+    <p class="page-subtitle">
+      Gestiona y visualiza todos tus prestamos de libros
+    </p>
+  </div>
+  <div class="content-prestamos">
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table class="table-prestamos">
+          <thead>
+            <tr>
+              <th class="th-user">Usuario</th>
+              <th class="th-book">Libros Prestados</th>
+              <th class="th-date">Fecha de Préstamo</th>
+              <th class="th-date">Fecha Devolución</th>
+              <th class="th-library">Nombre Bibliotecario</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (loan of prestamos; track loan.idLean) {
+            <tr class="table-row">
+              <td class="td-user" data-label="Usuario">
+                <div class="user-info">
+                  <span class="user-name">{{loan.username}}</span>
+                </div>
+              </td>
+              <td class="td-book" data-label="Libro">
+                <div class="book-info">
+                  <span class="book-title">{{loan.booksQuantity}}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{loan.loanDate | date: 'dd/MM/yyyy'}}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{loan.devolutionDate | date: 'dd/MM/yyyy'}}</span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span>{{loan.librarianName}}</span>
+                </div>
+              </td>
+              <td>
+                <span> {{loan.state}} </span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
