@@ -56,7 +56,13 @@ export class Usuario {
       this.getUsers();
       return;
     }
-    this.loading = true;
+    if (!this.validateQuery(this.query)) {
+      alert('Consulta inválida. Por favor, ingrese un término válido.');
+      this.query = '';
+      return;
+    }
+
+    if (this.query) this.loading = true;
     this.error = null;
     this.userService.searchUser(this.query).subscribe({
       next: (response: any) => {
@@ -77,6 +83,11 @@ export class Usuario {
         console.log('Error al buscar usuarios');
       },
     });
+  }
+
+  validateQuery(query: string) {
+    const regex = /^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ@._\s-]+$/;
+    return regex.test(query);
   }
 
   getRol() {

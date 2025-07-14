@@ -79,6 +79,11 @@ export class CompPrestamo implements OnInit {
       this.getAllPrestamos();
       return;
     }
+    if (!this.validateDni(this.dni)) {
+      alert('DNI inválido. Por favor, ingrese un DNI válido.');
+      this.dni = '';
+      return;
+    }
     //this.prestamos = [];
     this.servicePrestamo.getAllByUserId(this.dni).subscribe({
       next: (data) => {
@@ -95,6 +100,11 @@ export class CompPrestamo implements OnInit {
         console.log('Ha ocurrido un error', error);
       },
     });
+  }
+
+  validateDni(query: string): boolean {
+    const regex = /^[0-9]+$/;
+    return regex.test(query);
   }
 
   save(Loan: LoanRequest) {
