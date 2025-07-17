@@ -2,10 +2,17 @@
   <div>
     <h1>Reservas</h1>
     <div class="header">
-      <button class="btn-report" (click)="generateReport()" >Generar reporte</button>
+      <button class="btn-report" (click)="generateReport()">
+        Generar reporte
+      </button>
       <div class="container-btnAdd">
         <button type="button" class="btn" (click)="openModal()">
           Nueva Reserva +
+        </button>
+      </div>
+      <div class="container-btnReload">
+        <button type="button" class="btn" (click)="cargarReservas()">
+          Recargar Reservas
         </button>
       </div>
       <div class="filter-container">
@@ -22,9 +29,9 @@
             />
             <div class="errores">
               @if (formFilter.get('searchDni')?.errors?.['maxlength']) {
-                <span style="color: red; font-size: 13px">
-                  El DNI no puede tener más de 8 caracteres.
-                </span>
+              <span style="color: red; font-size: 13px">
+                El DNI no puede tener más de 8 caracteres.
+              </span>
               }
             </div>
           </div>
@@ -59,7 +66,7 @@
               (focus)="deshabilitarCampos('state')"
               (blur)="habilitarCampos('state')"
             >
-              <option value="">Todos</option>
+              <option value="" selected>Selecciona un estado</option>
               <option value="true">Reservas Activas</option>
               <option value="false">Reservas Inactivas</option>
             </select>
@@ -68,12 +75,16 @@
       </div>
     </div>
   </div>
+  @if (error){
+  <div class="alert alert-danger alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>Error</strong> {{error}}
+  </div>
+  }
   <div class="table-container">
     @if (loading){
     <p>Cargando...</p>
-    } @if (error){
-    <p class="error">{{ error }}</p>
-    } @if (!loading && !error && reserves.length>0){
+    } @if (!loading && reserves.length>0){
     <table class="reserves-table">
       <thead>
         <tr>
@@ -138,9 +149,5 @@
   ></app-modal-reserva>
 </div>
 
-<app-modal-report
-  [isVisible] = "showModal"
-  (close) = "closeModalReport()"
->
+<app-modal-report [isVisible]="showModal" (close)="closeModalReport()">
 </app-modal-report>
-

@@ -1,10 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import {Reserve, ReserveRequest, ReserveService,} from '../../services/reserve/reserve-service';
+import {
+  Reserve,
+  ReserveRequest,
+  ReserveService,
+} from '../../services/reserve/reserve-service';
 import { ModalReserva } from '../modal-reserva/modal-reserva';
-import {NgClass} from '@angular/common';
-import {ModalReport} from '../modal-report/modal-report';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { NgClass } from '@angular/common';
+import { ModalReport } from '../modal-report/modal-report';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs';
 @Component({
   selector: 'app-comp-reserva',
   imports: [NgClass, ModalReserva, ReactiveFormsModule, ModalReport],
@@ -22,6 +31,7 @@ export class CompReserva implements OnInit {
   formFilter!: FormGroup;
 
   constructor(private reserveService: ReserveService, fb: FormBuilder) {
+    this.getReserves();
     this.formFilter = fb.group({
       searchDni: ['', [Validators.maxLength(8)]],
       searchTitle: [''],
@@ -30,38 +40,42 @@ export class CompReserva implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.getReserves();
-
     this.formFilter
       .get('searchDni')
-      ?.valueChanges.pipe(debounceTime(1000))
+      ?.valueChanges.pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((value) => {
         console.log('Valor de searchDni:', value);
-        if (value && value.trim() !== '') {
-          this.getReserveByDni(value);
-        }
+        this.getReserveByDni(value);
       });
 
     this.formFilter
       .get('searchTitle')
-      ?.valueChanges.pipe(debounceTime(1000))
+      ?.valueChanges.pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((value) => {
         console.log('Valor de searchTitle:', value);
-        if (value && value.trim() !== '') {
-          this.getReserveByTitle(value);
-        } else {
-          this.getReserves();
-        }
+        this.getReserveByTitle(value);
       });
     this.formFilter
       .get('searchDate')
-      ?.valueChanges.pipe(debounceTime(1000))
+      ?.valueChanges.pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((value) => {
         console.log('Valor de searchDate:', value);
-        if (value && value.trim() !== '') {
-          this.getReserveByDate(value);
-        } else {
-          this.getReserves();
+        this.getReserveByDate(value);
+      });
+    this.formFilter
+      .get('state')
+      ?.valueChanges.pipe(
+        skip(1),
+        debounceTime(1000),
+        distinctUntilChanged(),
+        filter((value) => value !== null && value !== undefined)
+      )
+      .subscribe((value) => {
+        if (value === 'true') {
+          this.getReserveActives();
+        }
+        if (value === 'false') {
+          this.getReserveInactives();
         }
       });
   }
@@ -100,7 +114,7 @@ export class CompReserva implements OnInit {
     });
   }
 
-  generateReport(){
+  generateReport() {
     this.showModal = true;
   }
   closeModalReport() {
@@ -151,6 +165,11 @@ export class CompReserva implements OnInit {
   getReserveByDni(dni: string) {
     this.loading = true;
     this.error = null;
+    if (!dni || dni.trim() === '') {
+      this.loading = false;
+      this.error = null;
+      return;
+    }
     this.reserveService.getReserveByDnI(dni).subscribe({
       next: (response) => {
         console.log('respuesta ', response);
@@ -172,6 +191,11 @@ export class CompReserva implements OnInit {
   getReserveByTitle(title: string) {
     this.loading = true;
     this.error = null;
+    if (!title || title.trim() === '') {
+      this.loading = false;
+      this.error = null;
+      return;
+    }
     this.reserveService.getRereserveByTitle(title).subscribe({
       next: (response) => {
         console.log('respuesta ', response);
@@ -195,6 +219,11 @@ export class CompReserva implements OnInit {
   getReserveByDate(date: string) {
     this.loading = true;
     this.error = null;
+    if (!date || date.trim() === '') {
+      this.loading = false;
+      this.error = null;
+      return;
+    }
     this.reserveService.getReserveByDate(date).subscribe({
       next: (response) => {
         console.log('respuesta ', response);
@@ -278,5 +307,10 @@ export class CompReserva implements OnInit {
         },
       });
     }
+  }
+
+  cargarReservas() {
+    this.formFilter.reset();
+    this.getReserves();
   }
 }

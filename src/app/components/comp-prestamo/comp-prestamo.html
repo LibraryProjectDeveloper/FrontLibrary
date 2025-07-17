@@ -1,65 +1,65 @@
-<h1>
-  Prestamos
-</h1>
+<h1>Prestamos</h1>
 <div class="container-prestamos">
   <div class="container-filter">
-   <!-- <div class="filter-item">
-      <label for="state">Estado</label>
-      <select id="state" [(ngModel)]="stateFilter" (change)="filterState()">
-        <option value="">Por todos los estados</option>
-        <option value="PRESTADO">PRESTADO</option>
-        <option value="NO_PRESTADO">NO_PRESTADO</option>
-        <option value="DEVUELTO">DEVUELTO</option>
-      </select>
-    </div> -->
     <div class="filter-item">
       <label for="fecha">Fecha Del Prestamo</label>
-      <input type="date" name="fecha" id="fecha">
+      <input type="date" name="fecha" id="fecha" />
     </div>
     <div class="filter-item">
       <label for="dniSear">Por DNI</label>
-      <input type="search" name="searDni" id="dniSear" placeholder="Buscar por dni..." [(ngModel)]="dni" (change)="getAllByUser()">
+      <input
+        type="search"
+        name="searDni"
+        id="dniSear"
+        placeholder="Buscar por dni..."
+        [(ngModel)]="dni"
+        (change)="getAllByUser()"
+      />
     </div>
-    <div class="filter-btn"><button class="btn" (click)="addPrestamo()">Nuevo prestamo</button></div>
+    <div class="filter-btn">
+      <button class="btn" (click)="addPrestamo()">Nuevo prestamo</button>
+    </div>
   </div>
 
   <div class="container-table">
     @if (!error && prestamos.length>0) {
     <table>
       <thead>
-      <tr>
-        <th>Usuario</th>
-        <th>Libros Prestados</th>
-        <th>Fecha Prestamo</th>
-        <th>Fecha Devolucion</th>
-        <th>Nombre bibliotecario</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
+        <tr>
+          <th>Usuario</th>
+          <th>Libros Prestados</th>
+          <th>Fecha Prestamo</th>
+          <th>Fecha Devolucion</th>
+          <th>Nombre bibliotecario</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
       </thead>
       <tbody>
         @for (prest of prestamos;track prest.idLean){
-          <tr>
-            <td>{{prest.username}}</td>
-            <td>{{prest.booksQuantity}}</td>
-            <td>{{prest.loanDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
-            <td>{{prest.devolutionDate | date: 'MMM d, yyyy'}}</td>
-            <td>{{prest.librarianName}}</td>
-            <td>
-              <span [ngClass]="{
+        <tr>
+          <td>{{prest.username}}</td>
+          <td>{{prest.booksQuantity}}</td>
+          <td>{{prest.loanDate | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+          <td>{{prest.devolutionDate | date: 'MMM d, yyyy'}}</td>
+          <td>{{prest.librarianName}}</td>
+          <td>
+            <span
+              [ngClass]="{
                 'badge': true,
                 'active': prest.state === 'PRESTADO',
                 'returned': prest.state === 'DEVUELTO',
                 'inactive': prest.state === 'NO_PRESTADO',
-              }">
-                {{prest.state}}
-              </span>
-            </td>
-            <td>
-              <button class="btn-edit" (click)="edit(prest)">✏️</button>
-              <button class="btn-delete">🗑️</button>
-            </td>
-          </tr>
+              }"
+            >
+              {{prest.state}}
+            </span>
+          </td>
+          <td>
+            <button class="btn-edit" (click)="edit(prest)">✏️</button>
+            <button class="btn-delete">🗑️</button>
+          </td>
+        </tr>
         }
       </tbody>
     </table>
@@ -67,10 +67,9 @@
   </div>
 </div>
 <app-modal-prestamo
-  [isVisible] = "showModal"
-  [prestUpdate] = "prestaUpdate"
-  [edit] = "editar"
-  (close) = "closeModal()"
-  (save) = "save($event)"
+  [isVisible]="showModal"
+  [prestUpdate]="prestaUpdate"
+  [edit]="editar"
+  (close)="closeModal()"
+  (save)="save($event)"
 />
-

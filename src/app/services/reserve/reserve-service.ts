@@ -86,7 +86,7 @@ export class ReserveService {
   }
 
   updateReserve(reserve: ReserveRequest) {
-    return this.http.put<Reserve>(`${this.url}update/${reserve.id}`, reserve);
+    return this.http.patch<Reserve>(`${this.url}update/${reserve.id}`, reserve);
   }
 
   deleteReserve(id: number) {
