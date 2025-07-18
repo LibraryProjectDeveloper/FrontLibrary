@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthorModel } from '../../model/Author';
+import {environment} from '../../../environment/environment';
 
 export interface Book {
   codeBook: number;
@@ -44,7 +45,7 @@ export interface BookReportRequest {
   providedIn: 'root',
 })
 export class BookService {
-  private url = 'http://localhost:8080/api/LIBRARIAN/books';
+  private url =environment.apiUrl+ '/LIBRARIAN/books';
   constructor(private http: HttpClient) {}
   getBooks() {
     return this.http.get<Book[]>(this.url + '/state/ACTIVO');

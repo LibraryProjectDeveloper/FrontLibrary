@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Loan } from '../../model/loan';
 import { LoanRequest } from '../../model/LoanRequest';
+import {environment} from '../../../environment/environment';
+
 @Injectable({
   providedIn: 'root',
 })
 export class PrestSercice {
-  private url = 'http://localhost:8080/api/loan';
+  private url = environment.apiUrl+'/loan';
   constructor(private http: HttpClient) {}
 
   getAllPrestamos() {
