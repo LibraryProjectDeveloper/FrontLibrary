@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../../environment/environment';
+
 export interface Reserve {
   id: number;
   bookTitle: string;
@@ -41,7 +43,7 @@ export interface ReserveReport {
   providedIn: 'root',
 })
 export class ReserveService {
-  private url = 'http://localhost:8080/api/reserve/';
+  private url = environment.apiUrl+'/reserve/';
   constructor(private http: HttpClient) {}
   getReserves() {
     return this.http.get<Reserve[]>(this.url);
