@@ -70,7 +70,7 @@ export class BookService {
     return this.http.put<Book>(`${this.url}/update/${id}`, book);
   }
   getBuscarTitle(title: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/searchTitle?title=${title}`);
+    return this.http.get<Book[]>(`${this.url}/book-info/searchTitle?title=${title}`);
   }
 
   getBuscarCategory(category: string): Observable<Book[]> {
@@ -99,5 +99,9 @@ export class BookService {
 
   getBookAvailable(): Observable<Book[]> {
     return this.http.get<Book[]>(`${this.url}/book-info/available`);
+  }
+
+  searchAutor(authorName: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/book-info/searchAuthor?authorName=${authorName}`);
   }
 }
