@@ -451,11 +451,10 @@
 .table-wrapper::-webkit-scrollbar-thumb {
   background: #c1c1c1;
   border-radius: 4px;
+  -webkit-transition: var(--transition);
   transition: var(--transition);
 }
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
-}
-
-/*# sourceMappingURL=page-reservas.css.map */
+}/*# sourceMappingURL=page-reservas.css.map */

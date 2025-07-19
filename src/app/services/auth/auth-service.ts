@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
-import {jwtDecode} from 'jwt-decode';
-export interface JwtPayload  {
+import { jwtDecode } from 'jwt-decode';
+export interface JwtPayload {
   sub: string;
   roles: string[];
   exp: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly TOKEN = 'jwt';
-  setToken(token:string){
-    sessionStorage.setItem(this.TOKEN,token);
+  setToken(token: string) {
+    sessionStorage.setItem(this.TOKEN, token);
   }
-  getToken():string|null{
+  getToken(): string | null {
     console.log(sessionStorage.getItem(this.TOKEN));
     return sessionStorage.getItem(this.TOKEN);
   }
-  getUserRoles():string[]{
+  getUserRoles(): string[] {
     const token = this.getToken();
-    if(!token) return [];
+    if (!token) return [];
     const decoded = jwtDecode<any>(token);
 
-    if(typeof decoded.role === 'string') return [decoded.role];
+    if (typeof decoded.role === 'string') return [decoded.role];
 
     if (Array.isArray(decoded.role)) return decoded.role;
 
@@ -35,7 +35,6 @@ export class AuthService {
     if (!token) return false;
 
     const decoded = jwtDecode<any>(token);
-
     if (typeof decoded.role === 'string') {
       return decoded.role === role;
     }
@@ -47,19 +46,18 @@ export class AuthService {
     return false;
   }
 
-
-  getUserId():number|null{
+  getUserId(): number | null {
     const token = this.getToken();
-    if(!token) return null;
+    if (!token) return null;
     const decoded = jwtDecode<any>(token);
     return decoded.idUser || null;
   }
 
-  removeToken():void{
+  removeToken(): void {
     sessionStorage.removeItem(this.TOKEN);
   }
-  isAuthenticated():boolean{
+  isAuthenticated(): boolean {
     return !!this.getToken();
   }
-  constructor() { }
+  constructor() {}
 }

@@ -59,7 +59,6 @@
 }
 .dashboard-layout ::ng-deep {
   /* Tarjetas y contenedores */
-  /* Botones con mejor sombreado */
   /* Inputs con mejor estilo */
   /* Tablas con mejor presentación */
 }
@@ -77,25 +76,6 @@
 .dashboard-layout ::ng-deep .content-wrapper:hover {
   box-shadow: var(--shadow-xl);
   transform: translateY(-1px);
-}
-.dashboard-layout ::ng-deep .btn,
-.dashboard-layout ::ng-deep button {
-  border-radius: 8px;
-  transition: var(--transition);
-  box-shadow: var(--shadow);
-}
-.dashboard-layout ::ng-deep .btn:hover,
-.dashboard-layout ::ng-deep button:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-1px);
-}
-.dashboard-layout ::ng-deep .btn.btn-primary,
-.dashboard-layout ::ng-deep button.btn-primary {
-  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
-}
-.dashboard-layout ::ng-deep .btn.btn-primary:hover,
-.dashboard-layout ::ng-deep button.btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 .dashboard-layout ::ng-deep input,
 .dashboard-layout ::ng-deep select,
@@ -121,7 +101,8 @@
 }
 .dashboard-layout ::ng-deep table th {
   background: rgba(248, 250, 252, 0.8);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
 }
 
 /* Header responsivo */
@@ -382,6 +363,7 @@ html {
 ::-webkit-scrollbar-thumb {
   background: rgba(100, 116, 139, 0.3);
   border-radius: 4px;
+  -webkit-transition: var(--transition);
   transition: var(--transition);
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -470,6 +452,4 @@ html {
     background-color: #1e40af;
     color: #dbeafe;
   }
-}
-
-/*# sourceMappingURL=dashboard-user.css.map */
+}/*# sourceMappingURL=dashboard-user.css.map */

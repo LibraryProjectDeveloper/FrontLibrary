@@ -7,14 +7,8 @@
     </div>
     <div class="filter-item">
       <label for="dniSear">Por DNI</label>
-      <input
-        type="search"
-        name="searDni"
-        id="dniSear"
-        placeholder="Buscar por dni..."
-        [(ngModel)]="dni"
-        (change)="getAllByUser()"
-      />
+      <input type="search" name="searDni" id="dniSear" placeholder="Buscar por dni..." [(ngModel)]="dni"
+        (change)="getAllByUser()" />
     </div>
     <div class="filter-btn">
       <button class="btn" (click)="addPrestamo()">Nuevo prestamo</button>
@@ -44,20 +38,18 @@
           <td>{{prest.devolutionDate | date: 'MMM d, yyyy'}}</td>
           <td>{{prest.librarianName}}</td>
           <td>
-            <span
-              [ngClass]="{
+            <span [ngClass]="{
                 'badge': true,
                 'active': prest.state === 'PRESTADO',
                 'returned': prest.state === 'DEVUELTO',
                 'inactive': prest.state === 'NO_PRESTADO',
-              }"
-            >
+              }">
               {{prest.state}}
             </span>
           </td>
           <td>
             <button class="btn-edit" (click)="edit(prest)">✏️</button>
-            <button class="btn-delete">🗑️</button>
+            <button class="btn-delete" type="button" (click)="deletePrestamo(prest.idLean)">🗑️</button>
           </td>
         </tr>
         }
@@ -66,10 +58,5 @@
     }
   </div>
 </div>
-<app-modal-prestamo
-  [isVisible]="showModal"
-  [prestUpdate]="prestaUpdate"
-  [edit]="editar"
-  (close)="closeModal()"
-  (save)="save($event)"
-/>
+<app-modal-prestamo [isVisible]="showModal" [prestUpdate]="prestaUpdate" [edit]="editar" (close)="closeModal()"
+  (save)="save($event)" />

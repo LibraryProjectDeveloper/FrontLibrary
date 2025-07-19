@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthorModel } from '../../model/Author';
-import {environment} from '../../../environment/environment';
+import { environment } from '../../../environment/environment';
 
 export interface Book {
   codeBook: number;
@@ -45,7 +45,7 @@ export interface BookReportRequest {
   providedIn: 'root',
 })
 export class BookService {
-  private url =environment.apiUrl+ '/LIBRARIAN/books';
+  private url = environment.apiUrl + '/LIBRARIAN/books';
   constructor(private http: HttpClient) {}
   getBooks() {
     return this.http.get<Book[]>(this.url + '/state/ACTIVO');
@@ -53,6 +53,10 @@ export class BookService {
 
   getBookCategory(category: string): Observable<Book[]> {
     return this.http.get<Book[]>(`${this.url}/categoria/${category}`);
+  }
+
+  searchCategory(category: string): Observable<Book[]> {
+    return this.http.get<Book[]>(`${this.url}/book-info/category/${category}`);
   }
 
   getBookState(state: string): Observable<Book[]> {
@@ -71,7 +75,9 @@ export class BookService {
     return this.http.put<Book>(`${this.url}/update/${id}`, book);
   }
   getBuscarTitle(title: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/book-info/searchTitle?title=${title}`);
+    return this.http.get<Book[]>(
+      `${this.url}/book-info/searchTitle?title=${title}`
+    );
   }
 
   getBuscarCategory(category: string): Observable<Book[]> {
@@ -103,6 +109,8 @@ export class BookService {
   }
 
   searchAutor(authorName: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/book-info/searchAuthor?authorName=${authorName}`);
+    return this.http.get<Book[]>(
+      `${this.url}/book-info/searchAuthor?authorName=${authorName}`
+    );
   }
 }

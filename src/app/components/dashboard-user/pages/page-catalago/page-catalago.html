@@ -1,70 +1,66 @@
 <section class="container-fluid p-2">
-  <div class="row">
-    <div class="col-12 rounded-2 shadow-sm p-3 mb-2 bg-body-tertiary">
-      <h1>Catálogo de Libros</h1>
-      <p>Explora y reserva libros disponibles en nuestra biblioteca</p>
-    </div>
 
-    @if (errorMessage) {
-    <div class="alert alert-danger alert-dismissible fade show">
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      <strong>Error</strong> {{errorMessage}}
-    </div>
-    }
-    <form [formGroup]="form">
-      <div class="row row-cols-3 border-1 mt-3 shadow-sm mb-2 p-2 bg-body-tertiary">
-        <div class="col-3">
-          <label for="categoria">Filtrar por categoria</label>
-          <select id="categoria" class="form-select">
-            <option value="" selected>Elige una categoria</option>
-            <option value="INFANTIL">INFANTIL</option>
-            <option value="CIENCIA_FICCION">CIENCIA_FICCION</option>
-            <option value="FANTASIA">FANTASIA</option>
-            <option value="HISTORIA">HISTORIA</option>
-            <option value="SUPENSO">SUSPENSO</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <label for="searchAuthor">Buscar por autor</label>
-          <div class="input-group mb-3">
-            <input id="searchAuthor" type="text" class="form-control" placeholder="Ingresa el nombre del autor"
-              aria-label="Example text with button addon" aria-describedby="button-addon1" formControlName="authorName"
-              [ngClass]="{'is-invalid': form.get('authorName')?.invalid && form.get('authorName')?.touched}" />
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1"
-              (click)="buscar(form.value.authorName)" [disabled]="!form.get('authorName')?.valid">
-              Button
-            </button>
-            @if ( form.get('authorName')?.errors?.['pattern'] ) {
-            <div class="invalid-feedback">
-              El nombre del autor solo puede contener letras y espacios.
-            </div>
-            }
+  @if (errorMessage) {
+  <div class="alert alert-warning alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>Error</strong> {{errorMessage}}
+  </div>
+  }
+  <form [formGroup]="form">
+    <div class="row row-cols-3 border-1 mt-3 shadow-sm mb-2 p-2 bg-body-tertiary">
+      <div class="col-3">
+        <label for="categoria">Filtrar por categoria</label>
+        <select id="categoria" class="form-select" formControlName="category"
+          (change)="searchCaetegory(form.value.category)">
+          <option value="" selected>Elige una categoria</option>
+          <option value="INFANTIL">INFANTIL</option>
+          <option value="CIENCIA_FICCION">CIENCIA_FICCION</option>
+          <option value="FANTASIA">FANTASIA</option>
+          <option value="HISTORIA">HISTORIA</option>
+          <option value="SUSPENSO">SUSPENSO</option>
+        </select>
+      </div>
+      <div class="col-3">
+        <label for="searchAuthor">Buscar por autor</label>
+        <div class="input-group mb-3">
+          <input id="searchAuthor" type="text" class="form-control" placeholder="Ingresa el nombre del autor"
+            aria-describedby="button-searchAutor" formControlName="authorName"
+            [ngClass]="{'is-invalid': form.get('authorName')?.invalid && form.get('authorName')?.touched}" />
+          <button class="btn btn-outline-secondary" type="button" id="button-searchAutor"
+            (click)="buscar(form.value.authorName)" [disabled]="!form.get('authorName')?.valid">
+            Button
+          </button>
+          @if ( form.get('authorName')?.errors?.['pattern'] ) {
+          <div class="invalid-feedback">
+            El nombre del autor solo puede contener letras y espacios.
           </div>
-        </div>
-        <div class="col-3">
-          <label for="searchTitle">Buscar por Titulo</label>
-          <div class="input-group mb-3">
-            <input id="searchTitle" type="text" class="form-control" placeholder="Ingresa el título del libro"
-              aria-label="Example text with button addon" aria-describedby="button-addon1" formControlName="title"
-              [ngClass]="{'is-invalid': form.get('title')?.invalid && form.get('title')?.touched}" />
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1"
-              (click)="buscarTitulo(form.value.title)" [disabled]="!form.get('title')?.valid">
-              Button
-            </button>
-            @if ( form.get('title')?.errors?.['pattern'] ) {
-            <div class="invalid-feedback">
-              El nombre del libro solo puede contener letras y espacios.
-            </div>
-            }
-          </div>
-        </div>
-        <div class="col-3 justify-content-center align-content-center"><button type="button" class="btn btn-success"
-            (click)="recargar()">Recargar
-            catalago</button>
+          }
         </div>
       </div>
-    </form>
-  </div>
+      <div class="col-3">
+        <label for="searchTitle">Buscar por Titulo</label>
+        <div class="input-group mb-3">
+          <input id="searchTitle" type="text" class="form-control" placeholder="Ingresa el título del libro"
+            aria-label="Example text with button addon" aria-describedby="button-addon1" formControlName="title"
+            [ngClass]="{'is-invalid': form.get('title')?.invalid && form.get('title')?.touched}" />
+          <button class="btn btn-outline-secondary" type="button" id="button-addon1"
+            (click)="buscarTitulo(form.value.title)" [disabled]="!form.get('title')?.valid">
+            Button
+          </button>
+          @if ( form.get('title')?.errors?.['pattern'] ) {
+          <div class="invalid-feedback">
+            El nombre del libro solo puede contener letras y espacios.
+          </div>
+          }
+        </div>
+      </div>
+      <div class="col-3 justify-content-center align-content-center">
+        <button type="button" class="btn btn-success" (click)="recargar()">
+          Recargar catalago
+        </button>
+      </div>
+    </div>
+  </form>
   <div class="row border-1 mt-3 shadow-lg mb-2 p-1">
     @for (book of booksAvailable; track book.codeBook) {
     <div class="col-sm-4 mb-sm-0 mt-2 mb-2">

@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Loan } from '../../model/loan';
 import { LoanRequest } from '../../model/LoanRequest';
-import {environment} from '../../../environment/environment';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrestSercice {
-  private url = environment.apiUrl+'/loan';
+  private url = environment.apiUrl + '/loan';
   constructor(private http: HttpClient) {}
 
   getAllPrestamos() {
@@ -27,11 +27,25 @@ export class PrestSercice {
     return this.http.get<Loan[]>(`${this.url}/user/${id}`);
   }
 
+  serchLoanBookAuthorUser(query: string, idUser: number) {
+    return this.http.get<Loan[]>(
+      `${this.url}/searchBook/${idUser}?searchTerm=${query}`
+    );
+  }
+
+  searchLoanSatateByUser(state: string, idUser: number) {
+    return this.http.get<Loan[]>(`${this.url}/userByState/${state}/${idUser}`);
+  }
+
   addLoan(loanRequest: LoanRequest) {
     return this.http.post<Loan>(`${this.url}/add`, loanRequest);
   }
 
   updateLoan(loanRequest: LoanRequest, id: number) {
     return this.http.put<Loan>(`${this.url}/update/${id}`, loanRequest);
+  }
+
+  deleteLoan(id: number) {
+    return this.http.delete(`${this.url}/delete/${id}`);
   }
 }

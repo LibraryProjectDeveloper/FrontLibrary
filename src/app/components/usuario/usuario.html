@@ -7,23 +7,18 @@
     </div>
 
     <div class="toolbar">
-      <input
-        type="text"
-        placeholder="Buscar por nombre, email,DNI"
-        [(ngModel)]="query"
-        (change)="searchUser()"
-      />
+      <input type="text" placeholder="Buscar por nombre, email,DNI" [(ngModel)]="query" (change)="searchUser()" />
 
       <select [(ngModel)]="idRol" (change)="getRol()">
         <option value="">Todos los roles</option>
-        @if (hasRole('ROLE_ADMIN')) {
+        @if (verificarRol('ROLE_ADMIN')) {
         <option value="1">Admin</option>
         }
         <option value="3">Bibliotecario</option>
         <option value="2">Usuario</option>
       </select>
 
-      @if (hasRole('ROLE_ADMIN')) {
+      @if (verificarRol('ROLE_ADMIN')) {
       <select [(ngModel)]="state" (change)="getUsersState()">
         <option value="">Todos los estados</option>
         <option value="true">Activos</option>
@@ -71,13 +66,11 @@
             <span class="user-role">{{User.roleName}}</span>
           </td>
           <td>
-            <span
-              [ngClass]="{
+            <span [ngClass]="{
                     'badge': true,
                     'active': User.state,
                     'inactive': !User.state
-                  }"
-            >
+                  }">
               @if (User.state){ Activo } @else { Inactivo }
             </span>
           </td>
@@ -86,12 +79,8 @@
               ✏️
             </button>
 
-            @if (hasRole('ROLE_ADMIN')) {
-            <button
-              type="button"
-              class="btn-delete"
-              (click)="openDeleteModal(User.idUsuario)"
-            >
+            @if (verificarRol('ROLE_ADMIN')) {
+            <button type="button" class="btn-delete" (click)="openDeleteModal(User.idUsuario)">
               🗑️
             </button>
             }
@@ -110,13 +99,11 @@
             <span class="user-role">{{user.roleName}}</span>
           </td>
           <td>
-            <span
-              [ngClass]="{
+            <span [ngClass]="{
                       'badge': true,
                       'active': user.state,
                       'inactive': !user.state
-                    }"
-            >
+                    }">
               {{user.state}}
             </span>
           </td>
@@ -124,12 +111,8 @@
             <button type="button" class="btn-edit" (click)="edit(user)">
               ✏️
             </button>
-            @if (hasRole('ROLE_ADMIN')) {
-            <button
-              type="button"
-              class="btn-delete"
-              (click)="openDeleteModal(user.idUsuario)"
-            >
+            @if (verificarRol('ROLE_ADMIN')) {
+            <button type="button" class="btn-delete" (click)="openDeleteModal(user.idUsuario)">
               🗑️
             </button>
             }
@@ -141,17 +124,8 @@
     }
   </div>
 </div>
-<app-com-modal-user
-  [showModal]="showModal"
-  [editar]="editar"
-  [user]="userUpdated"
-  (closeModal)="close()"
-  (saveUserEvent)="saveUser($event)"
-/>
+<app-com-modal-user [showModal]="showModal" [editar]="editar" [user]="userUpdated" (closeModal)="close()"
+  (saveUserEvent)="saveUser($event)" />
 
-<app-delemodal-user
-  *ngIf="showDeleteModal"
-  (close)="closeDeleteModal()"
-  (confirm)="deleteUser($event)"
-  [idUserDelete]="idUserDelete"
-></app-delemodal-user>
+<app-delemodal-user *ngIf="showDeleteModal" (close)="closeDeleteModal()" (confirm)="deleteUser($event)"
+  [idUserDelete]="idUserDelete"></app-delemodal-user>

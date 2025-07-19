@@ -92,27 +92,6 @@
       }
     }
 
-    /* Botones con mejor sombreado */
-    .btn,
-    button {
-      border-radius: 8px;
-      transition: var(--transition);
-      box-shadow: var(--shadow);
-
-      &:hover {
-        box-shadow: var(--shadow-lg);
-        transform: translateY(-1px);
-      }
-
-      &.btn-primary {
-        box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
-
-        &:hover {
-          box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
-        }
-      }
-    }
-
     /* Inputs con mejor estilo */
     input,
     select,

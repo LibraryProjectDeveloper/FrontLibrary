@@ -51,6 +51,11 @@ export class Usuario {
     });
   }
 
+  verificarRol(role: string) {
+    const isValide = this.authService.hasRole(role);
+    return isValide;
+  }
+
   searchUser() {
     if (!this.query.trim()) {
       this.getUsers();

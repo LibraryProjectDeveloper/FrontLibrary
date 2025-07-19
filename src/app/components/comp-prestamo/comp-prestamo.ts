@@ -157,4 +157,18 @@ export class CompPrestamo implements OnInit {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   }
+
+  deletePrestamo(id: number) {
+    if (confirm('¿Estás seguro de que deseas eliminar este préstamo?')) {
+      this.servicePrestamo.deleteLoan(id).subscribe({
+        next: () => {
+          console.log('Préstamo eliminado con éxito');
+          this.getAllPrestamos();
+        },
+        error: (error) => {
+          console.error('Error al eliminar el préstamo:', error);
+        },
+      });
+    }
+  }
 }

@@ -1,60 +1,93 @@
-<section class="prestamos-section">
-  <div class="page-header">
-    <h2 class="page-title">Mis Prestamos</h2>
-    <p class="page-subtitle">
-      Gestiona y visualiza todos tus prestamos de libros
-    </p>
-  </div>
-  <div class="content-prestamos">
-    <div class="table-container">
-      <div class="table-wrapper">
-        <table class="table-prestamos">
-          <thead>
-            <tr>
-              <th class="th-user">Usuario</th>
-              <th class="th-book">Libros Prestados</th>
-              <th class="th-date">Fecha de Préstamo</th>
-              <th class="th-date">Fecha Devolución</th>
-              <th class="th-library">Nombre Bibliotecario</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (loan of prestamos; track loan.idLean) {
-            <tr class="table-row">
-              <td class="td-user" data-label="Usuario">
-                <div class="user-info">
-                  <span class="user-name">{{loan.username}}</span>
-                </div>
-              </td>
-              <td class="td-book" data-label="Libro">
-                <div class="book-info">
-                  <span class="book-title">{{loan.booksQuantity}}</span>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <span>{{loan.loanDate | date: 'dd/MM/yyyy'}}</span>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <span>{{loan.devolutionDate | date: 'dd/MM/yyyy'}}</span>
-                </div>
-              </td>
-              <td>
-                <div>
-                  <span>{{loan.librarianName}}</span>
-                </div>
-              </td>
-              <td>
-                <span> {{loan.state}} </span>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
+<section class="container-fluid p-2">
+  <div class="contaier shadow-sm p-2 mb-2 mt-2 rounded-3 p-3">
+    <form #formu="ngForm">
+      <div class="row row-cols-1 row-cols-md-4">
+        <div class="col">
+          <label for="search-01">Buscar Prestamo</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Buscar por autor, titulo..." id="search-01"
+              [(ngModel)]="filter.query" name="query" (ngModelChange)="validateQuery()" />
+            <button type="button" class="btn btn-success" (click)="search()" [disabled]="!queryValid">Buscar</button>
+          </div>
+          @if(!queryValid) {
+          <span style="color: red;">No se deben poner caracteres raros</span>
+          }
+        </div>
+        <div class="col">
+          <label for="search-02">Filtrar Por Fecha de Prestamo</label>
+          <div class="mb-3">
+            <input type="date" class="form-control" id="search-02" />
+          </div>
+        </div>
+        <div class="col">
+          <label for="search-state">Filtrar Por Estado</label>
+          <select class="form-control" id="search-state" [(ngModel)]="filter.state" name="state"
+            (change)="searchByState()">
+            <option value="" selected>Selecciona un estado</option>
+            <option value="PRESTADO">Prestado</option>
+            <option value="NO_PRESTADO">No Prestado</option>
+            <option value="DEVUELTO">Devuelto</option>
+          </select>
+        </div>
+        <div class="col justify-content-center align-content-center">
+          <button type="button" (click)="recardarPrestamos()" class="btn btn-success">Recargar
+            prestamos</button>
+        </div>
       </div>
+    </form>
+  </div>
+  <div class="content-fluid mt-3">
+    <div class="table-responsive-sm">
+      <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th class="th-user">Usuario</th>
+            <th class="th-book">Libros Prestados</th>
+            <th class="th-date">Fecha de Préstamo</th>
+            <th class="th-date">Fecha Devolución</th>
+            <th class="th-library">Nombre Bibliotecario</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (loan of prestamos; track loan.idLean) {
+          <tr class="table-row">
+            <td class="td-user" data-label="Usuario">
+              <div class="user-info">
+                <span class="user-name">{{loan.username}}</span>
+              </div>
+            </td>
+            <td class="td-book" data-label="Libro">
+              <div class="book-info">
+                <span class="book-title">{{loan.booksQuantity}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <span>{{loan.loanDate | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <span>{{loan.devolutionDate | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </td>
+            <td>
+              <div>
+                <span>{{loan.librarianName}}</span>
+              </div>
+            </td>
+            <td>
+              <span> {{loan.state}} </span>
+            </td>
+            <td>
+              <button type="button" class="btn btn-info btn-sm">Ver más Detalles</button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
