@@ -1,0 +1,62 @@
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="detailModalLabel">Detalles del Préstamo</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onModalClose()"></button>
+            </div>
+            <div class="modal-body">
+                @if (selectedLoan) {
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Información del Préstamo</h6>
+                        <p><strong>ID Préstamo:</strong> {{ selectedLoan.idLean }}</p>
+                        <p><strong>Cantidad de Libros:</strong> {{ selectedLoan.booksQuantity }}</p>
+                        @if (selectedLoan.bookResponseList && selectedLoan.bookResponseList.length > 0) {
+                        <p><strong>Libros:</strong></p>
+                        <ul class="list-unstyled">
+                            @for (book of selectedLoan.bookResponseList; track book.codeBook) {
+                            <li>• {{ book.title }} (ISBN: {{ book.isbn }})</li>
+                            }
+                        </ul>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Información del Usuario</h6>
+                        <p><strong>Usuario:</strong> {{ selectedLoan.username }}</p>
+                        <p><strong>ID Usuario:</strong> {{ selectedLoan.userId }}</p>
+                        <p><strong>Bibliotecario:</strong> {{ selectedLoan.librarianName }}</p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Fechas</h6>
+                        <p><strong>Fecha de Préstamo:</strong> {{ selectedLoan.loanDate | date:'dd/MM/yy HH:mm a'}}</p>
+                        <p><strong>Fecha de Devolución:</strong>
+                            {{ selectedLoan.devolutionDate | date:'dd/MM/yy HH:mm a'}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Estado Actual Del Prestamo</h6>
+                        <p><strong>Estado:</strong>
+                            <span class="badge" [ngClass]="{'bg-warning': selectedLoan.state === 'PRESTADO',
+                                'bg-info': selectedLoan.state === 'DEVUELTO'}">
+                                {{ selectedLoan.state }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                } @else {
+                <div class="text-center">
+                    <p>No hay datos del préstamo para mostrar.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onModalClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
