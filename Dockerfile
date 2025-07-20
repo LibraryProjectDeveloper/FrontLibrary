@@ -6,5 +6,5 @@ RUN npm run build --prod
 
 FROM nginx:stable-alpine
 COPY --from=builder /app/dist/FrontLibrary /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY frontend.conf /etc/nginx/conf.d/frontend.conf
 EXPOSE 80
