@@ -3,7 +3,8 @@
   <div class="container-filter">
     <div class="filter-item">
       <label for="fecha">Fecha Del Prestamo</label>
-      <input type="date" name="fecha" id="fecha" />
+      <input type="date" name="fecha" id="fecha" name="searchDate" [(ngModel)]="searchDate"
+        (change)="searchLoanByDate()" />
     </div>
     <div class="filter-item">
       <label for="dniSear">Por DNI</label>
@@ -49,7 +50,7 @@
           </td>
           <td>
             <button class="btn-edit" (click)="edit(prest)">✏️</button>
-            <button class="btn-finish" type="button" (click)="finishedLoan(prest.idLean)">📚 Finalizar</button>
+            <button class="btn-finish" type="button" (click)="finishedLoan(prest.idLean)">Finalizar</button>
             <button class="btn-delete" type="button" (click)="deletePrestamo(prest.idLean)">🗑️</button>
           </td>
         </tr>
