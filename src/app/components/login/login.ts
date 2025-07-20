@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth-service';
 import { Router } from '@angular/router';
-import {environment} from '../../../environment/environment';
+import { environment } from '../../../environment/environment';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +36,7 @@ export class LoginComponent {
   onSubmit() {
     const data: any = this.loginForm.value;
     this.errorMessage = ' ';
-    this.http.post(environment.apiUrl+'/auth/login', data).subscribe({
+    this.http.post(environment.apiUrl + '/auth/login', data).subscribe({
       next: (response: any) => {
         console.log(response);
         this.authService.setToken(response.token);
@@ -45,7 +45,7 @@ export class LoginComponent {
             this.authService.hasRole('ROLE_ADMIN') ||
             this.authService.hasRole('ROLE_LIBRARIAN')
           ) {
-            this.router.navigate(['/panel']);
+            this.router.navigate(['/panel/home']);
           } else if (this.authService.hasRole('ROLE_USER')) {
             this.router.navigate(['/panelUser/reservas']);
           } else {

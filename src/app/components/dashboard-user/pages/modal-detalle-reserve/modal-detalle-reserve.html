@@ -1,0 +1,62 @@
+<div class="modal fade" id="reserveDetailModal" tabindex="-1" aria-labelledby="reserveDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="reserveDetailModalLabel">Detalles de la Reserva</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onModalClose()"></button>
+            </div>
+            <div class="modal-body">
+                @if (selectedReserve) {
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Información del Libro</h6>
+                        <p><strong>Título:</strong> {{ selectedReserve.bookTitle }}</p>
+                        @if (selectedReserve.authorBook) {
+                        <p><strong>Autor:</strong> {{ selectedReserve.authorBook }}</p>
+                        }
+                        @if (selectedReserve.categoryBook) {
+                        <p><strong>Categoría:</strong> {{ selectedReserve.categoryBook }}</p>
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Información del Usuario</h6>
+                        <p><strong>Usuario:</strong> {{ selectedReserve.userName }}</p>
+
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Detalles de la Reserva</h6>
+
+                        <p><strong>Fecha de Reserva:</strong> {{ selectedReserve.reservationDate }}</p>
+                        <p><strong>Hora Inicio:</strong> {{ selectedReserve.startTime }}</p>
+                        <p><strong>Hora Fin:</strong> {{ selectedReserve.endTime }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Estado y Ubicación</h6>
+                        <p><strong>Estado:</strong>
+                            <span class="badge" [class.bg-success]="selectedReserve.active"
+                                [class.bg-danger]="!selectedReserve.active">
+                                @if (selectedReserve.active) { ACTIVO } @else { INACTIVO }
+                            </span>
+                        </p>
+                        <p><strong>Sucursal:</strong> {{ selectedReserve.libraryName }}</p>
+
+                    </div>
+                </div>
+                } @else {
+                <div class="text-center">
+                    <p>No hay datos de la reserva para mostrar.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onModalClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,7 +16,8 @@
         <div class="col">
           <label for="search-02">Filtrar Por Fecha de Prestamo</label>
           <div class="mb-3">
-            <input type="date" class="form-control" id="search-02" />
+            <input type="date" class="form-control" id="search-02" [(ngModel)]="filter.date" name="date"
+              (change)="serachByDate()" />
           </div>
         </div>
         <div class="col">
@@ -36,6 +37,12 @@
       </div>
     </form>
   </div>
+  @if (errorMessage) {
+  <div class="alert alert-warning fade alert-dismissible show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>Alert</strong> {{errorMessage}}
+  </div>
+  }
   <div class="content-fluid mt-3">
     <div class="table-responsive-sm">
       <table class="table table-hover table-bordered">
@@ -82,7 +89,7 @@
               <span> {{loan.state}} </span>
             </td>
             <td>
-              <button type="button" class="btn btn-info btn-sm">Ver más Detalles</button>
+              <button type="button" class="btn btn-info btn-sm" (click)="openModal(loan)">Ver más Detalles</button>
             </td>
           </tr>
           }
@@ -91,3 +98,7 @@
     </div>
   </div>
 </section>
+
+<!-- Modal de detalle -->
+<app-modal-detalle [showModal]="showModal" [selectedLoan]="selectedLoan" (closeModal)="closeModal()">
+</app-modal-detalle>

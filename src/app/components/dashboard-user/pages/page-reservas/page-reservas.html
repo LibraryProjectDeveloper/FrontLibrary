@@ -1,11 +1,52 @@
 <section class="reservas-section">
-  <div class="page-header">
-    <h2 class="page-title">Mis Reservas</h2>
-    <p class="page-subtitle">
-      Gestiona y visualiza todas tus reservas de libros
-    </p>
+  <form [formGroup]="formFilter">
+    <div class="row row-cols-1 row-cols-md-4 justify-content-center">
+      <div class="col">
+        <label for="search-bookAuthor">Buscar Reserva por libro o autor</label>
+        <div class="input-group mb-3">
+          <input type="text" id="search-bookAuthor" class="form-control" formControlName="searchBookAut"
+            placeholder="Buscar por Autor,Titulo..." [ngClass]="
+            {'is-invalid': formFilter.get('searchBookAut')?.invalid && formFilter.get('searchBookAut')?.touched}" />
+          <button class=" btn btn-success" type="button" [disabled]="!formFilter.get('searchBookAut')?.valid"
+            (click)="searchReservaByTitleAuthor(formFilter.value.searchBookAut)">
+            Buscar
+          </button>
+          @if (formFilter.get('searchBookAut')?.errors?.['pattern'] && formFilter.get('searchBookAut')?.touched) {
+          <div class="invalid-feekback">
+            <span> El nombre del libro o autor solo puede contener letras y espacios.</span>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="col">
+        <label for="search-reserveDate">Buscar Por Fecha</label>
+        <div class="input-group mb-3">
+          <input type="date" id="search-reserveDate" class="form-control" formControlName="searchDate"
+            (change)="searchReservaByDate(formFilter.value.searchDate)" />
+        </div>
+      </div>
+      <div class="col">
+        <label for="search-state">Filtrar por estado</label>
+        <select id="search-state" class="form-selec form-control" formControlName="state"
+          (change)="searchReservaByState(formFilter.value.state)">">
+          <option value="info" selected>Selecciona un estado</option>
+          <option value="true">Reservas Activas</option>
+          <option value="false">Reservas Inactivas</option>
+        </select>
+      </div>
+      <div class="col justify-content-center align-content-center">
+        <button type="button" class="btn btn-secondary" (click)="recargarReservas()">
+          Recargar Reservas
+        </button>
+      </div>
+    </div>
+  </form>
+  @if (errorMessage) {
+  <div class="alert alert-warning alert-dismissible fade show">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    {{errorMessage}}
   </div>
-
+  }
   <div class="content-reserves">
     <div class="table-container">
       <div class="table-wrapper">
@@ -19,6 +60,7 @@
               <th class="th-time">Hora Fin</th>
               <th class="th-library">Bibliotecario</th>
               <th class="th-status">Estado</th>
+              <th>Información</th>
             </tr>
           </thead>
           <tbody>
@@ -47,13 +89,12 @@
                 <span class="library-name">{{reserve.libraryName}}</span>
               </td>
               <td class="td-status" data-label="Estado">
-                <span
-                  class="status-badge"
-                  [class.status-active]="reserve.active"
-                  [class.status-inactive]="!reserve.active"
-                >
+                <span class="badge" [class.text-bg-success]="reserve.active" [class.text-bg-danger]="!reserve.active">
                   @if (reserve.active){ ACTIVO } @else { INACTIVO }
                 </span>
+              </td>
+              <td class="actions">
+                <button type="button" class="btn btn-info" (click)="openModal(reserve)">Detalles</button>
               </td>
             </tr>
             }
@@ -63,3 +104,7 @@
     </div>
   </div>
 </section>
+
+
+<app-modal-detalle-reserve [showModal]="showModal" [selectedReserve]="selectedReserve" (closeModal)="closeModal()">
+</app-modal-detalle-reserve>

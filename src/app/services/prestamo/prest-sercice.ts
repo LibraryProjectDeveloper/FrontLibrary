@@ -27,6 +27,10 @@ export class PrestSercice {
     return this.http.get<Loan[]>(`${this.url}/user/${id}`);
   }
 
+  getSearchDateByUserId(fecha: string, id: number) {
+    return this.http.get<Loan[]>(`${this.url}/loanDate/${fecha}/${id}`);
+  }
+
   serchLoanBookAuthorUser(query: string, idUser: number) {
     return this.http.get<Loan[]>(
       `${this.url}/searchBook/${idUser}?searchTerm=${query}`

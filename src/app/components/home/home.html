@@ -1,18 +1,40 @@
-<div class="container-home">
-  <div class="item-home">
-    <span>5</span>
-    <p>Usuarios</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="text-center mb-4">Dashboard de Libros</h2>
+    </div>
   </div>
-  <div class="item-home">
-    <span>3</span>
-    <p>Prestamos</p>
-  </div>
-  <div class="item-home">
-    <span>2</span>
-    <p>Multas</p>
-  </div>
-  <div class="item-home">
-    <span>1</span>
-    <p>Reservas</p>
+  <div class="row">
+    <div class="col-12 col-md-8 mx-auto">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Estadísticas de Préstamos por Categoría</h5>
+        </div>
+        <div class="card-body">
+          @if (loading) {
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2">Cargando datos del gráfico...</p>
+          </div>
+          } @else if (error) {
+          <div class="alert alert-danger" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            {{ error }}
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary" (click)="countBooksLoanedByCategory()">
+              Reintentar
+            </button>
+          </div>
+          } @else {
+          <div class="chart-container" style="position: relative; height: 400px;">
+            <canvas id="grafic"></canvas>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
   </div>
 </div>
