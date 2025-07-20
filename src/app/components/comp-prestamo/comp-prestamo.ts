@@ -158,9 +158,7 @@ export class CompPrestamo implements OnInit {
     return diffDays;
   }
 
-  finishedLoan(loan: number) {
-
-  }
+  finishedLoan(loan: number) {}
 
   deletePrestamo(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar este préstamo?')) {
