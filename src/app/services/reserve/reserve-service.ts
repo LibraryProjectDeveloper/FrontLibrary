@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {environment} from '../../../environment/environment';
+import { environment } from '../../../environment/environment';
 
 export interface Reserve {
   id: number;
@@ -14,6 +14,8 @@ export interface Reserve {
   reservationDate: string;
   startTime: string;
   endTime: string;
+  authorBook?: string;
+  categoryBook?: string;
 }
 
 export interface ReserveRequest {
@@ -43,7 +45,7 @@ export interface ReserveReport {
   providedIn: 'root',
 })
 export class ReserveService {
-  private url = environment.apiUrl+'/reserve/';
+  private url = environment.apiUrl + '/reserve/';
   constructor(private http: HttpClient) {}
   getReserves() {
     return this.http.get<Reserve[]>(this.url);
@@ -79,10 +81,27 @@ export class ReserveService {
     return this.http.get<Reserve[]>(`${this.url}date/${date}`);
   }
 
+  searchReserveByUserCode(date: string, codeUser: number) {
+    return this.http.get<Reserve[]>(
+      `${this.url}searchDateByUser/${date}/user/${codeUser}`
+    );
+  }
+
   getRereserveByUserId(userId: number) {
     return this.http.get<Reserve[]>(`${this.url}user/${userId}`);
   }
 
+  getSearchReserveBokkAuthor(search: string, idUser: number) {
+    return this.http.get<Reserve[]>(
+      `${this.url}searchReserveBookAut/${search}/${idUser}`
+    );
+  }
+
+  searchReserveStateByUserId(state: boolean, userCode: number) {
+    return this.http.get<Reserve[]>(
+      `${this.url}searchByStateAndUser/${state}/user/${userCode}`
+    );
+  }
   addReserve(reserve: ReserveRequest) {
     return this.http.post<Reserve>(`${this.url}add`, reserve);
   }

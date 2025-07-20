@@ -40,7 +40,10 @@ export interface BookReportRequest {
   dateEnd: string;
   category: string;
 }
-
+export interface CountBookByCategory {
+  category: string;
+  count: number;
+}
 @Injectable({
   providedIn: 'root',
 })
@@ -65,6 +68,12 @@ export class BookService {
 
   getBookYear(year: number): Observable<Book[]> {
     return this.http.get<Book[]>(`${this.url}/year/${year}`);
+  }
+
+  CountBookByCategory(): Observable<CountBookByCategory[]> {
+    return this.http.get<CountBookByCategory[]>(
+      `${this.url}/countBooksLoanedByCategory`
+    );
   }
 
   addBook(book: Book) {

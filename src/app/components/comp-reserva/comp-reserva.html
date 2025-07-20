@@ -2,16 +2,16 @@
   <div>
     <h1>Reservas</h1>
     <div class="header">
-      <button class="btn-report" (click)="generateReport()">
+      <button class="btn btn-outline-primary" (click)="generateReport()">
         Generar reporte
       </button>
       <div class="container-btnAdd">
-        <button type="button" class="btn" (click)="openModal()">
+        <button type="button" class="btn btn-success" (click)="openModal()">
           Nueva Reserva +
         </button>
       </div>
       <div class="container-btnReload">
-        <button type="button" class="btn" (click)="cargarReservas()">
+        <button type="button" class="btn btn-secondary" (click)="cargarReservas()">
           Recargar Reservas
         </button>
       </div>
@@ -19,14 +19,8 @@
         <form class="filter-item" [formGroup]="formFilter">
           <div>
             <label for="search-user">Reserva por usuario:</label>
-            <input
-              type="search"
-              id="search-user"
-              placeholder="Buscar por Dni..."
-              formControlName="searchDni"
-              (focus)="deshabilitarCampos('searchDni')"
-              (blur)="habilitarCampos('searchDni')"
-            />
+            <input type="search" id="search-user" placeholder="Buscar por Dni..." formControlName="searchDni"
+              (focus)="deshabilitarCampos('searchDni')" (blur)="habilitarCampos('searchDni')" />
             <div class="errores">
               @if (formFilter.get('searchDni')?.errors?.['maxlength']) {
               <span style="color: red; font-size: 13px">
@@ -37,35 +31,18 @@
           </div>
           <div>
             <label for="search-book">Buscar Reserva por Libro:</label>
-            <input
-              type="search"
-              id="search-book"
-              placeholder="Buscar por libro"
-              formControlName="searchTitle"
-              (focus)="deshabilitarCampos('searchTitle')"
-              (blur)="habilitarCampos('searchTitle')"
-            />
+            <input type="search" id="search-book" placeholder="Buscar por libro" formControlName="searchTitle"
+              (focus)="deshabilitarCampos('searchTitle')" (blur)="habilitarCampos('searchTitle')" />
           </div>
           <div>
             <label for="search-date">Buscar Reserva por Fecha:</label>
-            <input
-              type="date"
-              id="search-date"
-              placeholder="Buscar por fecha"
-              formControlName="searchDate"
-              (focus)="deshabilitarCampos('searchDate')"
-              (blur)="habilitarCampos('searchDate')"
-            />
+            <input type="date" id="search-date" placeholder="Buscar por fecha" formControlName="searchDate"
+              (focus)="deshabilitarCampos('searchDate')" (blur)="habilitarCampos('searchDate')" />
           </div>
           <div>
             <label for="filter-user">Filtrar por estado:</label>
-            <select
-              name="filter-state"
-              id="filter-state"
-              formControlName="state"
-              (focus)="deshabilitarCampos('state')"
-              (blur)="habilitarCampos('state')"
-            >
+            <select name="filter-state" id="filter-state" formControlName="state" (focus)="deshabilitarCampos('state')"
+              (blur)="habilitarCampos('state')">
               <option value="" selected>Selecciona un estado</option>
               <option value="true">Reservas Activas</option>
               <option value="false">Reservas Inactivas</option>
@@ -108,13 +85,11 @@
           <td>{{reserve.endTime}}</td>
           <td>{{reserve.libraryName}}</td>
           <td>
-            <span
-              [ngClass]="{
+            <span [ngClass]="{
                   'badge': true,
                   'active': reserve.active,
                   'inactive': !reserve.active
-                }"
-            >
+                }">
               @if (reserve.active){ ACTIVO } @else if (!reserve.active ){
               INACTIVO }
             </span>
@@ -123,11 +98,7 @@
             <button type="button" class="btn-edit" (click)="editar(reserve)">
               ✏️
             </button>
-            <button
-              class="btn-delete"
-              type="button"
-              (click)="deleteReserve(reserve.id)"
-            >
+            <button class="btn-delete" type="button" (click)="deleteReserve(reserve.id)">
               🗑️
             </button>
           </td>
@@ -140,13 +111,8 @@
   </div>
 </div>
 <div>
-  <app-modal-reserva
-    [isVisible]="isVisible"
-    [editMode]="edit"
-    [reserveEdit]="reserveEdit"
-    (close)="closeModal()"
-    (save)="saveReserve($event)"
-  ></app-modal-reserva>
+  <app-modal-reserva [isVisible]="isVisible" [editMode]="edit" [reserveEdit]="reserveEdit" (close)="closeModal()"
+    (save)="saveReserve($event)"></app-modal-reserva>
 </div>
 
 <app-modal-report [isVisible]="showModal" (close)="closeModalReport()">
