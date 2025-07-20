@@ -5,6 +5,6 @@ RUN npm install
 RUN npm run build --prod
 
 FROM nginx:stable-alpine
-COPY --from=builder /app/dist/FrontLibrary /usr/share/nginx/html
+COPY --from=builder /dist/FrontLibrary /usr/share/nginx/html
 COPY frontend.conf /etc/nginx/conf.d/frontend.conf
 EXPOSE 80
