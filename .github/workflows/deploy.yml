@@ -1,0 +1,26 @@
+name: Deploy to Ubuntu server
+
+on:
+  workflow_run:
+    workflows:
+      - "Build and Push Angular Docker Image"
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_KEY }}
+          script: |
+            cd /home/ubuntu/config-docker
+            docker-compose pull
+            docker-compose up -d
+            docker-compose ps
