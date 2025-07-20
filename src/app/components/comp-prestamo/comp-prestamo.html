@@ -42,13 +42,14 @@
                 'badge': true,
                 'active': prest.state === 'PRESTADO',
                 'returned': prest.state === 'DEVUELTO',
-                'inactive': prest.state === 'NO_PRESTADO',
+                'inactive': prest.state === 'CANCELADO' || prest.state === 'RETRASADO' ,
               }">
               {{prest.state}}
             </span>
           </td>
           <td>
             <button class="btn-edit" (click)="edit(prest)">✏️</button>
+            <button class="btn-finish" type="button" (click)="finishedLoan(prest.idLean)">📚 Finalizar</button>
             <button class="btn-delete" type="button" (click)="deletePrestamo(prest.idLean)">🗑️</button>
           </td>
         </tr>

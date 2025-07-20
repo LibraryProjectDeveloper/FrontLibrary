@@ -74,8 +74,12 @@
               </div>
             </div>
             <div class="custom-grid__item">
-              <label for="days">Dias prestados</label>
-              <input type="number" id="days" name="days" placeholder="Ingresa los dias que se van a prestar..." formControlName="loanDays">
+              <label for="days" >Dias prestados</label>
+              <select  id="days" formControlName="loanDays" name="days">
+                <option value="1">1 dia</option>
+                <option value="3">3 dias</option>
+                <option value="5">5 dias</option>
+              </select>
               <div class="custom-error">
                 @if (form.get('loanDays')?.errors?.['required']){
                   <span>El campo es requerido</span>
@@ -91,7 +95,6 @@
                 <label for="state">Estado</label>
                 <select id="state" formControlName="state">
                   <option value="PRESTADO">Prestado</option>
-                  <option value="NO_PRESTADO">No prestado</option>
                   <option value="DEVUELTO">Devuelto</option>
                 </select>
               </div>
