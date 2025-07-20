@@ -158,7 +158,7 @@ export class CompPrestamo implements OnInit {
     return diffDays;
   }
 
-  finishedLoan(loan: Loan) {
+  finishedLoan(loan: number) {
 
   }
 
