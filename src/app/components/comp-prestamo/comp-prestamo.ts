@@ -158,6 +158,10 @@ export class CompPrestamo implements OnInit {
     return diffDays;
   }
 
+  finishedLoan(loan: Loan) {
+
+  }
+
   deletePrestamo(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar este préstamo?')) {
       this.servicePrestamo.deleteLoan(id).subscribe({

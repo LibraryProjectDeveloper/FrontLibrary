@@ -97,6 +97,21 @@
 .container-prestamos .container-table table tbody tr td:last-child .btn-delete:hover {
   background-color: #c82333;
 }
+.container-prestamos .container-table table tbody tr td:last-child .btn-finish {
+  background: linear-gradient(90deg, #4caf50 0%, #81c784 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: background 0.2s;
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.15);
+}
+.container-prestamos .container-table table tbody tr td:last-child .btn-finish:hover {
+  background: linear-gradient(90deg, #388e3c 0%, #66bb6a 100%);
+}
 
 .badge {
   display: inline-block;
@@ -119,4 +134,6 @@
 .inactive {
   background-color: #ef4444;
   color: white;
-}/*# sourceMappingURL=comp-prestamo.css.map */
+}
+
+/*# sourceMappingURL=comp-prestamo.css.map */
