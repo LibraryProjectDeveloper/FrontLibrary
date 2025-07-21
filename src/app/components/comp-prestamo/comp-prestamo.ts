@@ -6,7 +6,7 @@ import { DatePipe, NgClass } from '@angular/common';
 import { ModalPrestamo } from '../modal-prestamo/modal-prestamo';
 import { LoanRequest } from '../../model/LoanRequest';
 import { LoanUpdateResponse } from '../../model/LoanUpdateRequest';
-import {PageResponse} from '../../model/PageResponse';
+import { PageResponse } from '../../model/PageResponse';
 
 @Component({
   selector: 'app-comp-prestamo',
@@ -19,11 +19,10 @@ export class CompPrestamo implements OnInit {
   totalElements: number = 0;
   totalPages: number = 0;
   currentPage: number = 0;
-  size : number = 1;
+  size: number = 5;
   pagesArray: number[] = [];
   startItem: number = 1;
   endItem: number = 0;
-
 
   error: string | null = null;
   stateFilter: string = '';
@@ -38,18 +37,21 @@ export class CompPrestamo implements OnInit {
   constructor(private servicePrestamo: PrestSercice) {}
 
   ngOnInit() {
-    this.getAllPrestamos(0,this.size);
+    this.getAllPrestamos(0, this.size);
   }
 
-  getAllPrestamos(page:number = 0, size:number = 10) {
+  getAllPrestamos(page: number = 0, size: number = 10) {
     this.error = null;
-    this.servicePrestamo.getAllLoans(page,size).subscribe({
+    this.servicePrestamo.getAllLoans(page, size).subscribe({
       next: (data) => {
         this.prestamos = data.content;
         this.totalElements = data.totalElements;
         this.totalPages = data.totalPages;
         this.currentPage = data.page;
-        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         console.log('Prestamos', data);
       },
       error: (error) => {
@@ -175,7 +177,7 @@ export class CompPrestamo implements OnInit {
   }
 
   finishedLoan(loan: number) {
-    if(confirm("Esta seguro que desea finalizar el préstamo?")) {
+    if (confirm('Esta seguro que desea finalizar el préstamo?')) {
       this.servicePrestamo.finishedLoan(loan).subscribe({
         next: (data) => {
           console.log('Préstamo finalizado con éxito', data);
@@ -232,16 +234,15 @@ export class CompPrestamo implements OnInit {
       return;
     }
     this.currentPage = page;
-    this.getAllPrestamos(page,this.size);
+    this.getAllPrestamos(page, this.size);
     this.paginateLoans();
   }
 
-  paginateLoans(){
+  paginateLoans() {
     console.log(this.totalPages);
-    this.pagesArray = Array.from({length: this.totalPages}, (_, i) => i + 1);
-    this.startItem = (this.currentPage -1) * this.size+1;
-    this.endItem = Math.min(this.currentPage*this.size, this.totalElements);
+    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.startItem = (this.currentPage - 1) * this.size + 1;
+    this.endItem = Math.min(this.currentPage * this.size, this.totalElements);
     const startIndex = (this.currentPage - 1) * this.size;
   }
-
 }

@@ -7,6 +7,7 @@ import { Modal } from '../modal/modal';
 import { ModalDelete } from '../modal-delete/modal-delete';
 import { ModalReportBook } from '../modal-report-book/modal-report-book';
 import { DetModalBook } from './det-modal-book/det-modal-book';
+import { PageResponse } from '../../model/PageResponse';
 
 @Component({
   selector: 'app-book',
@@ -42,6 +43,14 @@ export class BookComponent implements OnInit {
   selectedBookDetail: Book | null = null;
   selectedBook: Book | null = null;
   bookDelete: Book | null = null;
+
+  //variables para la paginacion
+  page: number = 0;
+  size: number = 5;
+  totalElements: number = 0;
+  totalPages: number = 0;
+  pagesArray: number[] = [];
+  currentPage: number = 0;
   constructor(
     private bookService: BookService,
     private category: CategoryService
@@ -50,12 +59,20 @@ export class BookComponent implements OnInit {
     this.getData();
     this.getCategories();
   }
-  getData(): void {
+  getData(page: number = 0, size: number = 5): void {
     this.loading = true;
     this.error = null;
-    this.bookService.getBooks().subscribe({
-      next: (response: Book[]) => {
-        this.Books = response;
+    this.bookService.getBooks(page, size).subscribe({
+      next: (response: PageResponse<Book>) => {
+        console.log('Libros obtenidos:', response);
+        this.Books = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: () => {
@@ -276,5 +293,47 @@ export class BookComponent implements OnInit {
         this.closeDeleteModal();
       },
     });
+  }
+
+  getVisiblePages(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5; // Número máximo de páginas visibles
+
+    // Si hay pocas páginas, mostrar todas
+    if (this.totalPages <= maxVisiblePages) {
+      for (let i = 1; i < this.totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
+    }
+
+    // Lógica para mostrar páginas alrededor de la página actual
+    let startPage = Math.max(1, this.currentPage - 1);
+    let endPage = Math.min(this.totalPages - 1, this.currentPage + 1);
+
+    // Ajustar si estamos muy cerca del inicio
+    if (this.currentPage <= 2) {
+      endPage = Math.min(this.totalPages - 1, 3);
+    }
+
+    // Ajustar si estamos muy cerca del final
+    if (this.currentPage >= this.totalPages - 2) {
+      startPage = Math.max(1, this.totalPages - 3);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }
+
+  goPage(page: number) {
+    if (page < 0 || page >= this.totalPages) {
+      console.error('Número de página inválido:', page);
+      return;
+    }
+    this.page = page;
+    this.getData(this.page, this.size);
   }
 }

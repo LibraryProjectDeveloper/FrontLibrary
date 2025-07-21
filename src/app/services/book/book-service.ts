@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthorModel } from '../../model/Author';
 import { environment } from '../../../environment/environment';
+import { PageResponse } from '../../model/PageResponse';
 
 export interface Book {
   codeBook: number;
@@ -50,8 +51,13 @@ export interface CountBookByCategory {
 export class BookService {
   private url = environment.apiUrl + '/LIBRARIAN/books';
   constructor(private http: HttpClient) {}
-  getBooks() {
-    return this.http.get<Book[]>(this.url + '/state/ACTIVO');
+  getBooks(page: number = 0, size: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageResponse<Book>>(this.url + '/state/ACTIVO', {
+      params,
+    });
   }
 
   getBookCategory(category: string): Observable<Book[]> {
