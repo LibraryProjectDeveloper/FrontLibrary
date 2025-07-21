@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Loan } from '../../model/loan';
 import { LoanRequest } from '../../model/LoanRequest';
 import { environment } from '../../../environment/environment';
+import {PageResponse} from '../../model/PageResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,14 @@ export class PrestSercice {
 
   getAllPrestamos() {
     return this.http.get<Loan[]>(this.url);
+  }
+
+  getAllLoans(page:number = 0, size:number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageResponse<Loan>>(`${this.url}`,{ params });
+
   }
 
   getAllState(state: string) {

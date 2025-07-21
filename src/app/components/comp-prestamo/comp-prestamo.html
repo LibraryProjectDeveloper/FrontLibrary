@@ -65,6 +65,35 @@
     </table>
     }
   </div>
+  <div class="pagination-container">
+    <div class="pagination-info">Mostrando {{ currentPage+1 }}-{{ totalPages }} de {{ totalElements }} préstamos</div>
+    <div class="pagination-controls">
+      <button class="pagination-btn" [disabled]="currentPage === 0" (click)="goToPage(0)">
+        <span>««</span>
+      </button>
+      @if (currentPage -1 >=0) {
+        <button class="pagination-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+          <span>«</span>
+        </button>
+      }
+
+      @for (page of pagesArray; track page) {
+        <button class="pagination-btn" [class.active]="currentPage === page-1" (click)="goToPage(page-1)">
+          {{ page }}
+        </button>
+      }
+
+      @if(currentPage +1 < totalPages){
+        <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">
+          <span>»</span>
+        </button>
+      }
+      <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="goToPage(totalPages-1)">
+        <span>»»</span>
+      </button>
+    </div>
+  </div>
+
 </div>
 <app-modal-prestamo [isVisible]="showModal" [prestUpdate]="prestaUpdate" [edit]="editar" (close)="closeModal()"
   (save)="save($event)" />

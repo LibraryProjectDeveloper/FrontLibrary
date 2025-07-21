@@ -6,6 +6,7 @@ import { DatePipe, NgClass } from '@angular/common';
 import { ModalPrestamo } from '../modal-prestamo/modal-prestamo';
 import { LoanRequest } from '../../model/LoanRequest';
 import { LoanUpdateResponse } from '../../model/LoanUpdateRequest';
+import {PageResponse} from '../../model/PageResponse';
 
 @Component({
   selector: 'app-comp-prestamo',
@@ -15,6 +16,15 @@ import { LoanUpdateResponse } from '../../model/LoanUpdateRequest';
 })
 export class CompPrestamo implements OnInit {
   prestamos: Loan[] = [];
+  totalElements: number = 0;
+  totalPages: number = 0;
+  currentPage: number = 0;
+  size : number = 1;
+  pagesArray: number[] = [];
+  startItem: number = 1;
+  endItem: number = 0;
+
+
   error: string | null = null;
   stateFilter: string = '';
   showModal: boolean = false;
@@ -28,14 +38,18 @@ export class CompPrestamo implements OnInit {
   constructor(private servicePrestamo: PrestSercice) {}
 
   ngOnInit() {
-    this.getAllPrestamos();
+    this.getAllPrestamos(0,this.size);
   }
 
-  getAllPrestamos() {
+  getAllPrestamos(page:number = 0, size:number = 10) {
     this.error = null;
-    this.servicePrestamo.getAllPrestamos().subscribe({
+    this.servicePrestamo.getAllLoans(page,size).subscribe({
       next: (data) => {
-        this.prestamos = data;
+        this.prestamos = data.content;
+        this.totalElements = data.totalElements;
+        this.totalPages = data.totalPages;
+        this.currentPage = data.page;
+        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
         console.log('Prestamos', data);
       },
       error: (error) => {
@@ -213,4 +227,21 @@ export class CompPrestamo implements OnInit {
       },
     });
   }
+  goToPage(page: number) {
+    if (page < 0 || page > this.totalPages) {
+      return;
+    }
+    this.currentPage = page;
+    this.getAllPrestamos(page,this.size);
+    this.paginateLoans();
+  }
+
+  paginateLoans(){
+    console.log(this.totalPages);
+    this.pagesArray = Array.from({length: this.totalPages}, (_, i) => i + 1);
+    this.startItem = (this.currentPage -1) * this.size+1;
+    this.endItem = Math.min(this.currentPage*this.size, this.totalElements);
+    const startIndex = (this.currentPage - 1) * this.size;
+  }
+
 }
