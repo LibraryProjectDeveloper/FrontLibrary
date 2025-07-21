@@ -1,14 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { User, UserService } from '../../services/user/user-service';
 import { FormsModule } from '@angular/forms';
 import { ComModalUser } from '../com-modal-user/com-modal-user';
 import { UserRequest } from '../../model/UserRequest';
 import { DelemodalUser } from '../delemodal-user/delemodal-user';
+import { DetaModalUser } from '../deta-modal-user/deta-modal-user';
 import { AuthService } from '../../services/auth/auth-service';
+
 @Component({
   selector: 'app-usuario',
-  imports: [CommonModule, FormsModule, ComModalUser, DelemodalUser],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ComModalUser,
+    DelemodalUser,
+    DetaModalUser,
+    DatePipe,
+  ],
   templateUrl: './usuario.html',
   standalone: true,
   styleUrl: './usuario.scss',
@@ -27,6 +36,10 @@ export class Usuario {
   userSave: UserRequest | null = null;
   showDeleteModal: boolean = false;
   idUserDelete: number = 0;
+
+  // Variables para el modal de detalles
+  showDetailModal: boolean = false;
+  selectedUserDetail: User | null = null;
 
   userRoles: string[] = [];
   authService = inject(AuthService);
@@ -256,5 +269,16 @@ export class Usuario {
 
   hasRole(role: string): boolean {
     return this.userRoles.includes(role);
+  }
+
+  // Métodos para manejar el modal de detalles
+  openDetailModal(user: User): void {
+    this.selectedUserDetail = user;
+    this.showDetailModal = true;
+  }
+
+  closeDetailModal(): void {
+    this.showDetailModal = false;
+    this.selectedUserDetail = null;
   }
 }

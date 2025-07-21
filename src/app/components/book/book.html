@@ -6,7 +6,7 @@
       <select id="filtroCategoria" [(ngModel)]="categoria" (change)="getSelection()">
         <option value="">Todas las categorias</option>
         @for (Category of Categories; track Category){
-          <option value="{{Category}}">{{Category}}</option>
+        <option value="{{Category}}">{{Category}}</option>
         }
       </select>
     </div>
@@ -20,14 +20,7 @@
     </div>
     <div class="filter-item">
       <label for="filtroFecha">Fecha de publicación</label>
-      <input
-        type="number"
-        name="anio" id="filtroFecha"
-        [(ngModel)]="year"
-        min="1900"
-        max="2024"
-        (change)="getYear()"
-      >
+      <input type="number" name="anio" id="filtroFecha" [(ngModel)]="year" min="1900" max="2024" (change)="getYear()">
     </div>
     <div class="filter-item">
       <button class="btn btn-primary" (click)="addBook()">Agregar libro</button>
@@ -37,15 +30,15 @@
     </div>
   </div>
   @if (loading){
-    <p>Cargando...</p>
+  <p>Cargando...</p>
   }
   @if (error){
-    <p class="error">{{ error }}</p>
+  <p class="error">{{ error }}</p>
   }
   <div class="table-container">
     @if (!loading && !error && Books.length>0){
-      <table class="books-table">
-        <thead>
+    <table class="books-table">
+      <thead>
         <tr>
           <th>Título</th>
           <th>Categoría</th>
@@ -56,56 +49,48 @@
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
-        </thead>
-        <tbody>
-          @for (Book of Books; track Book.codeBook){
-            <tr>
-              <td>{{Book.title }}</td>
-              <td>{{Book.category}}</td>
-              <td>{{Book.isbn}}</td>
-              <td>{{Book.publicationDate}}</td>
-              <td>{{Book.publisher}}</td>
-              <td>{{Book.stockTotal}}</td>
-              <td>
-                <span [ngClass] = "{
+      </thead>
+      <tbody>
+        @for (Book of Books; track Book.codeBook){
+        <tr>
+          <td>{{Book.title }}</td>
+          <td>{{Book.category}}</td>
+          <td>{{Book.isbn}}</td>
+          <td>{{Book.publicationDate | date: "dd-MM-yyyy"}}</td>
+          <td>{{Book.publisher}}</td>
+          <td>{{Book.stockTotal}}</td>
+          <td>
+            <span [ngClass]="{
                   'badge' : true,
                   'active' : Book.state === 'ACTIVO',
                   'inactive' : Book.state === 'INACTIVO'
                 }">
-                {{Book.state}}
-                </span>
-              </td>
-              <td class="actions">
-                <button class="btn-edit" (click)="editBook(Book)">✏️</button>
-                <button class="btn-delete" (click)="openDeleteModal(Book)">🗑️</button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+              {{Book.state}}
+            </span>
+          </td>
+          <td class="actions">
+            <button class="btn-edit" (click)="editBook(Book)">✏️</button>
+            <button class="btn-delete" (click)="openDeleteModal(Book)">🗑️</button>
+            <button class="btn btn-outline-info" (click)="openDetailModal(Book)">Ver Detalles</button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
     }
   </div>
 </div>
 
-<app-modal
-[isVisible]="showModal"
-[editMode]="editMode"
-[bookData]="selectedBook"
-[categories]="Categories"
-(close) = "closeModal()"
-(save) = "handleSave($event)"
->
+<app-modal [isVisible]="showModal" [editMode]="editMode" [bookData]="selectedBook" [categories]="Categories"
+  (close)="closeModal()" (save)="handleSave($event)">
 </app-modal>
 
-<app-modal-report-book
-[isVisible] = "showReportModal"
-(close)="closeReportModal()"
->
+<app-modal-report-book [isVisible]="showReportModal" (close)="closeReportModal()">
 
 </app-modal-report-book>
-<app-modal-delete
-  *ngIf="showDeleteModal"
-  [book]="bookDelete"
-  (close)="closeDeleteModal()"
+<app-modal-delete *ngIf="showDeleteModal" [book]="bookDelete" (close)="closeDeleteModal()"
   (confirm)="confirmDelete($event)">
 </app-modal-delete>
+
+<app-det-modal-book [showModal]="showDetailModal" [selectedBook]="selectedBookDetail" (closeModal)="closeDetailModal()">
+</app-det-modal-book>

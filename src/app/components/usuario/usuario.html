@@ -84,6 +84,9 @@
               🗑️
             </button>
             }
+            <button type="button" class="btn btn-outline-info" (click)="openDetailModal(User)">
+              Ver Detalles
+            </button>
           </td>
         </tr>
         } } @if (user != null){
@@ -116,6 +119,9 @@
               🗑️
             </button>
             }
+            <button type="button" class="btn btn-info" (click)="openDetailModal(user)">
+              Ver Detalles
+            </button>
           </td>
         </tr>
         }
@@ -129,3 +135,8 @@
 
 <app-delemodal-user *ngIf="showDeleteModal" (close)="closeDeleteModal()" (confirm)="deleteUser($event)"
   [idUserDelete]="idUserDelete"></app-delemodal-user>
+
+<!-- Modal de detalles del usuario -->
+<app-deta-modal-user [showModal]="showDetailModal" [selectedUser]="selectedUserDetail"
+  (closeModal)="closeDetailModal()">
+</app-deta-modal-user>

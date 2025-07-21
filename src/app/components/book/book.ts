@@ -1,110 +1,123 @@
-import { Component ,OnInit} from '@angular/core';
-import{BookService,Book} from '../../services/book/book-service';
-import {CommonModule} from '@angular/common';
-import {CategoryService} from '../../services/book/category';
-import {FormsModule} from '@angular/forms';
-import {Modal} from '../modal/modal';
-import {ModalDelete} from '../modal-delete/modal-delete';
-import {ModalReportBook} from '../modal-report-book/modal-report-book';
+import { Component, OnInit } from '@angular/core';
+import { BookService, Book } from '../../services/book/book-service';
+import { CommonModule } from '@angular/common';
+import { CategoryService } from '../../services/book/category';
+import { FormsModule } from '@angular/forms';
+import { Modal } from '../modal/modal';
+import { ModalDelete } from '../modal-delete/modal-delete';
+import { ModalReportBook } from '../modal-report-book/modal-report-book';
+import { DetModalBook } from './det-modal-book/det-modal-book';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [CommonModule, FormsModule, Modal,ModalDelete,ModalReportBook],
+  imports: [
+    CommonModule,
+    FormsModule,
+    Modal,
+    ModalDelete,
+    ModalReportBook,
+    DetModalBook,
+  ],
   templateUrl: './book.html',
-  styleUrl: './book.scss'
+  styleUrl: './book.scss',
 })
 export class BookComponent implements OnInit {
-  Books : Book[] = [];
-  Categories : String[] = [];
-  loading : boolean = true;
-  error : string | null = null;
-  categoria: string = "";
+  Books: Book[] = [];
+  Categories: String[] = [];
+  loading: boolean = true;
+  error: string | null = null;
+  categoria: string = '';
   year: number = 0;
-  state: string = "";
+  state: string = '';
 
   showModal = false;
   editMode = false;
   showDeleteModal = false;
   showReportModal = false;
   bookToDelete: Book | null = null;
+
+  // Variables para el modal de detalles
+  showDetailModal = false;
+  selectedBookDetail: Book | null = null;
   selectedBook: Book | null = null;
   bookDelete: Book | null = null;
-  constructor(private bookService:BookService, private category:CategoryService) {
-  }
-  ngOnInit():void{
+  constructor(
+    private bookService: BookService,
+    private category: CategoryService
+  ) {}
+  ngOnInit(): void {
     this.getData();
     this.getCategories();
   }
-  getData():void{
+  getData(): void {
     this.loading = true;
     this.error = null;
     this.bookService.getBooks().subscribe({
-      next: (response:Book[])=>{
+      next: (response: Book[]) => {
         this.Books = response;
         this.loading = false;
       },
-      error: ()=>{
+      error: () => {
         this.loading = false;
         this.error = 'Error al cargar los libros';
         console.log('Error al cargar los libros');
-      }
-    })
+      },
+    });
   }
-  getCategories() :void {
+  getCategories(): void {
     this.category.getCategories().subscribe({
-      next: (response:String[])=>{
+      next: (response: String[]) => {
         this.Categories = response;
       },
-      error: ()=>{
+      error: () => {
         this.loading = false;
         this.error = 'Error al cargar las categorias';
         console.log('Error al cargar las categorias');
-      }
-    })
+      },
+    });
   }
 
-  getSelection():void{
-    console.log(this.categoria)
-    if (!this.categoria){
+  getSelection(): void {
+    console.log(this.categoria);
+    if (!this.categoria) {
       this.getData();
       this.loading = false;
-      return
+      return;
     }
     this.loading = true;
     this.error = null;
     this.bookService.getBookCategory(this.categoria).subscribe({
-      next: (response)=>{
+      next: (response) => {
         this.Books = response;
         this.loading = false;
       },
-      error: (err)=>{
+      error: (err) => {
         this.loading = false;
         this.error = 'Error al cargar los libros';
-        console.log("Error: ",err);
-      }
+        console.log('Error: ', err);
+      },
     });
   }
 
-  getState(){
-    if (!this.state){
+  getState() {
+    if (!this.state) {
       this.getData();
       return;
     }
     this.loading = true;
     this.error = null;
-     this.bookService.getBookState(this.state).subscribe(
-      {
-        next: (response:Book[])=>{
-          this.Books = response;
-          this.loading = false;
-        },error: (err) => {
-          this.loading = false;
-          this.error = 'Error al cargar los libros';
-          console.log(`Error al filtrar por estado: `,err);
-        }
-      }
-    );
+    this.bookService.getBookState(this.state).subscribe({
+      next: (response: Book[]) => {
+        this.Books = response;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.loading = false;
+        this.error = 'Error al cargar los libros';
+        console.log(`Error al filtrar por estado: `, err);
+      },
+    });
   }
   getYear() {
     if (this.year === 0 || !this.year) {
@@ -114,9 +127,9 @@ export class BookComponent implements OnInit {
 
     this.loading = true;
     this.error = null;
-     this.bookService.getBookYear(this.year).subscribe({
-      next: (response:Book[])=>{
-        if (response.length === 0){
+    this.bookService.getBookYear(this.year).subscribe({
+      next: (response: Book[]) => {
+        if (response.length === 0) {
           alert('No se encontraron libros con el año ingresado');
           this.loading = false;
           this.year = 0;
@@ -125,30 +138,31 @@ export class BookComponent implements OnInit {
         this.Books = response;
         this.loading = false;
       },
-      error: (err)=> {
+      error: (err) => {
         this.loading = false;
         this.error = 'Error al cargar los libros';
-        console.log(`Error al filtrar por año: `,err);
-      }
-    })
+        console.log(`Error al filtrar por año: `, err);
+      },
+    });
   }
 
-  addBook(){
-    console.log("esta haciendo click en addBook")
+  addBook() {
+    console.log('esta haciendo click en addBook');
     this.editMode = false;
     this.selectedBook = null;
     this.showModal = true;
-    console.log("showModal:",this.showModal);
+    console.log('showModal:', this.showModal);
   }
-  generateReport(){
+  generateReport() {
     const body = {
       dateStart: '2024-07-01',
       dateEnd: '2025-07-12',
-      category: ''
-    }
+      category: '',
+    };
     this.bookService.getReportExcel(body).subscribe({
-      next: response =>{
-        const contentDisposition = response.headers.get('Content-Disposition') ?? '';
+      next: (response) => {
+        const contentDisposition =
+          response.headers.get('Content-Disposition') ?? '';
         let filename = 'Report.xlsx';
         const matches = /filename="?([^"]+)"?/.exec(contentDisposition);
         if (matches && matches[1]) {
@@ -162,30 +176,29 @@ export class BookComponent implements OnInit {
         a.click();
         window.URL.revokeObjectURL(url);
       },
-      error: err => {
+      error: (err) => {
         alert('Error al generar el archivo Excel');
-      }
-    })
-
+      },
+    });
   }
 
   editBook(book: Book) {
-    console.log("Esta haciendo clicj en editBook",book);
+    console.log('Esta haciendo clicj en editBook', book);
     this.editMode = true;
-    this.selectedBook = {...book};
+    this.selectedBook = { ...book };
     this.showModal = true;
   }
 
   handleSave(book: Book) {
     if (this.editMode) {
-        const id = this.selectedBook?.codeBook;
-        if (id){
-          book.codeBook=id;
-        }
+      const id = this.selectedBook?.codeBook;
+      if (id) {
+        book.codeBook = id;
+      }
       //console.log("editado libro: ",book);
-      this.updateBook(book,id);
+      this.updateBook(book, id);
     } else {
-      console.log("guardando libro: ",book);
+      console.log('guardando libro: ', book);
       this.createBook(book);
     }
     this.showModal = false;
@@ -200,40 +213,50 @@ export class BookComponent implements OnInit {
     this.showReportModal = false;
   }
 
-  updateBook(book: Book,id:any) {
-    return this.bookService.putBook(book,id).subscribe({
+  openDetailModal(book: Book) {
+    this.selectedBookDetail = book;
+    this.showDetailModal = true;
+  }
+
+  closeDetailModal() {
+    this.showDetailModal = false;
+    this.selectedBookDetail = null;
+  }
+
+  updateBook(book: Book, id: any) {
+    return this.bookService.putBook(book, id).subscribe({
       next: (res) => {
-        alert("Libro actualizado");
+        alert('Libro actualizado');
         //console.log("Libro actualizado",res);
         this.getData();
         this.loading = false;
       },
-      error: (err)=> {
+      error: (err) => {
         this.loading = false;
         alert('Error al actualizar el libro');
         console.error('Error al actualizar:', err);
-      }
+      },
     });
   }
 
-  createBook(book:Book){
+  createBook(book: Book) {
     this.loading = true;
     this.bookService.addBook(book).subscribe({
-      next: (response)=>{
-        alert("Libro guardado");
-       // console.log("Libro creado",response);
+      next: (response) => {
+        alert('Libro guardado');
+        // console.log("Libro creado",response);
         this.getData();
         this.loading = false;
       },
-      error: (err)=>{
+      error: (err) => {
         this.loading = false;
         alert('Error al guardar el libro');
         console.error('Error al crear:', err);
-      }
+      },
     });
   }
   openDeleteModal(book: Book) {
-    this.bookDelete = {...book};
+    this.bookDelete = { ...book };
     this.showDeleteModal = true;
   }
 
@@ -242,17 +265,16 @@ export class BookComponent implements OnInit {
     this.bookToDelete = null;
   }
   confirmDelete(book: Book) {
-      this.bookService.deleteBook(book.codeBook).subscribe({
-        next: () => {
-          alert('Libro eliminado');
-          this.getData();
-          this.closeDeleteModal();
-        },
-        error: () => {
-          alert('Error al eliminar el libro');
-          this.closeDeleteModal();
-        }
-      });
-
+    this.bookService.deleteBook(book.codeBook).subscribe({
+      next: () => {
+        alert('Libro eliminado');
+        this.getData();
+        this.closeDeleteModal();
+      },
+      error: () => {
+        alert('Error al eliminar el libro');
+        this.closeDeleteModal();
+      },
+    });
   }
 }

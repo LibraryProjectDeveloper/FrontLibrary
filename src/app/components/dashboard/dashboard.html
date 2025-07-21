@@ -48,15 +48,8 @@
             🔄 Reservas
           </a>
         </li>
-        } @if (hasRole('ROLE_ADMIN')){
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-bs-toggle="tab" routerLinkActive="active" data-bs-target="#settings"
-            role="tab" aria-selected="false">
-            ⚙️ Configuración
-          </a>
-        </li>
         }
-        <li class="nav-item">
+        <li class="nav-item mt-2">
           <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
         </li>
       </ul>

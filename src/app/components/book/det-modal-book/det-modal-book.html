@@ -1,0 +1,94 @@
+<div class="modal fade" id="bookDetailModal" tabindex="-1" aria-labelledby="bookDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="bookDetailModalLabel">Detalles del Libro</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="onModalClose()"></button>
+            </div>
+            <div class="modal-body">
+                @if (selectedBook) {
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Información del Libro</h6>
+                        <p><strong>Título:</strong> {{ selectedBook.title }}</p>
+                        <p><strong>ISBN:</strong> {{ selectedBook.isbn }}</p>
+                        <p><strong>Categoría:</strong> {{ selectedBook.category }}</p>
+                        <p><strong>Editorial:</strong> {{ selectedBook.publisher }}</p>
+                        <p><strong>Fecha de Publicación:</strong> {{ selectedBook.publicationDate | date: 'dd/MM/yyyy'
+                            }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="fw-bold">Información de Inventario</h6>
+                        <p><strong>Código del Libro:</strong> {{ selectedBook.codeBook }}</p>
+                        <p><strong>Stock Total:</strong> {{ selectedBook.stockTotal }}</p>
+                        <p><strong>Estado:</strong>
+                            <span class="badge" [class.bg-success]="selectedBook.state === 'ACTIVO'"
+                                [class.bg-danger]="selectedBook.state === 'INACTIVO'">
+                                {{ selectedBook.state }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="fw-bold">Autores</h6>
+                        @if (selectedBook.author && selectedBook.author.length > 0) {
+                        <div class="row">
+                            @for (author of selectedBook.author; track author.idAuthor) {
+                            <div class="col-md-6 mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ author.names }} {{ author.lastname }}</h6>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                <strong>Nacionalidad:</strong> {{ author.nationality }}<br>
+                                                <strong>Género:</strong> {{ author.gender }}<br>
+                                                @if (author.birthday) {
+                                                <strong>Fecha de Nacimiento:</strong> {{ author.birthday | date:
+                                                'dd/MM/yyyy' }}
+                                                }
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        } @else {
+                        <p class="text-muted">No hay autores registrados para este libro.</p>
+                        }
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="fw-bold">Resumen del Libro</h6>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <strong>Libro:</strong> {{ selectedBook.title }}<br>
+                                    <strong>Autores:</strong> {{ getAuthorsNames() }}<br>
+                                    <strong>Categoría:</strong> {{ selectedBook.category }}<br>
+                                    <strong>Editorial:</strong> {{ selectedBook.publisher }}<br>
+                                    <strong>ISBN:</strong> {{ selectedBook.isbn }}<br>
+                                    <strong>Stock Disponible:</strong> {{ selectedBook.stockTotal }} unidades
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                } @else {
+                <div class="text-center">
+                    <p>No hay datos del libro para mostrar.</p>
+                </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="onModalClose()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
