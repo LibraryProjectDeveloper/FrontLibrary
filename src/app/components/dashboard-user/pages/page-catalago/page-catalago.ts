@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { BookService, Book } from '../../../../services/book/book-service';
+import {BookService, Book, BookResponse} from '../../../../services/book/book-service';
 import { DatePipe, CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -17,7 +17,12 @@ export class PageCatalago implements OnInit {
   bookService = inject(BookService);
   form!: FormGroup;
   fb = inject(FormBuilder);
-
+  page: number = 0;
+  size: number = 10;
+  totalElements: number = 0;
+  totalPages: number = 0;
+  currentPage: number = 0;
+  pagesArray: number[] = [];
   booksAvailable: Book[] = [];
   loading: boolean = true;
   errorMessage: string | null = null;
@@ -57,12 +62,16 @@ export class PageCatalago implements OnInit {
     this.searchBookByTitle(title);
   }
 
-  getBooks() {
+  getBooks(page:number = 0, size: number = this.size): void {
     this.loading = true;
     this.errorMessage = null;
-    this.bookService.getBookAvailable().subscribe({
-      next: (response: Book[]) => {
-        this.booksAvailable = response;
+    this.bookService.getBookAvailable(page,size).subscribe({
+      next: (response) => {
+        this.booksAvailable = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
         this.loading = false;
       },
       error: (error) => {
@@ -71,6 +80,26 @@ export class PageCatalago implements OnInit {
         console.error('Error al cargar los libros:', error);
       },
     });
+  }
+  goPage(page: number) {
+    if (page < 0 || page >= this.totalPages) return;
+    this.page = page;
+    this.getBooks(page, this.size);
+  }
+
+  getVisiblePages(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5;
+    if (this.totalPages <= maxVisiblePages) {
+      for (let i = 1; i < this.totalPages; i++) pages.push(i);
+      return pages;
+    }
+    let startPage = Math.max(1, this.currentPage - 1);
+    let endPage = Math.min(this.totalPages - 1, this.currentPage + 1);
+    if (this.currentPage <= 2) endPage = Math.min(this.totalPages - 1, 3);
+    if (this.currentPage >= this.totalPages - 2) startPage = Math.max(1, this.totalPages - 3);
+    for (let i = startPage; i <= endPage; i++) pages.push(i);
+    return pages;
   }
 
   getAuthorsNames(book: Book): string {

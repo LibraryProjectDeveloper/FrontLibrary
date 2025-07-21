@@ -137,8 +137,11 @@ export class BookService {
     return this.http.delete<Book>(`${this.url}/delete/${id}`);
   }
 
-  getBookAvailable(): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/book-info/available`);
+  getBookAvailable(page:number = 0 ,size:number = 10): Observable<PageResponse<Book>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageResponse<Book>>(`${this.url}/book-info/available`,{params});
   }
 
   searchAutor(authorName: string): Observable<Book[]> {
