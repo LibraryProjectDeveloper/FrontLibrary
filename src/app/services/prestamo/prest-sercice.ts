@@ -37,6 +37,10 @@ export class PrestSercice {
     );
   }
 
+  searchLoandByLoanDate(query: string) {
+    return this.http.get<Loan[]>(`${this.url}/loansByDate/${query}`);
+  }
+
   searchLoanSatateByUser(state: string, idUser: number) {
     return this.http.get<Loan[]>(`${this.url}/userByState/${state}/${idUser}`);
   }

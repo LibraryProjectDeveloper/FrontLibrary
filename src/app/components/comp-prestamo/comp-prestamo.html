@@ -3,7 +3,8 @@
   <div class="container-filter">
     <div class="filter-item">
       <label for="fecha">Fecha Del Prestamo</label>
-      <input type="date" name="fecha" id="fecha" />
+      <input type="date" name="fecha" id="fecha" name="searchDate" [(ngModel)]="searchDate"
+        (change)="searchLoanByDate()" />
     </div>
     <div class="filter-item">
       <label for="dniSear">Por DNI</label>

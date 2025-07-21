@@ -22,6 +22,8 @@ export class CompPrestamo implements OnInit {
   editar: boolean = false;
   prestaUpdate: LoanUpdateResponse | null = null;
 
+  searchDate: string = '';
+
   idPrestamoedit: number = 0;
   constructor(private servicePrestamo: PrestSercice) {}
 
@@ -184,5 +186,31 @@ export class CompPrestamo implements OnInit {
         },
       });
     }
+  }
+
+  searchLoanByDate() {
+    if (!this.searchDate) {
+      //this.getAllPrestamos();
+      return;
+    }
+    this.servicePrestamo.searchLoandByLoanDate(this.searchDate).subscribe({
+      next: (data: Loan[]) => {
+        this.error = null;
+
+        if (!data || data.length === 0) {
+          this.error = 'No se encontraron prestamos para la fecha ingresada';
+          return;
+        }
+        this.prestamos = data;
+        console.log('Prestamos encontrados por fecha', data);
+      },
+      error: (error) => {
+        console.log(
+          'Ha ocurrido un error al buscar prestamos por fecha',
+          error
+        );
+        this.error = 'No se pudieron cargar los prestamos por fecha';
+      },
+    });
   }
 }

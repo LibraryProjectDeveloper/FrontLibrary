@@ -1,6 +1,6 @@
 @if (isVisible){
 <div class="custom-modal" tabindex="-1" role="dialog">
-  <div class="custom-modal__overlay" ></div>
+  <div class="custom-modal__overlay"></div>
   <div class="custom-modal__dialog">
     <div class="custom-modal__content">
       <div class="custom-modal__header">
@@ -12,51 +12,120 @@
           <div class="custom-grid">
             <div class="custom-grid__item">
               <label for="searchUser">Buscar usuario</label>
-              <input type="search" name="searchUser" id="searchUser" class="custom-input" placeholder="Ingresa el DNI del usuario..."
-                     formControlName="searchDni">
-                  <div class="results-books">
-                    @for (usuari of usuarioResponse; track usuari.idUsuario) {
-                      <ul >
-                        <li>Nombres: {{usuari.name}} {{usuari.lastname}}</li>
-                        <li>DNI: {{usuari.dni}}</li>
-                        <li>Correo: {{usuari.email}}</li>
-                        <button type="button" class="btn" (click)="addUser(usuari)" title="Seleccionar usuario">
-                          Seleccionar
-                        </button>
-                      </ul>
-                    }
-                  </div>
-                  @if (usuario){
-                    <div class="select-user">
-                        <strong>Usuario selecionado: </strong>
-                        <p>{{usuario.name}} - {{usuario.lastname}}</p>
-                        <button type="button" (click)="usuario = null">Eliminar selecion</button>
-                    </div>
-                  }
-              <div class="custom--error">
-
+              <input type="search" name="searchUser" id="searchUser" class="custom-input"
+                placeholder="Ingresa el DNI del usuario..." formControlName="searchDni">
+              @for (usuari of usuarioResponse; track usuari.idUsuario) {
+              <div class="results-books p-2">
+                <ul class="list-group">
+                  <li class="list-group-item">Nombres: {{usuari.name}} {{usuari.lastname}}</li>
+                  <li class="list-group-item">DNI: {{usuari.dni}}</li>
+                  <li class="list-group-item">Correo: {{usuari.email}}</li>
+                </ul>
+                <button type="button" class="btn btn-success mt-2 mb-2" (click)="addUser(usuari)"
+                  title="Seleccionar usuario">
+                  Seleccionar
+                </button>
               </div>
+              }
+              @if (usuario){
+              <div class="rounded-2 mt-1 p-2 shadow-sm">
+                <div class="fw-bold">Usuario Selecionado</div>
+                <ul class="list-group">
+                  <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">Nombres y Apellidos</div>
+                      {{usuario.name}} {{usuario.lastname}}
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">DNI</div>
+                      {{usuario.dni}}
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold">Correo</div>
+                      {{usuario.email}}
+                    </div>
+                  </li>
+                </ul>
+                <button type="button" (click)="usuario = null" class="btn btn-outline-danger mt-1">
+                  Eliminar seleción
+                </button>
+              </div>
+              }
             </div>
             <div class="custom-grid__item">
               <label for="searchBook">Buscar Libro</label>
               <div class="container-search">
-                <input type="search" name="searchBook" id="searchBook" class="custom-input" placeholder="Buscar Libro por Titulo..."
-                       formControlName="searchTitle" [class.disable]="form.get('searchTitle')?.disable">
+                <input type="search" name="searchBook" id="searchBook" class="custom-input"
+                  placeholder="Buscar Libro por Titulo..." formControlName="searchTitle"
+                  [class.disable]="form.get('searchTitle')?.disable">
               </div>
-              <div class="results-books">
+              @if (books) {
+              <div class="rounded-2 mt-1 p-2 shadow-sm overflow-auto" style="max-height: 400px; max-width: 500px;">
                 @for (book of books;track book.codeBook){
-                  <div>
-                    <li>{{book.title}} - {{book.category}}</li>
-                    <button type="button" class="btn" (click)="addBook(book)">Selecionar</button>
-                  </div>
+                <div>
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Titulo del Libro</div>
+                        {{book.title}}
+                      </div>
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Autor</div>
+                        {{listAuthores(book.author)}}
+                      </div>
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Categoría</div>
+                        {{book.category}}
+                      </div>
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Estado</div>
+                        <span [ngClass]="{
+                          'badge': true,
+                          'text-bg-success': book.state === 'ACTIVO',
+                          'text-bg-danger': book.state === 'INACTIVO'
+                        }">{{book.state === 'INACTIVO' ? 'Inactivo' : 'Activo'}}</span>
+                      </div>
+                      <div class="ms-2 me-auto">
+                        <button type="button" class="btn btn-outline-primary mt-1" (click)="addBook(book)"
+                          [disabled]="book.state=='INACTIVO'">Selecionar</button>
+                      </div>
+                    </li>
+                  </ul>
+
+                </div>
                 }
               </div>
+              }
               <div>
                 @for (bookSelec of booksSeleccionado; track bookSelec.codeBook){
-                  <div>
-                    <li><strong>Libro selecionado: </strong>{{bookSelec.title}} - {{bookSelec.category}}</li>
-                    <button type="button" (click)="removeBook(bookSelec)">Eliminar</button>
-                  </div>
+                <div class="rounded-2 mt-1 p-2 shadow-sm">
+                  <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Titulo del Libro</div>
+                        {{bookSelec.title}}
+                      </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Categoria</div>
+                        {{bookSelec.category}}
+                      </div>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Autor</div>
+                        {{authorSelected}}
+                      </div>
+                    </li>
+                  </ul>
+                  <button type="button" (click)="removeBook(bookSelec)" class="btn btn-outline-danger mt-1">Eliminar
+                    Selección</button>
+                </div>
                 }
               </div>
             </div>
@@ -66,45 +135,46 @@
               <input type="number" name="cantBooks" id="cantBooks" formControlName="booksQuantity">
               <div class="custom--error">
                 @if (form.get('booksQuantity')?.errors?.['required']){
-                  <span>El campo es requerido</span>
+                <span>El campo es requerido</span>
                 }
                 @if (form.get('booksQuantity')?.errors?.['pattern']){
-                  <span>El campo no debe tener letras</span>
+                <span>El campo no debe tener letras</span>
                 }
               </div>
             </div>
             <div class="custom-grid__item">
-              <label for="days" >Dias prestados</label>
-              <select  id="days" formControlName="loanDays" name="days">
+              <label for="days">Dias prestados</label>
+              <select id="days" formControlName="loanDays" name="days">
                 <option value="1">1 dia</option>
                 <option value="3">3 dias</option>
                 <option value="5">5 dias</option>
               </select>
               <div class="custom-error">
                 @if (form.get('loanDays')?.errors?.['required']){
-                  <span>El campo es requerido</span>
+                <span>El campo es requerido</span>
                 }
                 @if (form.get('loanDays')?.errors?.['pattern']){
-                  <span>El campo no debe tener letras</span>
+                <span>El campo no debe tener letras</span>
                 }
               </div>
             </div>
 
             @if (edit){
-              <div class="custom-grid__item">
-                <label for="state">Estado</label>
-                <select id="state" formControlName="state">
-                  <option value="PRESTADO">Prestado</option>
-                  <option value="DEVUELTO">Devuelto</option>
-                </select>
-              </div>
+            <div class="custom-grid__item">
+              <label for="state">Estado</label>
+              <select id="state" formControlName="state">
+                <option value="PRESTADO">Prestado</option>
+                <option value="DEVUELTO">Devuelto</option>
+              </select>
+            </div>
             }
           </div>
         </form>
       </div>
       <div class="custom-modal__footer">
         <button type="button" class="custom-button custom-button--secondary" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="custom-button custom-button--primary" (click)="onSumbit()" [disabled]="!form.valid">Save</button>
+        <button type="button" class="custom-button custom-button--primary" (click)="onSumbit()"
+          [disabled]="!form.valid">Save</button>
       </div>
     </div>
   </div>
