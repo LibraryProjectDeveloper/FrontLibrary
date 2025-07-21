@@ -60,6 +60,7 @@ export class BookComponent implements OnInit {
     this.getCategories();
   }
   getData(page: number = 0, size: number = 5): void {
+    //  this.resetearVariablesPages();
     this.loading = true;
     this.error = null;
     this.bookService.getBooks(page, size).subscribe({
@@ -95,38 +96,55 @@ export class BookComponent implements OnInit {
     });
   }
 
-  getSelection(): void {
-    console.log(this.categoria);
+  getSelection(page: number = 0): void {
     if (!this.categoria) {
       this.getData();
-      this.loading = false;
       return;
     }
+    // this.resetearVariablesPages();
     this.loading = true;
     this.error = null;
-    this.bookService.getBookCategory(this.categoria).subscribe({
-      next: (response) => {
-        this.Books = response;
-        this.loading = false;
-      },
-      error: (err) => {
-        this.loading = false;
-        this.error = 'Error al cargar los libros';
-        console.log('Error: ', err);
-      },
-    });
+    this.bookService
+      .getBookCategory(this.categoria, page, this.size)
+      .subscribe({
+        next: (response: PageResponse<Book>) => {
+          console.log('Libros obtenidos por categoria:', response);
+          this.Books = response.content;
+          this.totalElements = response.totalElements;
+          this.totalPages = response.totalPages;
+          this.currentPage = response.page;
+          this.pagesArray = Array.from(
+            { length: this.totalPages },
+            (_, i) => i + 1
+          );
+          this.loading = false;
+        },
+        error: (err) => {
+          this.loading = false;
+          this.error = 'Error al cargar los libros';
+          console.log('Error: ', err);
+        },
+      });
   }
 
-  getState() {
+  getState(page: number = 0): void {
     if (!this.state) {
       this.getData();
       return;
     }
+    //this.resetearVariablesPages();
     this.loading = true;
     this.error = null;
-    this.bookService.getBookState(this.state).subscribe({
-      next: (response: Book[]) => {
-        this.Books = response;
+    this.bookService.getBookState(this.state, page, this.size).subscribe({
+      next: (response: PageResponse<Book>) => {
+        this.Books = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: (err) => {
@@ -136,7 +154,7 @@ export class BookComponent implements OnInit {
       },
     });
   }
-  getYear() {
+  getYear(page: number = 0, size: number = 5) {
     if (this.year === 0 || !this.year) {
       this.getData();
       return;
@@ -144,15 +162,22 @@ export class BookComponent implements OnInit {
 
     this.loading = true;
     this.error = null;
-    this.bookService.getBookYear(this.year).subscribe({
-      next: (response: Book[]) => {
-        if (response.length === 0) {
+    this.bookService.getBookYear(this.year, page, size).subscribe({
+      next: (response: PageResponse<Book>) => {
+        if (response.content.length === 0) {
           alert('No se encontraron libros con el año ingresado');
           this.loading = false;
           this.year = 0;
           return;
         }
-        this.Books = response;
+        this.Books = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: (err) => {
@@ -295,6 +320,15 @@ export class BookComponent implements OnInit {
     });
   }
 
+  resetearVariablesPages() {
+    this.page = 0;
+    this.size = 5;
+    this.totalElements = 0;
+    this.totalPages = 0;
+    this.pagesArray = [];
+    this.currentPage = 0;
+  }
+
   getVisiblePages(): number[] {
     const pages: number[] = [];
     const maxVisiblePages = 5; // Número máximo de páginas visibles
@@ -334,6 +368,16 @@ export class BookComponent implements OnInit {
       return;
     }
     this.page = page;
-    this.getData(this.page, this.size);
+
+    // Determinar qué método usar según los filtros activos
+    if (this.categoria && this.categoria !== '') {
+      this.getSelection(page);
+    } else if (this.state && this.state !== '') {
+      this.getState(page);
+    } else if (this.year && this.year !== 0) {
+      this.getYear(page);
+    } else {
+      this.getData(this.page, this.size);
+    }
   }
 }

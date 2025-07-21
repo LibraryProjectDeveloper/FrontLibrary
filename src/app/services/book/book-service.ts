@@ -60,20 +60,38 @@ export class BookService {
     });
   }
 
-  getBookCategory(category: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/categoria/${category}`);
+  getBookCategory(category: string, page: number = 0, size: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageResponse<Book>>(
+      `${this.url}/categoria/${category}`,
+      {
+        params,
+      }
+    );
   }
 
   searchCategory(category: string): Observable<Book[]> {
     return this.http.get<Book[]>(`${this.url}/book-info/category/${category}`);
   }
 
-  getBookState(state: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/state/${state}`);
+  getBookState(state: string, page: number = 0, size: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageResponse<Book>>(`${this.url}/state/${state}`, {
+      params,
+    });
   }
 
-  getBookYear(year: number): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/year/${year}`);
+  getBookYear(year: number, page: number = 0, size: number = 10) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<PageResponse<Book>>(`${this.url}/year/${year}`, {
+      params,
+    });
   }
 
   CountBookByCategory(): Observable<CountBookByCategory[]> {
