@@ -72,8 +72,10 @@ export class BookService {
     );
   }
 
-  searchCategory(category: string): Observable<Book[]> {
-    return this.http.get<Book[]>(`${this.url}/book-info/category/${category}`);
+  searchCategory(category: string) {
+    return this.http.get<PageResponse<Book>>(
+      `${this.url}/book-info/category/${category}`
+    );
   }
 
   getBookState(state: string, page: number = 0, size: number = 10) {
@@ -137,11 +139,17 @@ export class BookService {
     return this.http.delete<Book>(`${this.url}/delete/${id}`);
   }
 
-  getBookAvailable(page:number = 0 ,size:number = 10): Observable<PageResponse<Book>> {
+  getBookAvailable(
+    page: number = 0,
+    size: number = 10
+  ): Observable<PageResponse<Book>> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<PageResponse<Book>>(`${this.url}/book-info/available`,{params});
+    return this.http.get<PageResponse<Book>>(
+      `${this.url}/book-info/available`,
+      { params }
+    );
   }
 
   searchAutor(authorName: string): Observable<Book[]> {

@@ -112,7 +112,7 @@ export class ComModalUser implements OnInit, OnChanges {
         [Validators.required, Validators.pattern('^[0-9]{8}$')],
         [dniExists(this.userService, undefined)], // Se actualizará en updateAsyncValidators
       ],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       idRol: [2, [Validators.required]], // Valor por defecto: Usuario
       state: ['true', [Validators.required]],
     });

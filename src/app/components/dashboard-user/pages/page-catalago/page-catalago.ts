@@ -1,5 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {BookService, Book, BookResponse} from '../../../../services/book/book-service';
+import {
+  BookService,
+  Book,
+  BookResponse,
+} from '../../../../services/book/book-service';
 import { DatePipe, CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -7,6 +11,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { PageResponse } from '../../../../model/PageResponse';
 @Component({
   selector: 'app-page-catalago',
   imports: [DatePipe, ReactiveFormsModule, CommonModule],
@@ -18,7 +23,7 @@ export class PageCatalago implements OnInit {
   form!: FormGroup;
   fb = inject(FormBuilder);
   page: number = 0;
-  size: number = 10;
+  size: number = 6;
   totalElements: number = 0;
   totalPages: number = 0;
   currentPage: number = 0;
@@ -62,16 +67,19 @@ export class PageCatalago implements OnInit {
     this.searchBookByTitle(title);
   }
 
-  getBooks(page:number = 0, size: number = this.size): void {
+  getBooks(page: number = 0, size: number = this.size): void {
     this.loading = true;
     this.errorMessage = null;
-    this.bookService.getBookAvailable(page,size).subscribe({
+    this.bookService.getBookAvailable(page, size).subscribe({
       next: (response) => {
         this.booksAvailable = response.content;
         this.totalElements = response.totalElements;
         this.totalPages = response.totalPages;
         this.currentPage = response.page;
-        this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: (error) => {
@@ -97,7 +105,8 @@ export class PageCatalago implements OnInit {
     let startPage = Math.max(1, this.currentPage - 1);
     let endPage = Math.min(this.totalPages - 1, this.currentPage + 1);
     if (this.currentPage <= 2) endPage = Math.min(this.totalPages - 1, 3);
-    if (this.currentPage >= this.totalPages - 2) startPage = Math.max(1, this.totalPages - 3);
+    if (this.currentPage >= this.totalPages - 2)
+      startPage = Math.max(1, this.totalPages - 3);
     for (let i = startPage; i <= endPage; i++) pages.push(i);
     return pages;
   }
@@ -167,13 +176,14 @@ export class PageCatalago implements OnInit {
       return;
     }
     this.bookService.searchCategory(category).subscribe({
-      next: (response: Book[]) => {
-        if (!response || response.length === 0) {
+      next: (response: PageResponse<Book>) => {
+        if (!response || response.content.length === 0) {
           this.loading = false;
           this.errorMessage =
             'No se encontraron libros para la categoría proporcionada';
         } else {
-          this.booksAvailable = response;
+          console.log('Libros encontrados por categoría:', response);
+          this.booksAvailable = response.content;
           this.loading = false;
         }
       },

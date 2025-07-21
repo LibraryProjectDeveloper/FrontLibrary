@@ -165,7 +165,7 @@ export class ModalReserva implements OnInit, OnChanges {
       ]),
       bookSearch: new FormControl('', [
         Validators.required,
-        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑs]+$'),
+        Validators.pattern('^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$'),
       ]),
       reservationDate: new FormControl('', [
         Validators.required,
