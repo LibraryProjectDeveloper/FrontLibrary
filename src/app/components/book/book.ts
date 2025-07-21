@@ -320,15 +320,6 @@ export class BookComponent implements OnInit {
     });
   }
 
-  resetearVariablesPages() {
-    this.page = 0;
-    this.size = 5;
-    this.totalElements = 0;
-    this.totalPages = 0;
-    this.pagesArray = [];
-    this.currentPage = 0;
-  }
-
   getVisiblePages(): number[] {
     const pages: number[] = [];
     const maxVisiblePages = 5; // Número máximo de páginas visibles

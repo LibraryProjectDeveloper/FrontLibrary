@@ -7,6 +7,7 @@ import { UserRequest } from '../../model/UserRequest';
 import { DelemodalUser } from '../delemodal-user/delemodal-user';
 import { DetaModalUser } from '../deta-modal-user/deta-modal-user';
 import { AuthService } from '../../services/auth/auth-service';
+import { PageResponse } from '../../model/PageResponse';
 
 @Component({
   selector: 'app-usuario',
@@ -43,17 +44,69 @@ export class Usuario {
 
   userRoles: string[] = [];
   authService = inject(AuthService);
+
+  //variables para la paginacion
+  page: number = 0;
+  size: number = 5;
+  totalElements: number = 0;
+  totalPages: number = 0;
+  pagesArray: number[] = [];
+  currentPage: number = 0;
   constructor(private userService: UserService) {}
   ngOnInit(): void {
     this.getUsers();
   }
-  getUsers() {
+
+  // Método para resetear filtros
+  resetFilters() {
+    this.query = '';
+    this.idRol = 0;
+    this.state = '';
+    this.page = 0;
+  }
+
+  // Método para resetear variables de paginación
+  resetPaginationVariables() {
+    this.page = 0;
+    this.totalElements = 0;
+    this.totalPages = 0;
+    this.currentPage = 0;
+    this.pagesArray = [];
+  }
+
+  // Métodos wrapper para llamadas desde el HTML (sin parámetros)
+  onSearchUser() {
+    console.log('onSearchUser llamado con query:', this.query);
+    this.resetPaginationVariables();
+    this.searchUser(0, this.size);
+  }
+
+  onGetRol() {
+    console.log('onGetRol llamado con idRol:', this.idRol);
+    this.resetPaginationVariables();
+    this.getRol(0, this.size);
+  }
+
+  onGetUsersState() {
+    console.log('onGetUsersState llamado con state:', this.state);
+    this.resetPaginationVariables();
+    this.getUsersState();
+  }
+  getUsers(page: number = 0, size: number = 5) {
     this.loading = true;
     this.error = null;
-    this.userService.getUsersActives().subscribe({
-      next: (response: User[]) => {
+    this.page = page; // Actualizar la página actual
+    this.userService.getUsersActives(page, size).subscribe({
+      next: (response: PageResponse<User>) => {
         this.user = null;
-        this.users = response;
+        this.users = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: () => {
@@ -69,30 +122,41 @@ export class Usuario {
     return isValide;
   }
 
-  searchUser() {
+  searchUser(page: number = 0, size: number = 5) {
     if (!this.query.trim()) {
-      this.getUsers();
+      // Limpiar otros filtros y cargar usuarios normales
+      this.idRol = 0;
+      this.state = '';
+      this.resetPaginationVariables();
+      this.getUsers(0, size);
       return;
     }
     if (!this.validateQuery(this.query)) {
       alert('Consulta inválida. Por favor, ingrese un término válido.');
       this.query = '';
+      this.resetPaginationVariables();
+      this.getUsers(0, size);
       return;
     }
 
-    if (this.query) this.loading = true;
+    // Limpiar otros filtros cuando se busca por query
+    this.idRol = 0;
+    this.state = '';
+
+    this.loading = true;
     this.error = null;
-    this.userService.searchUser(this.query).subscribe({
-      next: (response: any) => {
-        if (Array.isArray(response)) {
-          this.user = null;
-          this.users = response;
-          console.log('Usuarios encontrados:', this.users);
-        } else {
-          console.log('Usuario encontrado:', response);
-          this.users = [];
-          this.user = response;
-        }
+    this.page = page;
+    this.userService.searchUser(this.query, page, size).subscribe({
+      next: (response: PageResponse<User>) => {
+        this.users = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
+        console.log('Usuarios encontrados:', response);
         this.loading = false;
       },
       error: () => {
@@ -108,17 +172,34 @@ export class Usuario {
     return regex.test(query);
   }
 
-  getRol() {
+  getRol(page: number = 0, size: number = 5) {
     if (this.idRol == 0) {
-      this.getUsers();
+      // Limpiar otros filtros y cargar usuarios normales
+      this.query = '';
+      this.state = '';
+      this.resetPaginationVariables();
+      this.getUsers(0, size);
       return;
     }
 
+    // Limpiar otros filtros cuando se busca por rol
+    this.query = '';
+    this.state = '';
+
     this.loading = true;
     this.error = null;
-    this.userService.searchUserByRol(this.idRol).subscribe({
-      next: (response: User[]) => {
-        this.users = response;
+    this.page = page;
+    this.userService.searchUserByRol(this.idRol, page, size).subscribe({
+      next: (response: PageResponse<User>) => {
+        console.log('Respuesta de búsqueda por rol:', response);
+        this.users = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: () => {
@@ -131,24 +212,43 @@ export class Usuario {
 
   getUsersState() {
     if (!this.state || this.state === '') {
+      // Limpiar otros filtros y cargar todos los usuarios
+      this.query = '';
+      this.idRol = 0;
       this.getUserAll();
       return;
     }
 
+    // Limpiar otros filtros cuando se filtra por estado
+    this.query = '';
+    this.idRol = 0;
+    this.resetPaginationVariables();
+
     if (this.state === 'true') {
-      this.getUserActives();
+      this.getUsers(0, this.size);
     } else if (this.state === 'false') {
-      this.getUserInactives();
+      this.getUserInactives(0, this.size);
     }
   }
 
   getUserAll() {
+    // Limpiar otros filtros
+    this.query = '';
+    this.idRol = 0;
+
     this.loading = true;
     this.error = null;
     this.userService.getUsersAll().subscribe({
       next: (response: User[]) => {
         this.users = response;
+        // Resetear variables de paginación ya que no está paginado
+        this.totalElements = response.length;
+        this.totalPages = 1;
+        this.currentPage = 0;
+        this.page = 0;
+        this.pagesArray = [1];
         this.loading = false;
+        console.log('Todos los usuarios cargados:', response.length);
       },
       error: () => {
         this.loading = false;
@@ -158,12 +258,20 @@ export class Usuario {
     });
   }
 
-  getUserInactives() {
+  getUserInactives(page: number = 0, size: number = 5) {
     this.loading = true;
     this.error = null;
-    this.userService.getUsersInactives().subscribe({
-      next: (response: User[]) => {
-        this.users = response;
+    this.page = page; // Actualizar la página actual
+    this.userService.getUsersInactives(page, size).subscribe({
+      next: (response: PageResponse<User>) => {
+        this.users = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: () => {
@@ -173,7 +281,7 @@ export class Usuario {
       },
     });
   }
-
+  /*
   getUserActives() {
     this.loading = true;
     this.error = null;
@@ -189,7 +297,7 @@ export class Usuario {
       },
     });
   }
-
+*/
   openModal() {
     this.showModal = true;
     this.editar = false;
@@ -280,5 +388,75 @@ export class Usuario {
   closeDetailModal(): void {
     this.showDetailModal = false;
     this.selectedUserDetail = null;
+  }
+
+  goPage(page: number) {
+    if (page < 0 || page >= this.totalPages) {
+      console.error('Número de página inválido:', page);
+      return;
+    }
+
+    console.log('goPage llamado con:', {
+      page,
+      query: this.query,
+      idRol: this.idRol,
+      state: this.state,
+    });
+
+    // Determinar qué método usar según los filtros activos - orden de prioridad
+    if (this.query && this.query.trim() !== '') {
+      // Prioridad 1: Búsqueda por texto
+      console.log('Navegando con filtro de búsqueda');
+      this.searchUser(page, this.size);
+    } else if (this.idRol && this.idRol !== 0) {
+      // Prioridad 2: Filtro por rol
+      console.log('Navegando con filtro de rol');
+      this.getRol(page, this.size);
+    } else if (this.state && this.state !== '') {
+      // Prioridad 3: Filtro por estado
+      console.log('Navegando con filtro de estado');
+      if (this.state === 'true') {
+        this.getUsers(page, this.size);
+      } else if (this.state === 'false') {
+        this.getUserInactives(page, this.size);
+      }
+    } else {
+      // Sin filtros: usuarios activos por defecto
+      console.log('Navegando sin filtros');
+      this.getUsers(page, this.size);
+    }
+  }
+
+  getVisiblePages(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5; // Número máximo de páginas visibles
+
+    // Si hay pocas páginas, mostrar todas
+    if (this.totalPages <= maxVisiblePages) {
+      for (let i = 1; i < this.totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
+    }
+
+    // Lógica para mostrar páginas alrededor de la página actual
+    let startPage = Math.max(1, this.currentPage - 1);
+    let endPage = Math.min(this.totalPages - 1, this.currentPage + 1);
+
+    // Ajustar si estamos muy cerca del inicio
+    if (this.currentPage <= 2) {
+      endPage = Math.min(this.totalPages - 1, 3);
+    }
+
+    // Ajustar si estamos muy cerca del final
+    if (this.currentPage >= this.totalPages - 2) {
+      startPage = Math.max(1, this.totalPages - 3);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
   }
 }

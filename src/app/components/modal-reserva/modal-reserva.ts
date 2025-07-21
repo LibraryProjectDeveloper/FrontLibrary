@@ -22,6 +22,7 @@ import {
 } from '../../services/reserve/reserve-service';
 import { debounceTime } from 'rxjs';
 import { User, UserService } from '../../services/user/user-service';
+import { PageResponse } from '../../model/PageResponse';
 import { BookResponse, BookService } from '../../services/book/book-service';
 import { AuthService } from '../../services/auth/auth-service';
 @Component({
@@ -180,24 +181,20 @@ export class ModalReserva implements OnInit, OnChanges {
     this.isSearchingUser = true;
     this.userSearchError = null;
 
-    this.userService.searchUser(dni).subscribe({
-      next: (response) => {
+    this.userService.searchUser(dni, 0, 10).subscribe({
+      next: (response: PageResponse<User>) => {
         console.log('Usuario encontrado:', response);
         this.isSearchingUser = false;
 
-        if (Array.isArray(response)) {
-          // Si la respuesta es un array, tomar el primer usuario
-          this.usuario = response.length > 0 ? response[0] : null;
-        } else {
-          // Si la respuesta es un solo usuario
-          this.usuario = response;
-        }
-
-        if (this.usuario) {
+        // PageResponse contiene un array de usuarios en la propiedad 'content'
+        if (response.content && response.content.length > 0) {
+          // Tomar el primer usuario del resultado paginado
+          this.usuario = response.content[0];
           console.log('Usuario válido encontrado:', this.usuario);
           this.userSearchError = null;
         } else {
           console.log('No se encontró usuario con el DNI:', dni);
+          this.usuario = null;
           this.userSearchError = `No se encontró usuario con el DNI: ${dni}`;
         }
       },
