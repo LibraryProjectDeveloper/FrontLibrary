@@ -48,6 +48,9 @@ export class PrestSercice {
   updateLoan(loanRequest: LoanRequest, id: number) {
     return this.http.put<Loan>(`${this.url}/update/${id}`, loanRequest);
   }
+  finishedLoan(id_loan:number){
+    return this.http.put<Loan>(`${this.url}/finished/${id_loan}`,{})
+  }
 
   deleteLoan(id: number) {
     return this.http.delete(`${this.url}/delete/${id}`);

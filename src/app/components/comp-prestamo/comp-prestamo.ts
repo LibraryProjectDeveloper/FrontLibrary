@@ -158,7 +158,19 @@ export class CompPrestamo implements OnInit {
     return diffDays;
   }
 
-  finishedLoan(loan: number) {}
+  finishedLoan(loan: number) {
+    if(confirm("Esta seguro que desea finalizar el préstamo?")) {
+      this.servicePrestamo.finishedLoan(loan).subscribe({
+        next: (data) => {
+          console.log('Préstamo finalizado con éxito', data);
+          this.getAllPrestamos();
+        },
+        error: (error) => {
+          console.error('Error al finalizar el préstamo:', error);
+        },
+      });
+    }
+  }
 
   deletePrestamo(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar este préstamo?')) {
