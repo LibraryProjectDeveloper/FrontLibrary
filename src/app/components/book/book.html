@@ -61,7 +61,7 @@
 
         <!-- Páginas alrededor de la página actual -->
         @for (page of getVisiblePages(); track page) {
-        @if (page !== 0 && page !== totalPages) {
+        @if (page !== 0 && page !== totalPages - 1) {
         <li class="page-item" [class.active]="currentPage === page">
           <button class="page-link" (click)="goPage(page)">{{page + 1}}</button>
         </li>
@@ -69,21 +69,21 @@
         }
 
         <!-- Puntos suspensivos derecha -->
-        @if (currentPage < totalPages - 2) { <li class="page-item disabled">
+        @if (currentPage < totalPages - 3) { <li class="page-item disabled">
           <span class="page-link">...</span>
           </li>
           }
 
           <!-- Última página -->
           @if (totalPages > 0 && totalPages !== 0) {
-          <li class="page-item" [class.active]="currentPage === totalPages">
-            <button class="page-link" (click)="goPage(totalPages)">{{totalPages + 1}}</button>
+          <li class="page-item" [class.active]="currentPage === totalPages - 1">
+            <button class="page-link" (click)="goPage(totalPages - 1)">{{totalPages}}</button>
           </li>
           }
 
           <!-- Botón Siguiente -->
-          <li class="page-item" [class.disabled]="currentPage === totalPages">
-            <button class="page-link" (click)="goPage(currentPage+1)" [disabled]="currentPage === totalPages">
+          <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+            <button class="page-link" (click)="goPage(currentPage+1)" [disabled]="currentPage >= totalPages - 1">
               Siguiente
             </button>
           </li>
@@ -92,7 +92,7 @@
       <!-- Información de páginas -->
       <div class="text-center mt-2">
         <small class="text-muted">
-          Página {{currentPage + 1}} de {{totalPages + 1}}
+          Página {{currentPage + 1}} de {{totalPages}}
         </small>
       </div>
     </nav>
