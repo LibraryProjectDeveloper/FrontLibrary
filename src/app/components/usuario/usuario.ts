@@ -76,19 +76,16 @@ export class Usuario {
 
   // Métodos wrapper para llamadas desde el HTML (sin parámetros)
   onSearchUser() {
-    console.log('onSearchUser llamado con query:', this.query);
     this.resetPaginationVariables();
     this.searchUser(0, this.size);
   }
 
   onGetRol() {
-    console.log('onGetRol llamado con idRol:', this.idRol);
     this.resetPaginationVariables();
     this.getRol(0, this.size);
   }
 
   onGetUsersState() {
-    console.log('onGetUsersState llamado con state:', this.state);
     this.resetPaginationVariables();
     this.getUsersState();
   }
@@ -396,32 +393,18 @@ export class Usuario {
       return;
     }
 
-    console.log('goPage llamado con:', {
-      page,
-      query: this.query,
-      idRol: this.idRol,
-      state: this.state,
-    });
-
     // Determinar qué método usar según los filtros activos - orden de prioridad
     if (this.query && this.query.trim() !== '') {
-      // Prioridad 1: Búsqueda por texto
-      console.log('Navegando con filtro de búsqueda');
       this.searchUser(page, this.size);
     } else if (this.idRol && this.idRol !== 0) {
-      // Prioridad 2: Filtro por rol
-      console.log('Navegando con filtro de rol');
       this.getRol(page, this.size);
     } else if (this.state && this.state !== '') {
-      // Prioridad 3: Filtro por estado
-      console.log('Navegando con filtro de estado');
       if (this.state === 'true') {
         this.getUsers(page, this.size);
       } else if (this.state === 'false') {
         this.getUserInactives(page, this.size);
       }
     } else {
-      // Sin filtros: usuarios activos por defecto
       console.log('Navegando sin filtros');
       this.getUsers(page, this.size);
     }
