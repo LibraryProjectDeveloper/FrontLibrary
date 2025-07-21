@@ -109,6 +109,68 @@
 
     }
   </div>
+  <div>
+    <nav aria-label="Navegación de páginas">
+      <ul class="pagination justify-content-center">
+        <!-- Botón Anterior -->
+        <li class="page-item" [class.disabled]="currentPage === 0">
+          <button class="page-link" (click)="goPage(currentPage-1)" [disabled]="currentPage === 0">
+            Anterior
+          </button>
+        </li>
+
+        <!-- Primera página -->
+        @if (totalPages > 0) {
+        <li class="page-item" [class.active]="currentPage === 0">
+          <button class="page-link" (click)="goPage(0)">1</button>
+        </li>
+        }
+
+        <!-- Puntos suspensivos izquierda -->
+        @if (currentPage > 2) {
+        <li class="page-item disabled">
+          <span class="page-link">...</span>
+        </li>
+        }
+
+        <!-- Páginas alrededor de la página actual -->
+        @for (page of getVisiblePages(); track page) {
+        @if (page !== 0 && page !== totalPages - 1) {
+        <li class="page-item" [class.active]="currentPage === page">
+          <button class="page-link" (click)="goPage(page)">{{page + 1}}</button>
+        </li>
+        }
+        }
+
+        <!-- Puntos suspensivos derecha -->
+        @if (currentPage < totalPages - 3) { <li class="page-item disabled">
+          <span class="page-link">...</span>
+          </li>
+          }
+
+          <!-- Última página -->
+          @if (totalPages > 0 && totalPages !== 0) {
+          <li class="page-item" [class.active]="currentPage === totalPages - 1">
+            <button class="page-link" (click)="goPage(totalPages - 1)">{{totalPages}}</button>
+          </li>
+          }
+
+          <!-- Botón Siguiente -->
+          <li class="page-item" [class.disabled]="currentPage >= totalPages - 1">
+            <button class="page-link" (click)="goPage(currentPage+1)" [disabled]="currentPage >= totalPages - 1">
+              Siguiente
+            </button>
+          </li>
+      </ul>
+
+      <!-- Información de páginas -->
+      <div class="text-center mt-2">
+        <small class="text-muted">
+          Página {{currentPage + 1}} de {{totalPages}}
+        </small>
+      </div>
+    </nav>
+  </div>
 </div>
 <div>
   <app-modal-reserva [isVisible]="isVisible" [editMode]="edit" [reserveEdit]="reserveEdit" (close)="closeModal()"

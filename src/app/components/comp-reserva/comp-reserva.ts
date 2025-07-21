@@ -14,6 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs';
+import { PageResponse } from '../../model/PageResponse';
 @Component({
   selector: 'app-comp-reserva',
   imports: [NgClass, ModalReserva, ReactiveFormsModule, ModalReport],
@@ -30,8 +31,14 @@ export class CompReserva implements OnInit {
   reserveEdit: Reserve | null = null;
   formFilter!: FormGroup;
 
+  page: number = 0;
+  size: number = 5;
+  totalElements: number = 0;
+  totalPages: number = 0;
+  pagesArray: number[] = [];
+  currentPage: number = 0;
   constructor(private reserveService: ReserveService, fb: FormBuilder) {
-    this.getReserves();
+    this.getReserves(0, this.size);
     this.formFilter = fb.group({
       searchDni: ['', [Validators.maxLength(8)]],
       searchTitle: [''],
@@ -97,13 +104,22 @@ export class CompReserva implements OnInit {
     }
   }
 
-  getReserves() {
+  getReserves(page: number = 0, size: number = 5): void {
     this.loading = true;
     this.error = null;
-    this.reserveService.getReserves().subscribe({
-      next: (response: Reserve[]) => {
+
+    this.page = page;
+    this.reserveService.getReserves(page, size).subscribe({
+      next: (response: PageResponse<Reserve>) => {
         console.log(response);
-        this.reserves = response;
+        this.reserves = response.content;
+        this.totalElements = response.totalElements;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.page;
+        this.pagesArray = Array.from(
+          { length: this.totalPages },
+          (_, i) => i + 1
+        );
         this.loading = false;
       },
       error: () => {
@@ -131,6 +147,12 @@ export class CompReserva implements OnInit {
           this.error = 'No hay reservas activas';
         } else {
           this.reserves = response;
+          // Resetear variables de paginación para filtros sin paginación
+          this.totalElements = response.length;
+          this.totalPages = 1;
+          this.currentPage = 0;
+          this.page = 0;
+          this.pagesArray = [1];
           this.loading = false;
         }
       },
@@ -152,6 +174,12 @@ export class CompReserva implements OnInit {
           this.error = 'No hay reservas inactivas';
         } else {
           this.reserves = response;
+          // Resetear variables de paginación para filtros sin paginación
+          this.totalElements = response.length;
+          this.totalPages = 1;
+          this.currentPage = 0;
+          this.page = 0;
+          this.pagesArray = [1];
           this.loading = false;
         }
       },
@@ -178,6 +206,12 @@ export class CompReserva implements OnInit {
           this.error = 'No se encontraron reservas para el DNI proporcionado';
         } else {
           this.reserves = response;
+          // Resetear variables de paginación para filtros sin paginación
+          this.totalElements = response.length;
+          this.totalPages = 1;
+          this.currentPage = 0;
+          this.page = 0;
+          this.pagesArray = [1];
           this.loading = false;
         }
       },
@@ -205,6 +239,12 @@ export class CompReserva implements OnInit {
             'No se encontraron reservas para el título proporcionado';
         } else {
           this.reserves = response;
+          // Resetear variables de paginación para filtros sin paginación
+          this.totalElements = response.length;
+          this.totalPages = 1;
+          this.currentPage = 0;
+          this.page = 0;
+          this.pagesArray = [1];
           this.loading = false;
         }
       },
@@ -232,6 +272,12 @@ export class CompReserva implements OnInit {
           this.error = 'No se encontraron reservas para la fecha proporcionada';
         } else {
           this.reserves = response;
+          // Resetear variables de paginación para filtros sin paginación
+          this.totalElements = response.length;
+          this.totalPages = 1;
+          this.currentPage = 0;
+          this.page = 0;
+          this.pagesArray = [1];
           this.loading = false;
         }
       },
@@ -272,7 +318,7 @@ export class CompReserva implements OnInit {
   guardarReserva(reserve: ReserveRequest) {
     this.reserveService.addReserve(reserve).subscribe({
       next: (response) => {
-        this.getReserves();
+        this.getReserves(0, this.size);
         this.isVisible = false;
         console.log('Reserva guardada:', response);
       },
@@ -285,7 +331,7 @@ export class CompReserva implements OnInit {
   actualizarReserva(reserve: ReserveRequest) {
     this.reserveService.updateReserve(reserve).subscribe({
       next: (response) => {
-        this.getReserves();
+        this.getReserves(0, this.size);
         this.isVisible = false;
         console.log('Reserva actualizada:', response);
       },
@@ -299,7 +345,7 @@ export class CompReserva implements OnInit {
     if (confirm('¿Estás seguro de que deseas eliminar esta reserva?')) {
       this.reserveService.deleteReserve(id).subscribe({
         next: () => {
-          this.getReserves();
+          this.getReserves(0, this.size);
           console.log('Reserva eliminada con éxito');
         },
         error: (error) => {
@@ -311,6 +357,44 @@ export class CompReserva implements OnInit {
 
   cargarReservas() {
     this.formFilter.reset();
-    this.getReserves();
+    this.getReserves(0, this.size);
+  }
+
+  goPage(page: number) {
+    if (page < 0 || page >= this.totalPages) return;
+    this.page = page;
+    this.getReserves(this.page, this.size);
+  }
+  getVisiblePages(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5; // Número máximo de páginas visibles
+
+    // Si hay pocas páginas, mostrar todas
+    if (this.totalPages <= maxVisiblePages) {
+      for (let i = 1; i < this.totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
+    }
+
+    // Lógica para mostrar páginas alrededor de la página actual
+    let startPage = Math.max(1, this.currentPage - 1);
+    let endPage = Math.min(this.totalPages - 1, this.currentPage + 1);
+
+    // Ajustar si estamos muy cerca del inicio
+    if (this.currentPage <= 2) {
+      endPage = Math.min(this.totalPages - 1, 3);
+    }
+
+    // Ajustar si estamos muy cerca del final
+    if (this.currentPage >= this.totalPages - 2) {
+      startPage = Math.max(1, this.totalPages - 3);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
   }
 }

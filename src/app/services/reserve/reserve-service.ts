@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
+import { PageResponse } from '../../model/PageResponse';
 
 export interface Reserve {
   id: number;
@@ -47,8 +48,12 @@ export interface ReserveReport {
 export class ReserveService {
   private url = environment.apiUrl + '/reserve/';
   constructor(private http: HttpClient) {}
-  getReserves() {
-    return this.http.get<Reserve[]>(this.url);
+  getReserves(page: number = 0, size: number = 2) {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+
+    return this.http.get<PageResponse<Reserve>>(this.url, { params });
   }
   getReservesReport(dateStart: string, dateEnd: string) {
     return this.http.get<ReserveResponse[]>(`${this.url}report`, {

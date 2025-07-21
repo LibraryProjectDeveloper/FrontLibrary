@@ -105,6 +105,7 @@ export class CompPrestamo implements OnInit {
     //this.prestamos = [];
     this.servicePrestamo.getAllByUserId(this.dni).subscribe({
       next: (data) => {
+        console.log('Prestamos encontrados por DNI:', data);
         if (data.length > 0) {
           console.log(data);
           this.prestamos = data;
