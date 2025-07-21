@@ -1,59 +1,69 @@
 <header class="header-container">
   <button class="menu-toggle" aria-label="Abrir menú" (click)="toggleSidebar()">
-    ☰
+    <span class="material-symbols-outlined">menu</span>
   </button>
-  <div class="header-item" aria-label="Biblioteca - Dashboard">
-    📚 Biblioteca
+  <div class="header-title" aria-label="Biblioteca - Dashboard">
+    <span class="material-symbols-outlined logo-icon">library_books</span>
+    <span class="title-text">Biblioteca</span>
   </div>
-  <div class="header-item" tabindex="0" aria-label="Perfil de usuario">
+  <div class="header-profile" tabindex="0" aria-label="Perfil de usuario">
     <img src="https://i.pravatar.cc/40" alt="Foto de perfil de usuario" class="profile-img" />
-    <span class="text-white">Bienvenido</span>
+    <span class="welcome-text">Bienvenido</span>
   </div>
 </header>
 <div class="container-main">
   <nav class="sidebar" [class.visible]="isSidebarVisible">
-    <div>
-      <ul class="nav flex-column" role="navigation" aria-label="Navegación principal">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="home" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#books"
-            role="tab" aria-current="page" aria-selected="true">
-            🏠 Inicio
-          </a>
-        </li>
-        @if (hasRole('ROLE_ADMIN')){
+    <ul class="nav flex-column" role="navigation" aria-label="Navegación principal">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="home" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#books"
+           role="tab" aria-current="page" aria-selected="true">
+          <span class="material-symbols-outlined nav-icon">home</span>
+          Inicio
+        </a>
+      </li>
+      @if (hasRole('ROLE_ADMIN')){
         <li class="nav-item">
           <a class="nav-link" routerLink="books" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#books"
-            role="tab" aria-current="page" aria-selected="true">
-            📚 Libros
+             role="tab" aria-current="page" aria-selected="true">
+            <span class="material-symbols-outlined nav-icon">menu_book</span>
+            Libros
           </a>
         </li>
-        } @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
+      }
+      @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
         <li class="nav-item">
           <a class="nav-link" routerLink="users" routerLinkActive="active" data-bs-toggle="tab" data-bs-target="#users"
-            role="tab" aria-selected="false">
-            👥 Usuarios
+             role="tab" aria-selected="false">
+            <span class="material-symbols-outlined nav-icon">group</span>
+            Usuarios
           </a>
         </li>
-        } @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
+      }
+      @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
         <li class="nav-item">
           <a class="nav-link" routerLink="prestamo" data-bs-toggle="tab" routerLinkActive="active"
-            data-bs-target="#loans" role="tab" aria-selected="false">
-            🔄 Préstamos
+             data-bs-target="#loans" role="tab" aria-selected="false">
+            <span class="material-symbols-outlined nav-icon">swap_horiz</span>
+            Préstamos
           </a>
         </li>
-        } @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
+      }
+      @if (hasRole('ROLE_ADMIN') || hasRole("ROLE_LIBRARIAN")){
         <li class="nav-item">
           <a class="nav-link" routerLink="reserva" data-bs-toggle="tab" routerLinkActive="active"
-            data-bs-target="#loans" role="tab" aria-selected="false">
-            🔄 Reservas
+             data-bs-target="#loans" role="tab" aria-selected="false">
+            <span class="material-symbols-outlined nav-icon">event_available</span>
+            Reservas
           </a>
         </li>
-        }
-        <li class="nav-item mt-2">
-          <button class="btn btn-danger" (click)="logout()">Cerrar sesión</button>
-        </li>
-      </ul>
-    </div>
+      }
+      <li class="nav-item mt-2">
+        <button class="btn-logout" (click)="logout()">
+          <span class="material-symbols-outlined">logout</span>
+          Cerrar sesión
+        </button>
+      </li>
+    </ul>
   </nav>
   <main>
     <router-outlet></router-outlet>

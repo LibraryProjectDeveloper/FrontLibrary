@@ -18,3 +18,50 @@ input.is-invalid {
     background-color: #146c43;
   }
 }
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 1rem;
+}
+
+.page-item {
+  list-style: none;
+}
+
+.page-link {
+  color: #2563eb;
+  background: #fff;
+  border: 1px solid #d1d5db;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  margin: 0 2px;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+
+.page-item.active .page-link,
+.page-link:focus,
+.page-link:hover {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+  outline: none;
+}
+
+.page-item.disabled .page-link,
+.page-link[disabled] {
+  color: #b0b0b0;
+  background: #f3f6fb;
+  border-color: #e5e7eb;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.text-center.mt-2 {
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+}

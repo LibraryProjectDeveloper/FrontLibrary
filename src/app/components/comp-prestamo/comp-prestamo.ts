@@ -19,7 +19,7 @@ export class CompPrestamo implements OnInit {
   totalElements: number = 0;
   totalPages: number = 0;
   currentPage: number = 0;
-  size: number = 5;
+  size: number = 10;
   pagesArray: number[] = [];
   startItem: number = 1;
   endItem: number = 0;
